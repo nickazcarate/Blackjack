@@ -42,23 +42,29 @@ int Player::getTies() {
     return gamesTied;
 }
 
-vector<Card*> Player::getHandTotals() {
+vector<int> Player::getHandTotals() {
     int aceCount = 0;
-    vector<Card*>::iterator iter;
-    for (iter = hand.begin(); iter != hand.end(); iter++) {
+    int baseTotal = 0;
+    for (Card* card : hand) {
+        string value = card->getValue();
+        if (value == "A") {
+            aceCount++;
+            baseTotal += 1;
+        }
+        else if (value == "J" or value == "Q" or value == "K") {
+            baseTotal += 10;
+        }
+        else {
+            baseTotal += stoi(value);
+        }
     }
+    vector<int> totals;
+    totals.push_back(baseTotal);
+    for (int i = 1; i <= aceCount; i++) {
+        totals.push_back(baseTotal + 10 * i);
+    }
+    return totals;
 }
-
-
-void takeTurn();
-void updateMoney();
-
-void getCard();
-void doubleDown();
-void stand();
-void surrender();
-void split();
-void purchaseInsurance();
 
 void Player::takeTurn() {
     if (!isBot) {
