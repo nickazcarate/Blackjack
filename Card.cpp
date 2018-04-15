@@ -7,6 +7,7 @@ Card::Card(string value, string suit){
     this->suit = suit;
 }
 
+//Nick's comment here!
 string Card::getValue(){
     return this->value;
 }
