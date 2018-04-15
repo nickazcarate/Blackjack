@@ -2,6 +2,8 @@
 
 #include "Card.h"
 
+//Anotha one
+
 Card::Card(string value, string suit){
     this->value = value;
     this->suit = suit;
@@ -14,4 +16,3 @@ string Card::getValue(){
 string Card::getSuit(){
     return this->suit;
 }
-// Greg's test comment
