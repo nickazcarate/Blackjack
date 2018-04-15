@@ -13,3 +13,4 @@ string Card::getValue(){
 string Card::getSuit(){
     return this->suit;
 }
+// Greg's test comment
