@@ -13,10 +13,12 @@ using namespace std;
 class DeckStack {
 public:
     DeckStack(int numDecks);
-    void shuffleEntireDeck();
     void printDeck();
     void shuffleDeck();
     vector<Card *> getCardStack();
+    Card * getTopCard();
+    void removeTopCard();
+
 private:
     void createDeck();
     vector<Card *> cardStack;

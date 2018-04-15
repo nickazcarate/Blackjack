@@ -1,8 +1,6 @@
 // Created by Nick Azcarate on 4/15/18.
 #include "Game.h"
 
-
-
 Game::Game(int userGameTypeChoice, int tableBuyIn){
     this->tableBuyIn = tableBuyIn;
     if(userGameTypeChoice == 1){
@@ -15,6 +13,7 @@ Game::Game(int userGameTypeChoice, int tableBuyIn){
         //error handle
     }
 }
+
 
 vector<Player *> Game::getPlayers(){
     return this->players;
@@ -33,12 +32,12 @@ int Game::getTableBuyIn(){
 }
 
 void Game::runPlayingMode() {
-    cout << "How many players would you like to play alongside with (not including dealer)?\n";
+    cout << "\nHow many players would you like to play alongside with (not including dealer)?\n";
     cout << "Enter an integer from 0 (just you and the dealer) to 5: ";
     cin >> numPlayers;
     //getNumPlayers();
     //error handle
-    cout << "\n\n How much money should each player start with?\n";
+    cout << "\nHow much money should each player start with?\n";
     cout << "Enter an integer greater than or equal to $100: ";
     //getAmtMoney();
     //error handle
@@ -49,6 +48,7 @@ void Game::runPlayingMode() {
     }
     players.push_back(new Player(amtMoney, false)); //creates the user
     random_shuffle(players.begin(), players.end()); //shuffles the players to have random placement around the table
+    //add dealer as the last person always
 }
 
 void Game::runSimulationMode() {

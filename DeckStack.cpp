@@ -45,7 +45,7 @@ DeckStack::DeckStack(int numDecks) {
 }
 
 vector<Card *> DeckStack::getCardStack(){
-    return cardStack;
+    return this->cardStack;
 }
 
 void DeckStack::shuffleDeck() {
@@ -56,5 +56,12 @@ void DeckStack::printDeck() {
     for(int i = 0; i < cardStack.size(); i++){
         cout << cardStack[i]->getValue() << " of " << cardStack[i]->getSuit() << "\n";
     }
+}
+
+Card * DeckStack::getTopCard(){
+    return cardStack[0];
+}
+void DeckStack::removeTopCard(){
+    cardStack.erase(cardStack.begin());
 }
 

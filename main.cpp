@@ -21,15 +21,17 @@ int beginMenu(){
 }
 
 int main() {
-    beginMenu();
-    Game * game = new Game(userGameTypeChoice);
+    //beginMenu();
+    //Game * game = new Game(userGameTypeChoice, 100);
 
-    DeckStack * test = new DeckStack(1);
-    test->shuffleDeck();
-    test->printDeck();
-    test->getCardStack().erase(test->getCardStack().begin(),test->getCardStack().begin()+1);
-    cout << "\n\n\n";
-    test->printDeck();
+    DeckStack * unusedCards = new DeckStack(1); //creates a deckstack with 1 deck, shuffled
+    unusedCards->printDeck();
+    cout << "Top card is " << unusedCards->getTopCard()->getValue() << " of " << unusedCards->getTopCard()->getSuit() << endl;
+    cout << "Now I'll remove the top card and print the new top card" << endl;
+    unusedCards->removeTopCard();
+    cout << "Top card is " << unusedCards->getTopCard()->getValue() << " of " << unusedCards->getTopCard()->getSuit() << endl;
+    unusedCards->printDeck();
+
 
     //num players (meaning not the dealer, other than you) dealer always exists
         //max players of 5 other than the user running code
