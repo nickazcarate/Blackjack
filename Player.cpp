@@ -42,6 +42,13 @@ int Player::getTies() {
     return gamesTied;
 }
 
+vector<Card*> Player::getHandTotals() {
+    int aceCount = 0;
+    vector<Card*>::iterator iter;
+    for (iter = hand.begin(); iter != hand.end(); iter++) {
+    }
+}
+
 
 void takeTurn();
 void updateMoney();
@@ -88,7 +95,7 @@ void Player::getCard() {
     // deal card
 }
 
-void Player::doubleDown() {
+bool Player::doubleDown() {
 
 }
 
@@ -100,8 +107,9 @@ void Player::surrender() {
 
 }
 
+// may implement later
 bool Player::split() {
-    return true;
+    return false;
 }
 
 void Player::purchaseInsurance() {
