@@ -16,11 +16,11 @@ public:
     void gamePlay();
     vector<Player *> getPlayers();
     int getTableBuyIn();
-    void getNumPlayers();
-    void getAmtMoney();
+    int getNumPlayers();
+    int getAmountMoney();
 private:
     int numPlayers;
-    int amtMoney;
+    int amountMoney;
     int tableBuyIn;
     vector<Player *> players;
 };

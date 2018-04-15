@@ -10,14 +10,46 @@ using namespace std;
 int numPlayers = 0;
 int userGameTypeChoice = 0;
 
+void gameTypeSelection() {
+    bool programRun = true;
+    while (programRun) {
+        cout << "You may run either:\n";
+        cout << "\t 1) Playing mode: play rounds of Blackjack against a dealer and other players\n";
+        cout << "\t 2) Simulation mode: run many simulations to test effectiveness of playing styles between our bots\n";
+        cout << "Enter 1 or 2: ";
+        cin >> userGameTypeChoice;
+
+        //Check for valid user input
+        switch (userGameTypeChoice) {
+
+            case 1: {
+                //Exit loop with valid input
+                programRun = false;
+                break;
+            }
+
+            case 2: {
+
+                //Exit loop with valid input
+                programRun = false;
+                break;
+            }
+
+            default: {
+                cout << "\nPlease enter a valid choice. ";
+
+                //clears the input stream to allow the user to input an acceptable value
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            }
+        }
+    }
+}
+
 int beginMenu(){
     cout << "\nWelcome to Blackjack!\n\n";
     this_thread::sleep_for(chrono::milliseconds(600));
-    cout << "You may run either:\n";
-    cout << "\t 1) Playing mode: play rounds of Blackjack against a dealer and other players\n";
-    cout << "\t 2) Simulation mode: run many simulations to test effectiveness of playing styles between our bots\n";
-    cout << "Enter 1 or 2: ";
-    cin >> userGameTypeChoice;
+    gameTypeSelection();
 }
 
 int main() {
