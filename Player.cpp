@@ -2,7 +2,7 @@
 
 #include "Player.h"
 
-Player::Player(int money, int playerIdentity, const Game* game) : game(game){
+Player::Player(int money, int playerIdentity){
     this->money = money;
     this->playerIdentity = playerIdentity;
     gamesWon = 0;
@@ -67,7 +67,7 @@ vector<int> Player::getHandTotals() {
 }
 
 void Player::takeTurn() {
-    if (!isBot) {
+    if (playerIdentity == 0) {
         cout << "What would you like to do?";
     }
 }

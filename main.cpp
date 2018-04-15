@@ -21,10 +21,10 @@ int beginMenu(){
 }
 
 int main() {
-    //beginMenu();
-    //Game * game = new Game(userGameTypeChoice, 100);
+    beginMenu();
+    Game * game = new Game(userGameTypeChoice, 100);
 
-    DeckStack * unusedCards = new DeckStack(1); //creates a deckstack with 1 deck, shuffled
+    DeckStack * unusedCards = new DeckStack(1); //creates a DeckStack with 1 deck, shuffled
     unusedCards->printDeck();
     cout << "Top card is " << unusedCards->getTopCard()->getValue() << " of " << unusedCards->getTopCard()->getSuit() << endl;
     cout << "Now I'll remove the top card and print the new top card" << endl;
