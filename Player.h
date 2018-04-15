@@ -5,7 +5,6 @@
 #include "Card.h"
 #include "Game.h"
 #include <vector>
-#include <iterator>
 
 
 class Player {
@@ -29,7 +28,7 @@ public:
     void basicSoftTurn();   // This person uses https://www.blackjackapprenticeship.com/resources/blackjack-strategy-charts/
                             // strategy for hard totals
     void updateMoney();
-    vector<Card*> getHandTotals();
+    vector<int> getHandTotals();
 private:
     const Game* game;
     int money;
