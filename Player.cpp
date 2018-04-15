@@ -120,7 +120,30 @@ void Player::weakCardCounterTurn() // This person uses a card countring strategy
 void Player::basicHardTurn()    // This person uses https://www.blackjackapprenticeship.com/resources/blackjack-strategy-charts/
                                 // strategy for hard totals
 {
-
+    switch(getHandTotals().at(getHandTotals().size()-1))        // gives the current card total
+    {
+        case 17:                // always stand
+            stand();
+            break;
+        case 16:                // stand if dealer's upcard is 2-6, hit if 7-Ace
+            break;
+        case 15:                // stand if dealer's upcard is 2-6, hit if 7-Ace
+            break;
+        case 14:                // stand if dealer's upcard is 2-6, hit if 7-Ace
+            break;
+        case 13:                // stand if dealer's upcard is 2-6, hit if 7-Ace
+            break;
+        case 12:                // stand if dealer's upcard is 4-6, hit if 2, 3, or 7-Ace
+            break;
+        case 11:                // always double down
+            break;
+        case 10:                // double down if dealer's upcard is 2-9, hit if 10, face, or Ace
+            break;
+        case 9:                 // double down if dealer's upcard is 3-6, hit if 2, or 7-Ace
+            break;
+        default:                // always hit
+            getCard();
+    }
 }
 void Player::basicSoftTurn()    // This person uses https://www.blackjackapprenticeship.com/resources/blackjack-strategy-charts/
                                 // strategy for soft totals
