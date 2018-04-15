@@ -59,6 +59,31 @@ void Player::takeTurn() {
     }
 }
 
+void Player::dealerTurn()
+{
+
+}
+void Player::randoTurn()
+{
+
+}
+void Player::superCardCounterTurn()
+{
+
+}
+void Player::weakCardCounterTurn()
+{
+
+}
+void Player::basicHardTurn()
+{
+
+}
+void Player::basicSoftTurn()
+{
+
+}
+
 void Player::getCard() {
     // deal card
 }
