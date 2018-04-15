@@ -8,7 +8,8 @@
 using namespace std;
 
 class StatsRun : public Game{
-
+public:
+    void doRound;
 };
 
 #endif //BLACKJACK_STATSRUN_H
