@@ -87,7 +87,27 @@ void Player::dealerTurn() // Stops hitting at a hard 17. Will continune to hit i
 }
 void Player::randoTurn() // Randmomly chooses to get card, double down, stand, surrender, of split insurance
 {
-
+int randNum = rand()%100 +1;
+    if (randNum <= 70)      // 70% chance the bot will hit
+    {
+        getCard();
+    }
+    else if((randNum > 70) && (randNum <= 80))      // 10% chance the bot will hit
+    {
+        stand();
+    }
+    else if((randNum > 80) && (randNum <= 90))      // 10% chance the bot will surrender
+    {
+        surrender();
+    }
+    else if((randNum > 90) && (randNum <= 95))      // 5% chance the bot will double down
+    {
+        doubleDown();
+    }
+    else                                            // 5% chance the bot will purchase insurance
+    {
+        purchaseInsurance();
+    }
 }
 void Player::superCardCounterTurn() // This person uses a card counting strategy, remembering ALL of the cards
 {
