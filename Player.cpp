@@ -2,9 +2,9 @@
 
 #include "Player.h"
 
-Player::Player(int money, bool isBot, const Game* game) : game(game){
+Player::Player(int money, int playerIdentity, const Game* game) : game(game){
     this->money = money;
-    this->isBot = isBot;
+    this->playerIdentity = playerIdentity;
     gamesWon = 0;
     gamesLost = 0;
     gamesTied = 0;
@@ -61,7 +61,7 @@ vector<int> Player::getHandTotals() {
     vector<int> totals;
     totals.push_back(baseTotal);
     for (int i = 1; i <= aceCount; i++) {
-        totals.push_back(baseTotal + 10 * i);
+        totals.push_back(baseTotal + 9 * i);
     }
     return totals;
 }

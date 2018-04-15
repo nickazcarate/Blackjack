@@ -9,7 +9,7 @@
 
 class Player {
 public:
-    Player(int money, bool isBot, const Game* game);
+    Player(int money, int playerIdentity, const Game* game);
     int getMoney();
     vector<Card *> getHand();
     void wonGame();
@@ -36,7 +36,7 @@ private:
     int gamesLost;
     int gamesTied;
     vector<Card *> hand;
-    bool isBot;
+    int playerIdentity; // 0 = user, 1 = dealer, 2+ = bots
     void getCard();
     bool doubleDown();
     void stand();
