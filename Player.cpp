@@ -67,32 +67,43 @@ vector<int> Player::getHandTotals() {
 }
 
 void Player::takeTurn() {
-    if (!isBot) {
+    if (playerIdentity == 0) {
         cout << "What would you like to do?";
     }
 }
 
-void Player::dealerTurn()
+void Player::dealerTurn() // Stops hitting at a hard 17. Will continune to hit if at a soft 17
+{
+    if(getHandTotals().at(getHandTotals().size()-1) >= 17)
+    {
+        // Add that the dealer is standing (a prefix)
+        stand();
+    }
+    else
+    {
+        // Add that the dealer is hitting (a prefix)
+        getCard();
+    }
+}
+void Player::randoTurn() // Randmomly chooses to get card, double down, stand, surrender, of split insurance
 {
 
 }
-void Player::randoTurn()
+void Player::superCardCounterTurn() // This person uses a card counting strategy, remembering ALL of the cards
 {
 
 }
-void Player::superCardCounterTurn()
+void Player::weakCardCounterTurn() // This person uses a card countring strategy, remembering only the previous 10 cards
 {
 
 }
-void Player::weakCardCounterTurn()
+void Player::basicHardTurn()    // This person uses https://www.blackjackapprenticeship.com/resources/blackjack-strategy-charts/
+                                // strategy for hard totals
 {
 
 }
-void Player::basicHardTurn()
-{
-
-}
-void Player::basicSoftTurn()
+void Player::basicSoftTurn()    // This person uses https://www.blackjackapprenticeship.com/resources/blackjack-strategy-charts/
+                                // strategy for soft totals
 {
 
 }
