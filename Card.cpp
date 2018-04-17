@@ -18,5 +18,5 @@ string Card::getSuit(){
     return this->suit;
 }
 string Card::print() {
-    return (value + " of " + suit);
+    return (getValue() + " of " + getSuit());
 }
