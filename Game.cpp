@@ -31,23 +31,46 @@ void Game::runPlayingMode() {
 
     // goes as long as the user has money
     while (players.at(0)->getMoney() > 0) {
+
+        //stores player's bets
+        vector<int> bets;
+
+        // deals two cards to every player
         for (Player* p : players) {
             p->giveCard(deck->removeTopCard());
             p->giveCard(deck->removeTopCard());
         }
+
+        // each player takes turn
         for (Player* p : players) {
+            // adds p's bet to bets
+            bets.push_back(p->getBet());
+
             bool endTurn = false;
             while (!endTurn) {
-                int playerAction = p->takeTurn(players.at(players.size() - 1)->getHand().at(0));
-                switch (playerAction) {
-                    case 0:
-                        endTurn = true;
-                        break;
-                    case 1:
-                        p->giveCard(deck->removeTopCard());
+                // if their hand total is over 21, end turn
+                if (p->getHandTotals().at(0) > 21) {
+                    endTurn = true;
+                }
+                else if (p->getBestHand() == 21) {
+                    cout << "You have 21!\n";
+                    endTurn = true;
+                }
+
+                else {
+                    // gets player action (passes in dealer's top card so user can see it)
+                    int playerAction = p->takeTurn(players.at(players.size() - 1)->getHand().at(0));
+                    switch (playerAction) {
+                        case 0: // stand
+                            endTurn = true;
+                            break;
+                        case 1: // hit
+                            p->giveCard(deck->removeTopCard());
+                    }
                 }
             }
         }
+
     }
 }
 
@@ -88,7 +111,6 @@ int Game::getNumPlayers() {
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
     }
-  return 0;
 }
 
 int Game::getAmountMoney() {

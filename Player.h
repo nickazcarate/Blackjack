@@ -43,8 +43,10 @@ public:
                             // strategy for hard totals
     void updateMoney(int difference);
     void giveCard(Card *);
+    int getBet();
 
     vector<int> getHandTotals();
+    int getBestHand();
 };
 
 

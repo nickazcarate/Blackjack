@@ -217,3 +217,40 @@ vector<int> Player::getHandTotals() {
     }
     return totals;
 }
+
+int Player::getBestHand() {
+    vector<int> hand = getHandTotals();
+    int best = hand.at(0);
+    for (int i : hand) {
+        if (i > best and i <= 21)
+            best = i;
+    }
+    return best;
+}
+
+// gets the user's bet
+// add minimum?
+// default bet $15?
+int Player::getBet() {
+    if (playerIdentity == 0) {
+        cout << "You currently have $" << money << endl;
+        int bet = 0;
+        while (bet <= 0 or bet > money) {
+            cout <<  "How much would you like to bet? ";
+            cin >> bet;
+            if (bet <= 0) {
+                cout << "Invalid input, bet must be a positive integer.\n";
+            }
+            else if (bet > money) {
+                cout << "Invalid input, you don't have that much money.\n";
+            }
+        }
+        return bet;
+    }
+    else if (playerIdentity == 1) {
+        return 0;
+    }
+    else {
+        return 15;
+    }
+}
