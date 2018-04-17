@@ -10,6 +10,13 @@ using namespace std;
 
 
 class Game {
+private:
+    int numPlayers;
+    int amountMoney;
+    int tableBuyIn;
+    vector<Player *> players;
+    DeckStack * deck;
+    vector<Card *> discard;
 public:
     Game(int userGameTypeChoice, int tableBuyIn);
     void runPlayingMode();
@@ -19,13 +26,6 @@ public:
     int getTableBuyIn();
     int getNumPlayers();
     int getAmountMoney();
-private:
-    int numPlayers;
-    int amountMoney;
-    int tableBuyIn;
-    vector<Player *> players;
-    DeckStack * deck;
-    vector<Card *> discard;
 };
 
 
