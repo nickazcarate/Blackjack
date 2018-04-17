@@ -4,8 +4,9 @@
 #define BLACKJACK_GAME_H
 using namespace std;
 #include <iostream>
-#include "Player.h"
 #include <vector>
+#include "Player.h"
+#include "DeckStack.h"
 
 
 class Game {
@@ -23,6 +24,8 @@ private:
     int amountMoney;
     int tableBuyIn;
     vector<Player *> players;
+    DeckStack * deck;
+    vector<Card *> discard;
 };
 
 

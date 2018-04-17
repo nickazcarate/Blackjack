@@ -61,7 +61,9 @@ void DeckStack::printDeck() {
 Card * DeckStack::getTopCard(){
     return cardStack[0];
 }
-void DeckStack::removeTopCard(){
+Card * DeckStack::removeTopCard(){
+    Card * temp = getTopCard();
     cardStack.erase(cardStack.begin());
+    return temp;
 }
 

@@ -10,12 +10,14 @@ using namespace std;
 int numPlayers = 0;
 int userGameTypeChoice = 0;
 
-void gameTypeSelection() {
+int beginMenu(){
+    cout << "\nWelcome to Blackjack!\n\n";
+    this_thread::sleep_for(chrono::milliseconds(600));
     bool programRun = true;
     while (programRun) {
         cout << "You may run either:\n";
-        cout << "\t 1) Playing mode: play rounds of Blackjack against a dealer and other players\n";
-        cout << "\t 2) Simulation mode: run many simulations to test effectiveness of playing styles between our bots\n";
+        cout << "\t1) Playing mode: play rounds of Blackjack against a dealer and other players\n";
+        cout << "\t2) Simulation mode: run many simulations to test effectiveness of playing styles between our bots\n";
         cout << "Enter 1 or 2: ";
         cin >> userGameTypeChoice;
 
@@ -46,23 +48,21 @@ void gameTypeSelection() {
     }
 }
 
-int beginMenu(){
-    cout << "\nWelcome to Blackjack!\n\n";
-    this_thread::sleep_for(chrono::milliseconds(600));
-    gameTypeSelection();
-}
-
 int main() {
     beginMenu();
     Game * game = new Game(userGameTypeChoice, 100);
 
-    DeckStack * unusedCards = new DeckStack(1); //creates a DeckStack with 1 deck, shuffled
+    /*
+    DeckStack * unusedCards = new DeckStack(6); //creates a DeckStack with 6 decks, shuffled
     unusedCards->printDeck();
     cout << "Top card is " << unusedCards->getTopCard()->getValue() << " of " << unusedCards->getTopCard()->getSuit() << endl;
     cout << "Now I'll remove the top card and print the new top card" << endl;
     unusedCards->removeTopCard();
     cout << "Top card is " << unusedCards->getTopCard()->getValue() << " of " << unusedCards->getTopCard()->getSuit() << endl;
     unusedCards->printDeck();
+     */
+
+
 
 
     //num players (meaning not the dealer, other than you) dealer always exists

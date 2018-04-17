@@ -12,6 +12,7 @@ public:
     Card(string value, string suit);
     string getValue();
     string getSuit();
+    string print();
 private:
     string value;
     string suit;

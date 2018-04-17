@@ -19,16 +19,18 @@ public:
     int getWins();
     int getLosses();
     int getTies();
-    void takeTurn();
-    void dealerTurn();              // Stops hitting at a hard 17. Will hit once more if at a soft 17
-    void randoTurn();               // Randomly chooses to get card, double down, stand, surrender, of split insurance
-    void superCardCounterTurn();    // This person uses a card counting strategy, remembering ALL of the cards
-    void weakCardCounterTurn();     // This person uses a card counting strategy, remembering only the previous 10 cards
-    void basicHardTurn();   // This person uses https://www.blackjackapprenticeship.com/resources/blackjack-strategy-charts/
+    int takeTurn(Card * dealersTop);
+    int dealerTurn();              // Stops hitting at a hard 17. Will hit once more if at a soft 17
+    int randoTurn();               // Randomly chooses to get card, double down, stand, surrender, of split insurance
+    int superCardCounterTurn();    // This person uses a card counting strategy, remembering ALL of the cards
+    int weakCardCounterTurn();     // This person uses a card counting strategy, remembering only the previous 10 cards
+    int basicHardTurn();   // This person uses https://www.blackjackapprenticeship.com/resources/blackjack-strategy-charts/
                             // strategy for hard totals
-    void basicSoftTurn();   // This person uses https://www.blackjackapprenticeship.com/resources/blackjack-strategy-charts/
+    int basicSoftTurn();   // This person uses https://www.blackjackapprenticeship.com/resources/blackjack-strategy-charts/
                             // strategy for hard totals
-    void updateMoney();
+    void updateMoney(int difference);
+    void giveCard(Card *);
+
     vector<int> getHandTotals();
 private:
     int money;

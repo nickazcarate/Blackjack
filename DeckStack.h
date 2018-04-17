@@ -17,7 +17,7 @@ public:
     void shuffleDeck();
     vector<Card *> getCardStack();
     Card * getTopCard();
-    void removeTopCard();
+    Card * removeTopCard(); // removes and returns to avoid having to call both functions
 
 private:
     void createDeck();
