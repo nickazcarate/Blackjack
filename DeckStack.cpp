@@ -44,23 +44,24 @@ DeckStack::DeckStack(int numDecks) {
     shuffleDeck();
 }
 
-vector<Card *> DeckStack::getCardStack(){
-    return this->cardStack;
-}
-
-void DeckStack::shuffleDeck() {
-    random_shuffle(cardStack.begin(), cardStack.end());
-}
-
 void DeckStack::printDeck() {
     for(int i = 0; i < cardStack.size(); i++){
         cout << cardStack[i]->getValue() << " of " << cardStack[i]->getSuit() << "\n";
     }
 }
 
+void DeckStack::shuffleDeck() {
+    random_shuffle(cardStack.begin(), cardStack.end());
+}
+
+vector<Card *> DeckStack::getCardStack(){
+    return this->cardStack;
+}
+
 Card * DeckStack::getTopCard(){
     return cardStack[0];
 }
+
 Card * DeckStack::removeTopCard(){
     Card * temp = getTopCard();
     cardStack.erase(cardStack.begin());
