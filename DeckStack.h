@@ -11,6 +11,9 @@ using namespace std;
 #include <vector>
 
 class DeckStack {
+private:
+    void createDeck();
+    vector<Card *> cardStack;
 public:
     DeckStack(int numDecks);
     void printDeck();
@@ -19,9 +22,7 @@ public:
     Card * getTopCard();
     Card * removeTopCard(); // removes and returns to avoid having to call both functions
 
-private:
-    void createDeck();
-    vector<Card *> cardStack;
+
 
 };
 
