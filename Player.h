@@ -9,6 +9,19 @@ using namespace std;
 
 
 class Player {
+private:
+    int money;
+    int gamesWon;
+    int gamesLost;
+    int gamesTied;
+    vector<Card *> hand;
+    int playerIdentity; // 0 = user, 1 = dealer, 2 = random choices, 3 = incredible card counter, 4 = pretty good card counter, 5 = basic card strategy,
+    void getCard();
+    bool doubleDown();
+    void stand();
+    void surrender();
+    bool split();
+    void purchaseInsurance();
 public:
     Player(int money, int playerIdentity);
     int getMoney();
@@ -32,19 +45,6 @@ public:
     void giveCard(Card *);
 
     vector<int> getHandTotals();
-private:
-    int money;
-    int gamesWon;
-    int gamesLost;
-    int gamesTied;
-    vector<Card *> hand;
-    int playerIdentity; // 0 = user, 1 = dealer, 2 = random choices, 3 = incredible card counter, 4 = pretty good card counter, 5 = basic card strategy,
-    void getCard();
-    bool doubleDown();
-    void stand();
-    void surrender();
-    bool split();
-    void purchaseInsurance();
 };
 
 
