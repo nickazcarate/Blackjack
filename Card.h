@@ -8,14 +8,14 @@ using namespace std;
 #include <string>
 
 class Card {
+private:
+    string value;
+    string suit;
 public:
     Card(string value, string suit);
     string getValue();
     string getSuit();
     string print();
-private:
-    string value;
-    string suit;
 };
 
 
