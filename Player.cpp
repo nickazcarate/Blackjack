@@ -1,6 +1,35 @@
 // Created by Nick Azcarate on 4/14/18.
 
 #include "Player.h"
+// implemented directly in takeTurn() for now
+void Player::getCard() {
+    // deal card
+}
+
+// may implement later
+bool Player::doubleDown() {
+
+}
+
+// implemented directly in takeTurn() for now
+void Player::stand() {
+
+}
+
+// may implement later
+void Player::surrender() {
+
+}
+
+// may implement later
+bool Player::split() {
+    return false;
+}
+
+// may implement later
+void Player::purchaseInsurance() {
+
+}
 
 Player::Player(int money, int playerIdentity){
     this->money = money;
@@ -22,12 +51,12 @@ void Player::wonGame() {
     gamesWon++;
 }
 
-void Player::tiedGame() {
-    gamesTied++;
-}
-
 void Player::lostGame() {
     gamesLost++;
+}
+
+void Player::tiedGame() {
+    gamesTied++;
 }
 
 int Player::getWins() {
@@ -40,38 +69,6 @@ int Player::getLosses() {
 
 int Player::getTies() {
     return gamesTied;
-}
-
-vector<int> Player::getHandTotals() {
-    int aceCount = 0;
-    int baseTotal = 0;
-    for (Card* card : hand) {
-        string value = card->getValue();
-        if (value == "A") {
-            aceCount++;
-            baseTotal += 1;
-        }
-        else if (value == "J" or value == "Q" or value == "K") {
-            baseTotal += 10;
-        }
-        else {
-            baseTotal += stoi(value);
-        }
-    }
-    vector<int> totals;
-    totals.push_back(baseTotal);
-    for (int i = 1; i <= aceCount; i++) {
-        totals.push_back(baseTotal + 9 * i);
-    }
-    // removes totals that can't be used (greater than 21)
-    while (totals.size() > 1 and totals.at(totals.size() - 1) > 21) {
-        totals.pop_back();
-    }
-    return totals;
-}
-
-void Player::giveCard(Card * card) {
-    hand.push_back(card);
 }
 
 // will return the user's choice so game can use it
@@ -105,14 +102,12 @@ int Player::takeTurn(Card * dealersTop) {
         // implement other behaviors
         default:
             return randoTurn();
-
     }
-
 }
 
 // returns action
-int Player::dealerTurn() // Stops hitting at a hard 17. Will continue to hit if at a soft 17
-{
+// Stops hitting at a hard 17. Will continue to hit if at a soft 17
+int Player::dealerTurn(){
     if(getHandTotals().at(getHandTotals().size()-1) >= 17)
     {
         // Add that the dealer is standing (a prefix)
@@ -124,44 +119,39 @@ int Player::dealerTurn() // Stops hitting at a hard 17. Will continue to hit if 
         return 1;
     }
 }
-int Player::randoTurn() // Randmomly chooses to get card, double down, stand, surrender, of split insurance
-{
-int randNum = rand()%100 +1;
-    if (randNum <= 70)      // 70% chance the bot will hit
-    {
+
+// Randmomly chooses to get card, double down, stand, surrender, of split insurance
+int Player::randoTurn(){
+  int randNum = rand()%100 +1;
+  if (randNum <= 70){      // 70% chance the bot will hit
         getCard();
     }
-    else if((randNum > 70) && (randNum <= 80))      // 10% chance the bot will stand
-    {
+    else if((randNum > 70) && (randNum <= 80)){      // 10% chance the bot will stand
         stand();
     }
-    else if((randNum > 80) && (randNum <= 90))      // 10% chance the bot will surrender
-    {
+    else if((randNum > 80) && (randNum <= 90)){      // 10% chance the bot will surrender
         surrender();
     }
-    else if((randNum > 90) && (randNum <= 95))      // 5% chance the bot will double down
-    {
+    else if((randNum > 90) && (randNum <= 95)){      // 5% chance the bot will double down
         doubleDown();
     }
-    else                                            // 5% chance the bot will purchase insurance
-    {
+    else{                                            // 5% chance the bot will purchase insurance
         purchaseInsurance();
     }
 }
-int Player::superCardCounterTurn() // This person uses a card counting strategy, remembering ALL of the cards
-{
+
+int Player::superCardCounterTurn(){ // This person uses a card counting strategy, remembering ALL of the cards
 
 }
-int Player::weakCardCounterTurn() // This person uses a card countring strategy, remembering only the previous 10 cards
-{
+
+int Player::weakCardCounterTurn(){ // This person uses a card countring strategy, remembering only the previous 10 cards
 
 }
-int Player::basicHardTurn()    // This person uses https://www.blackjackapprenticeship.com/resources/blackjack-strategy-charts/
-                                // strategy for hard totals
-{
 
-    switch(getHandTotals().at(getHandTotals().size()-1))        // gives the current card total
-    {
+// This person uses https://www.blackjackapprenticeship.com/resources/blackjack-strategy-charts/
+// strategy for hard totals
+int Player::basicHardTurn(){
+    switch(getHandTotals().at(getHandTotals().size()-1)){        // gives the current card total
         case 17:                // always stand
             stand();
             break;
@@ -185,38 +175,45 @@ int Player::basicHardTurn()    // This person uses https://www.blackjackapprenti
             getCard();
     }
 }
-int Player::basicSoftTurn()    // This person uses https://www.blackjackapprenticeship.com/resources/blackjack-strategy-charts/
-                                // strategy for soft totals
-{
+
+// This person uses https://www.blackjackapprenticeship.com/resources/blackjack-strategy-charts/
+// strategy for soft totals
+int Player::basicSoftTurn(){
 
 }
 
-// implemented directly in takeTurn() for now
-void Player::getCard() {
-    // deal card
+void updateMoney(int difference){
+  
 }
 
-// implemented directly in takeTurn() for now
-void Player::stand() {
-
+void Player::giveCard(Card * card) {
+    hand.push_back(card);
 }
 
-// may implement later
-bool Player::doubleDown() {
-
-}
-
-// may implement later
-void Player::surrender() {
-
-}
-
-// may implement later
-bool Player::split() {
-    return false;
-}
-
-// may implement later
-void Player::purchaseInsurance() {
-
+vector<int> Player::getHandTotals() {
+    int aceCount = 0;
+    int baseTotal = 0;
+    for (Card* card : hand) {
+        string value = card->getValue();
+        if (value == "A") {
+            aceCount++;
+            baseTotal += 1;
+        }
+        else if (value == "J" or value == "Q" or value == "K") {
+            baseTotal += 10;
+        }
+        else {
+            baseTotal += stoi(value);
+        }
+    }
+    vector<int> totals;
+    totals.push_back(baseTotal);
+    for (int i = 1; i <= aceCount; i++) {
+        totals.push_back(baseTotal + 9 * i);
+    }
+    // removes totals that can't be used (greater than 21)
+    while (totals.size() > 1 and totals.at(totals.size() - 1) > 21) {
+        totals.pop_back();
+    }
+    return totals;
 }
