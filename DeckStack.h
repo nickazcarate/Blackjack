@@ -14,6 +14,7 @@ class DeckStack {
 private:
     void createDeck();
     vector<Card *> cardStack;
+    int numberDecks;
 public:
     DeckStack(int numDecks);
     void printDeck();

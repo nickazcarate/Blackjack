@@ -38,6 +38,7 @@ void DeckStack::createDeck(){
 }
 
 DeckStack::DeckStack(int numDecks) {
+    numberDecks = numDecks;
     for(int i = 0; i < numDecks; i++){
         createDeck();
     }
