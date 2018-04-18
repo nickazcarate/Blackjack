@@ -155,25 +155,65 @@ int Player::weakCardCounterTurn(){ // This person uses a card countring strategy
 // This person uses https://www.blackjackapprenticeship.com/resources/blackjack-strategy-charts/
 // strategy for hard totals
 int Player::basicHardTurn(){
+    string dealerTopCard = hand.at(hand.size()-1)->getValue();      // returns the card value on the hand of the dealer (assuming the top card is the last card in the hand)
+    int dealerTopCardNumVal;                                        // creates an int variable to hold the int value of the card value (which is originally string)
+    if (dealerTopCard == "A") {                     // If the card value is Ace, return a 1 as the int value
+        dealerTopCardNumVal = 1;
+    }
+    else if (dealerTopCard == "J" or dealerTopCard == "Q" or dealerTopCard == "K") {
+        dealerTopCardNumVal = 10;                   // if the card value is a Jack, Queen, or King, returns 10 as the int value
+    }
+    else {
+        dealerTopCardNumVal = stoi(dealerTopCard);          // All other cards return their card value, but in int form (which is what stoi() does)
+    }
     switch(getHandTotals().at(getHandTotals().size()-1)){        // gives the current card total
         case 17:                // always stand
             stand();
             break;
         case 16:                // stand if dealer's upcard is 2-6, hit if 7-Ace
+            if ((dealerTopCardNumVal >= 2) && (dealerTopCardNumVal <= 6))
+                stand();
+            else
+                getCard();
             break;
         case 15:                // stand if dealer's upcard is 2-6, hit if 7-Ace
+            if ((dealerTopCardNumVal >= 2) && (dealerTopCardNumVal <= 6))
+                stand();
+            else
+                getCard();
             break;
         case 14:                // stand if dealer's upcard is 2-6, hit if 7-Ace
+            if ((dealerTopCardNumVal >= 2) && (dealerTopCardNumVal <= 6))
+                stand();
+            else
+                getCard();
             break;
         case 13:                // stand if dealer's upcard is 2-6, hit if 7-Ace
+            if ((dealerTopCardNumVal >= 2) && (dealerTopCardNumVal <= 6))
+                stand();
+            else
+                getCard();
             break;
         case 12:                // stand if dealer's upcard is 4-6, hit if 2, 3, or 7-Ace
+            if ((dealerTopCardNumVal >= 4) && (dealerTopCardNumVal <= 6))
+                stand();
+            else
+                getCard();
             break;
         case 11:                // always double down
+            doubleDown();
             break;
         case 10:                // double down if dealer's upcard is 2-9, hit if 10, face, or Ace
+            if ((dealerTopCardNumVal >= 2 && dealerTopCardNumVal <= 9))
+                doubleDown();
+            else
+                getCard();
             break;
         case 9:                 // double down if dealer's upcard is 3-6, hit if 2, or 7-Ace
+            if ((dealerTopCardNumVal >= 3 && dealerTopCardNumVal <= 6))
+                doubleDown();
+            else
+                getCard();
             break;
         default:                // always hit
             getCard();
@@ -183,7 +223,68 @@ int Player::basicHardTurn(){
 // This person uses https://www.blackjackapprenticeship.com/resources/blackjack-strategy-charts/
 // strategy for soft totals
 int Player::basicSoftTurn(){
-
+    string dealerTopCard = hand.at(hand.size()-1)->getValue();      // returns the card value on the hand of the dealer (assuming the top card is the last card in the hand)
+    int dealerTopCardNumVal;                                        // creates an int variable to hold the int value of the card value (which is originally string)
+    if (dealerTopCard == "A") {                     // If the card value is Ace, return a 1 as the int value
+        dealerTopCardNumVal = 1;
+    }
+    else if (dealerTopCard == "J" or dealerTopCard == "Q" or dealerTopCard == "K") {
+        dealerTopCardNumVal = 10;                   // if the card value is a Jack, Queen, or King, returns 10 as the int value
+    }
+    else {
+        dealerTopCardNumVal = stoi(dealerTopCard);          // All other cards return their card value, but in int form (which is what stoi() does)
+    }
+    switch(getHandTotals().at(0)){        // gives the current soft total
+        case 20:                // always stand
+            stand();
+            break;
+        case 19:                // doubles against dealer's 6, otherwise stands
+            if (dealerTopCardNumVal == 6)
+                doubleDown();
+            else
+                stand();
+            break;
+        case 18:                // doubles against dealer's 2 through 6, and hits against 9 through Ace, otherwise stands
+            if ((dealerTopCardNumVal >= 2) && (dealerTopCardNumVal <= 6))
+                doubleDown();
+            else if((dealerTopCardNumVal >= 9) && (dealerTopCardNumVal <= 10) || (dealerTopCardNumVal == 1))
+                getCard();
+            else
+                stand();
+            break;
+        case 17:                // doubles against dealer's 3 through 6, otherwise hits
+            if ((dealerTopCardNumVal >= 3) && (dealerTopCardNumVal <= 6))
+                doubleDown();
+            else
+                getCard();
+            break;
+        case 16:                //doubles against dealer's 4 through 6, otherwise hits
+            if ((dealerTopCardNumVal >= 4) && (dealerTopCardNumVal <= 6))
+                doubleDown();
+            else
+                getCard();
+            break;
+        case 15:                //doubles against dealer's 4 through 6, otherwise hits
+            if ((dealerTopCardNumVal >= 4) && (dealerTopCardNumVal <= 6))
+                doubleDown();
+            else
+                getCard();
+            break;
+        case 14:                // doubles against dealer's 5 or 6, otherwise hits
+            if ((dealerTopCardNumVal == 5) || (dealerTopCardNumVal == 6))
+                doubleDown();
+            else
+                getCard();
+            break;
+        case 13:                // doubles against dealer's 5 or 6, otherwise hits
+            if ((dealerTopCardNumVal == 5) || (dealerTopCardNumVal == 6))
+                doubleDown();
+            else
+                getCard();
+            break;
+        default:                // always hit if none of the above options are satisfied
+            getCard();
+    }
 }
 
 void updateMoney(int difference){
