@@ -14,13 +14,15 @@ private:
     int numPlayers;
     int amountMoney;
     int tableBuyIn;
+    int userIndex;
     vector<Player *> players;
-    DeckStack * deck;
-    vector<Card *> discard;
+    DeckStack * unusedCards;
+    vector<Card *> discardPile;
 public:
     Game(int userGameTypeChoice, int tableBuyIn);
     void runPlayingMode();
     void runSimulationMode();
+    int determineUserIndex();
     void gamePlay();
     vector<Player *> getPlayers();
     int getTableBuyIn();

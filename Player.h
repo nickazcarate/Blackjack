@@ -5,6 +5,7 @@
 using namespace std;
 #include <iostream>
 #include "Card.h"
+#include "Game.h"
 #include <vector>
 
 
@@ -15,7 +16,9 @@ private:
     int gamesLost;
     int gamesTied;
     vector<Card *> hand;
-    int playerIdentity; // 0 = user, 1 = dealer, 2 = random choices, 3 = incredible card counter, 4 = pretty good card counter, 5 = basic card strategy,
+    int playerIdentity;
+        // 0 = user, 1 = random choices, 2 = incredible card counter, 3 = pretty good card counter,
+        // 4 = basic card strategy, 5 = SOMETHING_GOES_HERE, 6 = dealer
     void getCard();
     bool doubleDown();
     void stand();
@@ -44,7 +47,7 @@ public:
     void updateMoney(int difference);
     void giveCard(Card *);
     int getBet();
-
+    int getPlayerIdentity();
     vector<int> getHandTotals();
     int getBestHand();
 };

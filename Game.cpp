@@ -4,7 +4,7 @@
 Card * dealersTopCard;
 
 Game::Game(int userGameTypeChoice, int tableBuyIn){
-    deck = new DeckStack(6);
+    unusedCards = new DeckStack(6);
     this->tableBuyIn = tableBuyIn;
     if(userGameTypeChoice == 1){
         runPlayingMode();
@@ -17,32 +17,43 @@ Game::Game(int userGameTypeChoice, int tableBuyIn){
     }
 }
 
+int Game::determineUserIndex() {
+    for(int i = 0; i < players.size(); i++){
+        if(players[i]->getPlayerIdentity() == 0){ //if this player is the user, return the index
+            return i;
+        }
+    }
+}
+
 void Game::runPlayingMode() {
     numPlayers = getNumPlayers();
     amountMoney = getAmountMoney();
 
-    players.push_back(new Player(amountMoney, 0)); //creates the user
     for(int i = 0; i < numPlayers; i++){
-        players.push_back(new Player(amountMoney, 2)); //creates the number of other players desired
+        players.push_back(new Player(amountMoney, i)); //creates the number of other players desired
     }
-    random_shuffle(players.begin() + 1, players.end()); //shuffles the players other than the user to have random placement around the table
-    //add dealer as the last person always
-    players.push_back(new Player(0, 1));
+    random_shuffle(players.begin(), players.end()); //shuffles the players to have random placement around the table
+    //add dealer as the last person in the vector
+    players.push_back(new Player(0, 6));
 
-    // goes as long as the user has money
-    while (players.at(0)->getMoney() > 0) {
+    userIndex = determineUserIndex(); //determine at which index in the player vector is the user to be used throughout the game
+
+    // goes as long as the user has enough money for another round
+    while (players.at(userIndex)->getMoney() > tableBuyIn) {
 
         //stores player's bets
         vector<int> bets;
 
         // deals two cards to every player
         for (Player* p : players) {
-            p->giveCard(deck->removeTopCard());
-            p->giveCard(deck->removeTopCard());
+
+            p->giveCard(unusedCards->removeTopCard());//FINISH! put these in the discard pile before removing
+
+            p->giveCard(unusedCards->removeTopCard());
         }
 
         // each player takes turn
-        for (Player* p : players) {
+        for (Player * p : players) {
             // adds p's bet to bets
             bets.push_back(p->getBet());
 
@@ -50,6 +61,8 @@ void Game::runPlayingMode() {
             while (!endTurn) {
                 // if their hand total is over 21, end turn
                 if (p->getHandTotals().at(0) > 21) {
+                    //getHandTotals().at(0) is the baseTotal, which is the lowest possible total
+                    //if this total is already > 21, then the player busts (is out of the round)
                     endTurn = true;
                 }
                 else if (p->getBestHand() == 21) {
@@ -65,7 +78,7 @@ void Game::runPlayingMode() {
                             endTurn = true;
                             break;
                         case 1: // hit
-                            p->giveCard(deck->removeTopCard());
+                            p->giveCard(unusedCards->removeTopCard());
                     }
                 }
             }

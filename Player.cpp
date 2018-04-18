@@ -31,6 +31,10 @@ void Player::purchaseInsurance() {
 
 }
 
+int Player::getPlayerIdentity(){
+    return this->playerIdentity;
+}
+
 Player::Player(int money, int playerIdentity){
     this->money = money;
     this->playerIdentity = playerIdentity;
@@ -99,7 +103,7 @@ int Player::takeTurn(Card * dealersTop) {
         case 1:
             return dealerTurn();
 
-        // implement other behaviors
+        // FINISH implement other behaviors
         default:
             return randoTurn();
     }
@@ -120,7 +124,7 @@ int Player::dealerTurn(){
     }
 }
 
-// Randmomly chooses to get card, double down, stand, surrender, of split insurance
+// Randomly chooses to get card, double down, stand, surrender, of split insurance
 int Player::randoTurn(){
   int randNum = rand()%100 +1;
   if (randNum <= 70){      // 70% chance the bot will hit
@@ -193,7 +197,7 @@ void Player::giveCard(Card * card) {
 vector<int> Player::getHandTotals() {
     int aceCount = 0;
     int baseTotal = 0;
-    for (Card* card : hand) {
+    for (Card * card : hand) {
         string value = card->getValue();
         if (value == "A") {
             aceCount++;
@@ -208,10 +212,12 @@ vector<int> Player::getHandTotals() {
     }
     vector<int> totals;
     totals.push_back(baseTotal);
-    for (int i = 1; i <= aceCount; i++) {
-        totals.push_back(baseTotal + 9 * i);
+    if(aceCount >= 1){ //if there is 1 or more aces, add 10 to the total
+        //note that in Blackjack, only 1 ace can be 11 (in a hand with multiple), the remainder are 1s
+        totals.push_back(baseTotal + 10);
     }
-    // removes totals that can't be used (greater than 21)
+
+    // removes totals that cause a bust (greater than 21)
     while (totals.size() > 1 and totals.at(totals.size() - 1) > 21) {
         totals.pop_back();
     }
@@ -221,6 +227,7 @@ vector<int> Player::getHandTotals() {
 int Player::getBestHand() {
     vector<int> hand = getHandTotals();
     int best = hand.at(0);
+    //find the hand with the greatest value that is less than or equal to 21
     for (int i : hand) {
         if (i > best and i <= 21)
             best = i;
@@ -232,7 +239,7 @@ int Player::getBestHand() {
 // add minimum?
 // default bet $15?
 int Player::getBet() {
-    if (playerIdentity == 0) {
+    if(playerIdentity == 0) {
         cout << "You currently have $" << money << endl;
         int bet = 0;
         while (bet <= 0 or bet > money) {
