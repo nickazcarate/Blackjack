@@ -24,6 +24,8 @@ private:
     void surrender();
     bool split();
     void purchaseInsurance();
+    int runningCount;
+    int truCount;
 public:
     Player(int money, int playerIdentity);
     int getMoney();
@@ -39,9 +41,12 @@ public:
     int randoTurn();               // Randomly chooses to get card, double down, stand, surrender, of split insurance
     int superCardCounterTurn();    // This person uses a card counting strategy, remembering ALL of the cards
     int weakCardCounterTurn();     // This person uses a card counting strategy, remembering only the previous 10 cards
-    int basicHardTurn();   // This person uses https://www.blackjackapprenticeship.com/resources/blackjack-strategy-charts/
+    int runCount();         // keeps a running count of the +/- card values on the table
+    int trueCount(int runningCount);        // computes the true count of cards played so far (run count / num decks)
+    int determineValue(string value);           // returns int value of card's value
+    int basicHardTurn();    // This person uses https://www.blackjackapprenticeship.com/resources/blackjack-strategy-charts/
                             // strategy for hard totals
-    int basicSoftTurn();   // This person uses https://www.blackjackapprenticeship.com/resources/blackjack-strategy-charts/
+    int basicSoftTurn();    // This person uses https://www.blackjackapprenticeship.com/resources/blackjack-strategy-charts/
                             // strategy for hard totals
     void updateMoney(int difference);
     void giveCard(Card *);

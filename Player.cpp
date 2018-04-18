@@ -127,31 +127,56 @@ int Player::dealerTurn(){
 // Randomly chooses to get card, double down, stand, surrender, of split insurance
 int Player::randoTurn(){
   int randNum = rand()%100 +1;
-  if (randNum <= 70){      // 70% chance the bot will hit
+  if (randNum <= 70)      // 70% chance the bot will hit
         getCard();
-    }
-    else if((randNum > 70) && (randNum <= 80)){      // 10% chance the bot will stand
+    else if((randNum > 70) && (randNum <= 80))      // 10% chance the bot will stand
         stand();
-    }
-    else if((randNum > 80) && (randNum <= 90)){      // 10% chance the bot will surrender
+    else if((randNum > 80) && (randNum <= 90))      // 10% chance the bot will surrender
         surrender();
-    }
-    else if((randNum > 90) && (randNum <= 95)){      // 5% chance the bot will double down
+    else if((randNum > 90) && (randNum <= 95))      // 5% chance the bot will double down
         doubleDown();
-    }
-    else{                                            // 5% chance the bot will purchase insurance
+    else                                            // 5% chance the bot will purchase insurance
         purchaseInsurance();
-    }
 }
 
 int Player::superCardCounterTurn(){ // This person uses a card counting strategy, remembering ALL of the cards
 
 }
 
-int Player::weakCardCounterTurn(){ // This person uses a card countring strategy, remembering only the previous 10 cards
-
+int Player::weakCardCounterTurn(){ // This person uses a card counting strategy, remembering only the previous 10 cards
+// may use runCount and/or trueCount functions
 }
 
+int Player::runCount()      // adds or subtracts to the running count based on the current top cards on the table
+{
+    int topCard;
+    for (Player * p : Game.players)
+    {
+        topCard = determineValue(p->hand.at(p->hand.size()-1)->getValue());     // sets the current top card value equal to the top card of the player in question
+        if ((topCard >= 2) && (topCard <= 6))       // If the top card of the other player is b/w 2 and 6, add 1 to the running count
+            runningCount++;
+        else if((topCard == 10) || (topCard == 1))      // If the top card of the other player is a Jack, Queen, King, or Ace, subtract one from the running count
+            runningCount--;
+    }
+    return runningCount;
+}
+int Player::trueCount(int runningCount)     // computes the true count by dividing the running count by the number of decks in play
+{
+    truCount = runningCount/DeckStack.numberDecks;
+    return truCount;
+}
+int Player::determineValue(string value)
+{
+    if (value == "A") {                     // If the card value is Ace, return a 1 as the int value
+        return 1;
+    }
+    else if (value == "J" or value == "Q" or value == "K") {
+        return 10;                   // if the card value is a Jack, Queen, or King, returns 10 as the int value
+    }
+    else {
+        return stoi(value);          // All other cards return their card value, but in int form (which is what stoi() does)
+    }
+}
 // This person uses https://www.blackjackapprenticeship.com/resources/blackjack-strategy-charts/
 // strategy for hard totals
 int Player::basicHardTurn(){
@@ -247,7 +272,7 @@ int Player::basicSoftTurn(){
         case 18:                // doubles against dealer's 2 through 6, and hits against 9 through Ace, otherwise stands
             if ((dealerTopCardNumVal >= 2) && (dealerTopCardNumVal <= 6))
                 doubleDown();
-            else if((dealerTopCardNumVal >= 9) && (dealerTopCardNumVal <= 10) || (dealerTopCardNumVal == 1))
+            else if((dealerTopCardNumVal == 9) || (dealerTopCardNumVal == 10) || (dealerTopCardNumVal == 1))
                 getCard();
             else
                 stand();
