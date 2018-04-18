@@ -3,9 +3,8 @@
 
 Card * dealersTopCard;
 
-Game::Game(int userGameTypeChoice, int tableBuyIn){
+Game::Game(int userGameTypeChoice){
     unusedCards = new DeckStack(6);
-    this->tableBuyIn = tableBuyIn;
     if(userGameTypeChoice == 1){
         runPlayingMode();
     }
@@ -26,8 +25,8 @@ int Game::determineUserIndex() {
 }
 
 void Game::runPlayingMode() {
-    numPlayers = getNumPlayers();
-    amountMoney = getAmountMoney();
+    getNumPlayers();
+    getAmountMoney();
 
     for(int i = 0; i < numPlayers; i++){
         players.push_back(new Player(amountMoney, i)); //creates the number of other players desired
@@ -37,10 +36,11 @@ void Game::runPlayingMode() {
     players.push_back(new Player(0, 6));
 
     userIndex = determineUserIndex(); //determine at which index in the player vector is the user to be used throughout the game
-
+    int roundCounter = 0;
     // goes as long as the user has enough money for another round
-    while (players.at(userIndex)->getMoney() > tableBuyIn) {
-
+    while (players.at(userIndex)->getMoney() > 15) { //should we change to table buy in??
+        roundCounter++;
+        cout << "\nStarting Round #" <<roundCounter << ":\n";
         //stores player's bets
         vector<int> bets;
 
@@ -107,37 +107,45 @@ int Game::getTableBuyIn(){
     return this->tableBuyIn;
 }
 
-int Game::getNumPlayers() {
-    cout << "How many players do you want in the game?\n";
-    cout << "Enter an integer from 1 to 6: ";
+void Game::getNumPlayers() {
+    cout << "\nHow many other players do you want in the game?\n";
+    this_thread::sleep_for(chrono::milliseconds(600));
+    cout << "Enter an integer from 0 to 5: ";
     while(true) {
         cin >> numPlayers;
+        numPlayers++; //adding a player to account for the user running the game
 
         //Check for valid input
         //what happens when we have a decimal
         //
         if (numPlayers > 0 && numPlayers < 7) {
-            return numPlayers;
+            return; //this is a valid input
         }
-        cout << "\nInvalid input. Please enter an integer from 1-6: ";
+        cout << "\nInvalid input. Please enter an integer from 0 to 5: ";
         //clears the input stream to allow the user to input an acceptable value
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
     }
+    //FINISH do something about not allowing users to input decimals. even if they put 6.4, we dont want this to work.
+//    if(numPlayers == 1){
+//        cout << "You will be playing 1 on 1 against the dealer";
+//    }
+//    else{
+//        cout << numPlayers - 1 << " other players in game entered.";
+//    }
 }
 
-int Game::getAmountMoney() {
+void Game::getAmountMoney() {
     bool moneyCheck = true;
-
-    cout << "\n\nHow much money should each player start with?\n";
+    cout << "\nHow much money should each player start with?\n";
+    this_thread::sleep_for(chrono::milliseconds(600));
     cout << "Enter an integer greater than or equal to $100: ";
-    int moneyVal;
     while (moneyCheck) {
-        cin >> moneyVal;
+        cin >> amountMoney;
 
         //Check for valid user input
-        if (moneyVal >= 100) {
-            return moneyVal;
+        if (amountMoney >= 100) {
+            return; //this is a valid input
         }
         else {
             cout << "\nInvalid input. Please enter an integer greater than or equal to $100: ";

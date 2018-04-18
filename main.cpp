@@ -18,6 +18,7 @@ int beginMenu(){
         cout << "You may run either:\n";
         cout << "\t1) Playing mode: play rounds of Blackjack against a dealer and other players\n";
         cout << "\t2) Simulation mode: run many simulations to test effectiveness of playing styles between our bots\n";
+        this_thread::sleep_for(chrono::milliseconds(600));
         cout << "Enter 1 or 2: ";
         cin >> userGameTypeChoice;
 
@@ -50,7 +51,7 @@ int beginMenu(){
 
 int main() {
     beginMenu();
-    Game * game = new Game(userGameTypeChoice, 100);
+    Game * game = new Game(userGameTypeChoice);
 
     /*
     DeckStack * unusedCards = new DeckStack(6); //creates a DeckStack with 6 decks, shuffled

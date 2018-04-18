@@ -7,27 +7,28 @@ using namespace std;
 #include <vector>
 #include "Player.h"
 #include "DeckStack.h"
+#include <thread>
 
 
 class Game {
 private:
     int numPlayers;
     int amountMoney;
-    int tableBuyIn;
+    int tableBuyIn; //might delete
     int userIndex;
     vector<Player *> players;
     DeckStack * unusedCards;
     vector<Card *> discardPile;
 public:
-    Game(int userGameTypeChoice, int tableBuyIn);
+    Game(int userGameTypeChoice);
     void runPlayingMode();
     void runSimulationMode();
     int determineUserIndex();
     void gamePlay();
     vector<Player *> getPlayers();
     int getTableBuyIn();
-    int getNumPlayers();
-    int getAmountMoney();
+    void getNumPlayers();
+    void getAmountMoney();
 };
 
 

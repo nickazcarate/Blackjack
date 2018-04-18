@@ -319,18 +319,18 @@ vector<int> Player::getHandTotals() {
     }
 
     // removes totals that cause a bust (greater than 21)
-    while (totals.size() > 1 and totals.at(totals.size() - 1) > 21) {
+    while (totals.size() > 1 && totals.at(totals.size() - 1) > 21) {
         totals.pop_back();
     }
     return totals;
 }
 
 int Player::getBestHand() {
-    vector<int> hand = getHandTotals();
-    int best = hand.at(0);
+    vector<int> totals = getHandTotals();
+    int best = totals.at(0);
     //find the hand with the greatest value that is less than or equal to 21
-    for (int i : hand) {
-        if (i > best and i <= 21)
+    for (int i : totals) {
+        if (i > best && i <= 21)
             best = i;
     }
     return best;
@@ -341,16 +341,19 @@ int Player::getBestHand() {
 // default bet $15?
 int Player::getBet() {
     if(playerIdentity == 0) {
-        cout << "You currently have $" << money << endl;
+        cout << "You currently have $" << money << "."<< endl;
         int bet = 0;
-        while (bet <= 0 or bet > money) {
-            cout <<  "How much would you like to bet? ";
+        while (bet <= 15 || bet > money ) {
+            cout <<  "How much money would you like to bet? ";
             cin >> bet;
             if (bet <= 0) {
-                cout << "Invalid input, bet must be a positive integer.\n";
+                cout << "Invalid input - bet must be a positive integer.\n\n";
+            }
+            else if(bet < 15){
+               cout << "Invalid input - table minimum bet is $15.\n\n";
             }
             else if (bet > money) {
-                cout << "Invalid input, you don't have that much money.\n";
+                cout << "Invalid input - insufficient funds.\n\n";
             }
         }
         return bet;
