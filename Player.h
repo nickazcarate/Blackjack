@@ -24,6 +24,7 @@ private:
     void surrender();
     bool split();
     void purchaseInsurance();
+    int getProbability(int cardValue);
     int runningCount;
     int truCount;
 public:

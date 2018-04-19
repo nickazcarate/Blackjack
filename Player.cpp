@@ -1,6 +1,11 @@
 // Created by Nick Azcarate on 4/14/18.
 
 #include "Player.h"
+
+// #include "DeckStack.h"
+// #include "Game.h"
+
+
 // implemented directly in takeTurn() for now
 void Player::getCard() {
     // deal card
@@ -75,6 +80,12 @@ int Player::getTies() {
     return gamesTied;
 }
 
+int Player::getProbability(int cardValue) {
+    int probability = 0;
+
+    return probability;
+}
+
 // will return the user's choice so game can use it
 int Player::takeTurn(Card * dealersTop) {
     switch (playerIdentity) {
@@ -141,6 +152,23 @@ int Player::randoTurn(){
 
 int Player::superCardCounterTurn(){ // This person uses a card counting strategy, remembering ALL of the cards
 
+    int handValue = 16;
+    int bustChance = 0;
+    int safeChance = 0;
+    for (int i = 1; i < 11; i++) {
+        if (i + handValue <= 21) {
+            safeChance += getProbability(i);
+        }
+        else {
+            bustChance += getProbability(i);
+        }
+    }
+    if (safeChance > bustChance) {
+        getCard();
+    }
+    else {
+        stand();
+    }
 }
 
 int Player::weakCardCounterTurn()
