@@ -176,12 +176,13 @@ int Player::randoTurn(){
         purchaseInsurance();
 }
 
-int Player::superCardCounterTurn(){ // This person uses a card counting strategy, remembering ALL of the cards
+// This person uses a card counting strategy, remembering ALL of the cards
+int Player::superCardCounterTurn() {
 
     int handValue = 16;
     int bustChance = 0;
     int safeChance = 0;
-
+    int twentyoneChance = getProbability(21-handValue);
 
     for (int i = 1; i < 11; i++) {
         if (i + handValue <= 21) {
@@ -194,7 +195,11 @@ int Player::superCardCounterTurn(){ // This person uses a card counting strategy
         }
     }
 
-    if (safeChance > bustChance) {
+    //check if chance for doubling down into 21 is good enough, if so double down
+    if (twentyoneChance >= .3) {
+        doubleDown();
+    }
+    else if (safeChance > bustChance) {
         getCard();
     }
     else {
@@ -203,8 +208,9 @@ int Player::superCardCounterTurn(){ // This person uses a card counting strategy
 
 }
 
-int Player::weakCardCounterTurn()
-{ // This person uses a card counting strategy, using the true count and run count to make betting decisions
+int Player::weakCardCounterTurn() {
+
+// This person uses a card counting strategy, using the true count and run count to make betting decisions
 // may use runCount and/or trueCount functions
 // will use "illustrious 18" strategy outlined here https://www.888casino.com/blog/blackjack-strategy-guide/blackjack-card-counting
     runCount();
