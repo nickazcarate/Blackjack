@@ -143,11 +143,47 @@ int Player::superCardCounterTurn(){ // This person uses a card counting strategy
 
 }
 
-int Player::weakCardCounterTurn(){ // This person uses a card counting strategy, remembering only the previous 10 cards
+int Player::weakCardCounterTurn()
+{ // This person uses a card counting strategy, using the true count and run count to make betting decisions
 // may use runCount and/or trueCount functions
+// will use "illustrious 18" strategy outlined here https://www.888casino.com/blog/blackjack-strategy-guide/blackjack-card-counting
+    runCount();
+    trueCount(runningCount);
+    int topCard = determineValue(dealer->hand.at(dealer->hand.size()-1)->getValue());       // gets dealer's top card
+    int handTotal = getHandTotals().at(0);      // gets soft total for hand
+    if ((handTotal == 16) && (topCard == 9) && (truCount >= 5))     // if your hand is 16, the dealer's top card is 9, and the true count is +5 or above
+        stand();                                                          // stand
+    else if ((handTotal == 16) && (topCard == 10) && (truCount >= 0))     // if your hand is 16, the dealer's top card is 10, and the true count is 0 or above)
+        stand();
+    else if ((handTotal == 15) && (topCard == 10) && (truCount >= 4))     // if your hand is 15, the dealer's top card is 10, and the true count is +4 or above)
+        stand();
+    else if ((handTotal == 13) && (topCard == 2) && (truCount >= -1))     // if your hand is 13, the dealer's top card is 2, and the true count is -1 or above)
+        stand();
+    else if ((handTotal == 13) && (topCard == 3) && (truCount >= -2))     // if your hand is 13, the dealer's top card is 3, and the true count is -2 or above)
+        stand();
+    else if ((handTotal == 12) && (topCard == 2) && (truCount >= 4))     // if your hand is 12, the dealer's top card is 2, and the true count is +4 or above)
+        stand();
+    else if ((handTotal == 12) && (topCard == 3) && (truCount >= 2))     // if your hand is 12, the dealer's top card is 3, and the true count is +2 or above)
+        stand();
+    else if ((handTotal == 12) && (topCard == 4) && (truCount >= 0))     // if your hand is 12, the dealer's top card is 4, and the true count is 0 or above)
+        stand();
+    else if ((handTotal == 12) && ((topCard == 5) || (topCard == 6)) && (truCount >= -1))     // if your hand is 12, the dealer's top card is a 5 or 6, and the true count is -1 or above)
+        stand();
+    else if ((handTotal == 11) && (topCard == 1) && (truCount >= 1))     // if your hand is 11, the dealer's top card is Ace, and the true count is +1 or above)
+        doubleDown();
+    else if ((handTotal == 10) && (topCard == 10) && (truCount >= 4))     // if your hand is 10, the dealer's top card is 10, Jack, Queen, or King, and the true count is +4 or above)
+        doubleDown();
+    else if ((handTotal == 10) && (topCard == 1) && (truCount >= 4))     // if your hand is 10, the dealer's top card is Ace, and the true count is +4 or above)
+        doubleDown();
+    else if ((handTotal == 9) && (topCard == 2) && (truCount >= 1))     // if your hand is 9, the dealer's top card is 2, and the true count is +1 or above)
+        doubleDown();
+    else if ((handTotal == 9) && (topCard == 7) && (truCount >= 4))     // if your hand is 9, the dealer's top card is 7, and the true count is +4 or above)
+        doubleDown();
+    else
+        getCard();
 }
 
-int Player::runCount()      // adds or subtracts to the running count based on the current top cards on the table
+void Player::runCount()      // adds or subtracts to the running count based on the current top cards on the table
 {
     int topCard;
     for (Player * p : Game.players)
@@ -158,12 +194,12 @@ int Player::runCount()      // adds or subtracts to the running count based on t
         else if((topCard == 10) || (topCard == 1))      // If the top card of the other player is a Jack, Queen, King, or Ace, subtract one from the running count
             runningCount--;
     }
-    return runningCount;
+    return;
 }
-int Player::trueCount(int runningCount)     // computes the true count by dividing the running count by the number of decks in play
+void Player::trueCount(int runningCount)     // computes the true count by dividing the running count by the number of decks in play
 {
     truCount = runningCount/DeckStack.numberDecks;
-    return truCount;
+    return;
 }
 int Player::determineValue(string value)
 {
