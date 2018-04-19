@@ -4,7 +4,7 @@
 Card * dealersTopCard;
 
 Game::Game(int userGameTypeChoice){
-    unusedCards = new DeckStack(6);
+    unusedPile = new DeckStack(6);
     if(userGameTypeChoice == 1){
         runPlayingMode();
     }
@@ -46,10 +46,10 @@ void Game::runPlayingMode() {
 
         // deals two cards to every player
         for (Player* p : players) {
-
-            p->giveCard(unusedCards->removeTopCard());//FINISH! put these in the discard pile before removing
-
-            p->giveCard(unusedCards->removeTopCard());
+            discardPile->getCardStack().push_back(unusedPile->getCardStack()[0]); //places card in discardPile cardStack
+            p->giveCard(unusedPile->removeTopCard());// places card in user's hand and then deletes it from unusedPile
+            discardPile->getCardStack().push_back(unusedPile->getCardStack()[0]); //places card in discardPile cardStack
+            p->giveCard(unusedPile->removeTopCard());
         }
 
         // each player takes turn
@@ -78,12 +78,12 @@ void Game::runPlayingMode() {
                             endTurn = true;
                             break;
                         case 1: // hit
-                            p->giveCard(unusedCards->removeTopCard());
+                            discardPile->getCardStack().push_back(unusedPile->getCardStack()[0]); //places card in discardPile cardStack
+                            p->giveCard(unusedPile->removeTopCard()); //places card into player's hand and then deletes the card
                     }
                 }
             }
         }
-
     }
 }
 

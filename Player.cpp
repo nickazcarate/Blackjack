@@ -186,7 +186,7 @@ int Player::weakCardCounterTurn()
 void Player::runCount()      // adds or subtracts to the running count based on the current top cards on the table
 {
     int topCard;
-    for (Player * p : Game.players)
+    for (Player * p : Game->players)
     {
         topCard = determineValue(p->hand.at(p->hand.size()-1)->getValue());     // sets the current top card value equal to the top card of the player in question
         if ((topCard >= 2) && (topCard <= 6))       // If the top card of the other player is b/w 2 and 6, add 1 to the running count
@@ -198,7 +198,7 @@ void Player::runCount()      // adds or subtracts to the running count based on 
 }
 void Player::trueCount(int runningCount)     // computes the true count by dividing the running count by the number of decks in play
 {
-    truCount = runningCount/DeckStack.numberDecks;
+    truCount = runningCount/DeckStack->numDecks;
     return;
 }
 int Player::determineValue(string value)

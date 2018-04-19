@@ -17,8 +17,8 @@ private:
     int tableBuyIn; //might delete
     int userIndex;
     vector<Player *> players;
-    DeckStack * unusedCards;
-    vector<Card *> discardPile;
+    DeckStack * unusedPile;
+    DeckStack * discardPile;
 public:
     Game(int userGameTypeChoice);
     void runPlayingMode();
