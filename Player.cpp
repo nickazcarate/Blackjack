@@ -2,7 +2,6 @@
 
 #include "Player.h"
 
-// #include "DeckStack.h"
 // #include "Game.h"
 
 
@@ -80,8 +79,35 @@ int Player::getTies() {
     return gamesTied;
 }
 
+//Check probability that a card of a specified value would be drawn
 int Player::getProbability(int cardValue) {
+
     int probability = 0;
+    int deckCount = DeckStack->getNumDecks(); // call the getter for numberDecks within DeckStack
+    int cardValCount = 0;
+
+    for (int i = 0; i < DeckStack->getCardStack().size(); i++) {
+
+       //Grabs value of the card in the current space in the discardPile
+       int testValue = Card->getValue(DeckStack->getCardStack()[i]);
+
+       //If the current card is the same as the requested value,
+       if (testValue == cardValue) {
+            cardValCount++;
+       }
+    }
+
+    if (cardValue == 10) {
+
+        //probability = number of cards of specified value remaining divided by total cards that are left
+        // 16 = number of Jacks, Queens, Kings, and 10s in one deck of cards
+        probability = ((16*deckCount)-cardValCount)/((deckCount*52)-DeckStack->getCardStack().size());
+    }
+    else {
+
+        //probability = number of cards of specified value remaining divided by total cards that are left
+        probability = ((4*deckCount)-cardValCount)/((deckCount*52)-DeckStack->getCardStack().size()); //
+    }
 
     return probability;
 }
@@ -155,20 +181,26 @@ int Player::superCardCounterTurn(){ // This person uses a card counting strategy
     int handValue = 16;
     int bustChance = 0;
     int safeChance = 0;
+
+
     for (int i = 1; i < 11; i++) {
         if (i + handValue <= 21) {
+
+            //
             safeChance += getProbability(i);
         }
         else {
             bustChance += getProbability(i);
         }
     }
+
     if (safeChance > bustChance) {
         getCard();
     }
     else {
         stand();
     }
+
 }
 
 int Player::weakCardCounterTurn()

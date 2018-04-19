@@ -2,7 +2,6 @@
 
 #include "Card.h"
 
-//Anotha one
 
 Card::Card(string value, string suit){
     //test comment HERE
@@ -10,13 +9,15 @@ Card::Card(string value, string suit){
     this->suit = suit;
 }
 
-//Nick's comment here!
+//Getters for the Card object's point value and suit
 string Card::getValue(){
     return this->value;
 }
 string Card::getSuit(){
     return this->suit;
 }
+
+
 string Card::print() {
     return (value + " of " + suit);
 }

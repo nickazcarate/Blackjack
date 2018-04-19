@@ -3,6 +3,10 @@
 #include "DeckStack.h"
 using namespace std;
 
+int DeckStack::getNumDecks() {
+    return numberDecks;
+}
+
 void DeckStack::createDeck(){
     cardStack.push_back(new Card("A", "Hearts"));
     for(int i = 2; i <= 10; i++){

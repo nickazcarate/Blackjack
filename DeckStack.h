@@ -21,6 +21,7 @@ public:
     void shuffleDeck();
     vector<Card *> getCardStack();
     Card * getTopCard();
+    int getNumDecks();
     Card * removeTopCard(); // removes and returns to avoid having to call both functions
 
 

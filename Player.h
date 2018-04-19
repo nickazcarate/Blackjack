@@ -5,6 +5,7 @@
 using namespace std;
 #include <iostream>
 #include "Card.h"
+#include "DeckStack.h"
 #include <vector>
 
 
