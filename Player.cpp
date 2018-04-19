@@ -83,7 +83,9 @@ int Player::getTies() {
 int Player::getProbability(int cardValue) {
 
     int probability = 0;
-    int deckCount = DeckStack->getNumDecks(); // call the getter for numberDecks within DeckStack
+
+    // call the getter for numberDecks within DeckStack
+    int deckCount = DeckStack->getNumDecks();
     int cardValCount = 0;
 
     for (int i = 0; i < DeckStack->getCardStack().size(); i++) {
@@ -163,6 +165,7 @@ int Player::dealerTurn(){
 
 // Randomly chooses to get card, double down, stand, surrender, of split insurance
 int Player::randoTurn(){
+
   int randNum = rand()%100 +1;
   if (randNum <= 70)      // 70% chance the bot will hit
         getCard();
@@ -179,15 +182,13 @@ int Player::randoTurn(){
 // This person uses a card counting strategy, remembering ALL of the cards
 int Player::superCardCounterTurn() {
 
-    int handValue = 16;
+    int handValue = 16; //!!!!!!CHECK ACTUAL HAND VALUE!!!!!!!
     int bustChance = 0;
     int safeChance = 0;
     int twentyoneChance = getProbability(21-handValue);
 
     for (int i = 1; i < 11; i++) {
         if (i + handValue <= 21) {
-
-            //
             safeChance += getProbability(i);
         }
         else {
