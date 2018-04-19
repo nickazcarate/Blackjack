@@ -14,7 +14,7 @@ class Game {
 private:
     int numPlayers;
     int amountMoney;
-    int tableBuyIn; //might delete
+    int tableBuyIn; // holds the minimum value that players must bet
     int userIndex;
     vector<Player *> players;
     DeckStack * unusedPile;
@@ -29,6 +29,7 @@ public:
     int getTableBuyIn();
     void getNumPlayers();
     void getAmountMoney();
+    void getMinBet();
 };
 
 

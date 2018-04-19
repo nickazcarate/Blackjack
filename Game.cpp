@@ -27,6 +27,7 @@ int Game::determineUserIndex() {
 void Game::runPlayingMode() {
     getNumPlayers();
     getAmountMoney();
+    getMinBet();
 
     for(int i = 0; i < numPlayers; i++){
         players.push_back(new Player(amountMoney, i)); //creates the number of other players desired
@@ -150,6 +151,26 @@ void Game::getAmountMoney() {
         else {
             cout << "\nInvalid input. Please enter an integer greater than or equal to $100: ";
 
+            //clears the input stream to allow the user to input an acceptable value
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+    }
+}
+
+void Game::getMinBet() {
+    bool betCheck = true;
+    cout << "\nHow much should the minimum bet be?\n";
+    this_thread::sleep_for(chrono::milliseconds(600));
+    cout << "Enter an integer greater than or equal to $1: ";
+    while (betCheck) {
+        cin >> tableBuyIn;
+        //Check for valid user input
+        if (tableBuyIn >= 1) {
+            return; //this is a valid input
+        }
+        else {
+            cout << "\nInvalid input. Please enter an integer greater than or equal to $1: ";
             //clears the input stream to allow the user to input an acceptable value
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
