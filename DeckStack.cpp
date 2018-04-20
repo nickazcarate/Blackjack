@@ -4,7 +4,9 @@
 #include "DeckStack.h"
 using namespace std;
 
-
+int myRandom2 (int i){
+    return rand()%i;
+}
 
 void DeckStack::createDeck(){
     cardStack.push_back(new Card("A", "Hearts"));
@@ -55,7 +57,7 @@ void DeckStack::printDeck() {
 }
 
 void DeckStack::shuffleDeck() {
-    random_shuffle(cardStack.begin(), cardStack.end());
+    random_shuffle(cardStack.begin(), cardStack.end(), myRandom2);
 }
 
 vector<Card *> DeckStack::getCardStack(){

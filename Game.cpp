@@ -1,7 +1,6 @@
 // Created by Nick Azcarate on 4/15/18.
 #include "Game.h"
 
-
 Game::Game(int userGameTypeChoice){
     unusedPile = new DeckStack(6);
     discardPile = new DeckStack(0);
@@ -11,6 +10,10 @@ Game::Game(int userGameTypeChoice){
     else if(userGameTypeChoice == 2){
         runSimulationMode();
     }
+}
+
+int myRandom1(int i){
+    return rand()%i;
 }
 
 int Game::determineUserIndex() {
@@ -29,7 +32,7 @@ void Game::runPlayingMode() {
     for(int i = 0; i < numPlayers; i++){
         players.push_back(new Player(amountMoney, i)); //creates the number of other players desired
     }
-    random_shuffle(players.begin(), players.end()); //shuffles the players to have random placement around the table
+    random_shuffle(players.begin(), players.end(), myRandom1); //shuffles the players to have random placement around the table
     //add dealer as the last person in the vector
     players.push_back(new Player(0, 6));
 

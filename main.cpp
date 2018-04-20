@@ -50,6 +50,7 @@ int beginMenu(){
 }
 
 int main() {
+    srand (unsigned (time(0)));
     beginMenu();
     Game * game = new Game(userGameTypeChoice);
 
