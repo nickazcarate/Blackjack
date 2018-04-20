@@ -92,10 +92,10 @@ int Player::getProbability(int cardValue) {
     int deckCount = numDecks; // call the getter for numberDecks within DeckStack
     int cardValCount = 0;
 
-    for (int i = 0; i < rememberedDiscards.size(); i++) {
+    for (Card * card : rememberedDiscards) {
 
        //Grabs value of the card in the current space in the discardPile
-       int testValue = rememberedDiscards.at(i)->getNumericValue();
+       int testValue = card->getNumericValue();
 
        //If the current card is the same as the requested value,
        if (testValue == cardValue) {
@@ -174,8 +174,8 @@ int Player::dealerTurn(){
 
 // Randomly chooses to get card, double down, stand, surrender, of split insurance
 int Player::randoTurn(){
-  int randNum = rand()%100 +1;
-  if (randNum <= 70)                                // 70% chance the bot will hit
+    int randNum = rand()%100 +1;
+    if (randNum <= 70)                                // 70% chance the bot will hit
         return getCard();
     else                                            // 30% chance the bot will stand
         return stand();
@@ -374,24 +374,21 @@ void Player::giveCard(Card * card) {
 }
 
 vector<int> Player::getHandTotals() {
-    int aceCount = 0;
+    bool hasAce = false;
     int baseTotal = 0;
     for (Card * card : hand) {
-        string value = card->getValue();
-        if (value == "A") {
-            aceCount++;
+        int value = card->getNumericValue();
+        if (value == 1) {
+            hasAce = true;
             baseTotal += 1;
         }
-        else if (value == "J" or value == "Q" or value == "K") {
-            baseTotal += 10;
-        }
         else {
-            baseTotal += stoi(value);
+            baseTotal += value;
         }
     }
     vector<int> totals;
     totals.push_back(baseTotal);
-    if(aceCount >= 1){ //if there is 1 or more aces, add 10 to the total
+    if(hasAce){ //if there is 1 or more aces, add 10 to the total
         //note that in Blackjack, only 1 ace can be 11 (in a hand with multiple), the remainder are 1s
         totals.push_back(baseTotal + 10);
     }
@@ -465,4 +462,11 @@ void Player::cardCount(Card * discard) {
         default:
             break;
     }
+}
+
+
+// removes the cards from the player's hand
+// (at the end of the round)
+void Player::clearHand() {
+    hand.clear();
 }
