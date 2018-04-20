@@ -19,9 +19,9 @@ private:
     int playerIdentity;
         // 0 = user, 1 = random choices, 2 = incredible card counter, 3 = pretty good card counter,
         // 4 = basic card strategy, 5 = SOMETHING_GOES_HERE, 6 = dealer
-    void getCard();
-    bool doubleDown();
-    void stand();
+    int getCard();
+    int doubleDown();
+    int stand();
     void surrender();
     bool split();
     void purchaseInsurance();
@@ -46,7 +46,6 @@ public:
     int superCardCounterTurn();    // This person uses a card counting strategy, remembering ALL of the cards
     int weakCardCounterTurn(Card * dealersTop);     // This person uses a card counting strategy, remembering only the previous 10 cards
     void trueCount();        // computes the true count of cards played so far (run count / num decks)
-    int determineValue(string value);           // returns int value of card's value
     int basicHardTurn();    // This person uses https://www.blackjackapprenticeship.com/resources/blackjack-strategy-charts/
                             // strategy for hard totals
     int basicSoftTurn();    // This person uses https://www.blackjackapprenticeship.com/resources/blackjack-strategy-charts/

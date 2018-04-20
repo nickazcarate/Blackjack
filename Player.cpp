@@ -6,18 +6,18 @@
 
 
 // implemented directly in takeTurn() for now
-void Player::getCard() {
-    // deal card
+int Player::getCard() {    // deal card
+    return 1;
 }
 
 // may implement later
-bool Player::doubleDown() {
-
+int Player::doubleDown() {
+    return 3;
 }
 
 // implemented directly in takeTurn() for now
-void Player::stand() {
-
+int Player::stand() {
+    return 0;
 }
 
 // may implement later
@@ -145,32 +145,37 @@ int Player::takeTurn(Card * dealersTop) {
 
         case 1:
             return dealerTurn();
-
-        // FINISH implement other behaviors
+        case 2:
+            return randoTurn();
+        case 3:
+            return superCardCounterTurn();
+        case 4:
+            return weakCardCounterTurn(dealersTop);
+        case 5:
+            return basicSoftTurn();
+        case 6:
+            return basicHardTurn();
         default:
             return randoTurn();
     }
 }
 
-// returns action
 // Stops hitting at a hard 17. Will continue to hit if at a soft 17
 int Player::dealerTurn(){
     if(getHandTotals().at(getHandTotals().size()-1) >= 17)
     {
-        // Add that the dealer is standing (a prefix)
-        return 0;
+        stand();
     }
     else
     {
-        // Add that the dealer is hitting (a prefix)
-        return 1;
+        getCard();
     }
 }
 
 // Randomly chooses to get card, double down, stand, surrender, of split insurance
 int Player::randoTurn(){
   int randNum = rand()%100 +1;
-  if (randNum <= 70)      // 70% chance the bot will hit
+  if (randNum <= 70)                                // 70% chance the bot will hit
         getCard();
     else if((randNum > 70) && (randNum <= 80))      // 10% chance the bot will stand
         stand();
