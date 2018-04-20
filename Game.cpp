@@ -4,6 +4,7 @@
 Game::Game(int userGameTypeChoice){
     unusedPile = new DeckStack(6);
     discardPile = new DeckStack(0);
+
     if(userGameTypeChoice == 1){
         runPlayingMode();
     }
@@ -45,11 +46,12 @@ void Game::runPlayingMode() {
     userIndex = determineUserIndex(); //determine at which index in the player vector is the user to be used throughout the game
     int roundCounter = 0;
     // goes as long as the user has enough money for another round
-    while (players.at(userIndex)->getMoney() >= tableBuyIn) { //should we change to table buy in??
+    while (players.at(userIndex)->getMoney() >= tableBuyIn) {
         roundCounter++;
         cout << "\nStarting Round #" <<roundCounter << ":\n";
         //stores player's bets
         vector<int> bets;
+        vector<bool> surrendered(numPlayers);
 
         // deals two cards to every player
         for (Player* p : players) {
@@ -63,7 +65,7 @@ void Game::runPlayingMode() {
         for (int i = 0; i < players.size(); i++) {
             Player * p = players.at(i);
             // adds p's bet to bets
-            bets.push_back(p->getBet());
+            bets.push_back(p->getBet(tableBuyIn));
             if(p->getPlayerIdentity() == 0) {
                 cout << "The dealer's top card is " << players[players.size() - 1]->getHand().at(0)->getValue();
             }
@@ -112,6 +114,13 @@ void Game::runPlayingMode() {
                             break;
                         case 4: // surrender
                             bets.at(i) = bets.at(i) / 2;
+                            surrendered.at(i) = true;
+                            endTurn = true;
+                            break;
+                        case 9:
+                            cout << "You won " << p->getWins() << "games.\n";
+                            cout << "You lost " << p->getLosses() << " games.\n";
+                            cout << "You tied " << p->getTies() << "games.\n";
                             endTurn = true;
                             break;
                     }
@@ -126,10 +135,10 @@ void Game::runPlayingMode() {
 
         // runs through each player and compares their hand to the dealer
         for (int i = 0; i < players.size() - 1; i++) {
-            Player *player = players.at(i);
+            Player * player = players.at(i);
             // if the player busts, remove their bet from their money
             // and give it to the dealer
-            if (player->getBestHand() > 21) {
+            if (player->getBestHand() > 21 or surrendered.at(i)) {
                 player->updateMoney(bets.at(i) * -1);
                 dealer->updateMoney(bets.at(i));
                 player->lostGame();
@@ -169,11 +178,168 @@ void Game::runPlayingMode() {
         for (Player * p : players) {
             p->clearHand();
         }
+
+        while (true) {
+            cout << "Would you like to keep playing? (0 for no, 1 for yes) ";
+            string keepPlaying;
+            cin >> keepPlaying;
+
+            if (keepPlaying == "0") {
+                return;
+            }
+            else if (keepPlaying == "1") {
+                break;
+            }
+            else {
+                cout << "Invalid input, please enter 0 or 1\n";
+            }
+        }
+
+        if (roundCounter - lastRoundShuffled > 6) {
+            unusedPile = new DeckStack(6);
+            discardPile = new DeckStack(0);
+            lastRoundShuffled = roundCounter;
+        }
+
     }
+
 }
 
 void Game::runSimulationMode() {
+    getNumPlayers();
+    getAmountMoney();
+    getMinBet();
 
+    for(int i = 1; i <= numPlayers; i++){
+        players.push_back(new Player(amountMoney, i)); //creates the number of other players desired
+    }
+    random_shuffle(players.begin(), players.end(), myRandom1); //shuffles the players to have random placement around the table
+    //add dealer as the last person in the vector
+    players.push_back(new Player(0, 6));
+
+    // passes the number of decks in to each player
+    // used by card counting bots
+    for (Player * p : players) {
+        p->setNumDecks(unusedPile->getNumDecks());
+    }
+
+    int roundCounter = 0;
+    // goes as long as the user has enough money for another round
+    while (doPeopleHaveMoney() and roundCounter < 10000) {
+        roundCounter++;
+        //stores player's bets
+        vector<int> bets(numPlayers);
+        vector<bool> surrendered(numPlayers);
+
+        // deals two cards to every player
+        for (Player* p : players) {
+            p->giveCard(unusedPile->getTopCard());// places card in user's hand and then deletes it from unusedPile
+            discard(unusedPile->removeTopCard()); //places card in discardPile cardStack
+            p->giveCard(unusedPile->getTopCard());
+            discard(unusedPile->removeTopCard()); //places card in discardPile cardStack
+        }
+
+        // each player takes turn
+        for (int i = 0; i < players.size(); i++) {
+            Player * p = players.at(i);
+            // adds p's bet to bets
+            bets.push_back(p->getBet(tableBuyIn));
+
+            bool endTurn = false;
+
+            if ()
+
+            while (!endTurn) {
+                // if their hand total is over 21, end turn
+                if (p->getHandTotals().at(0) > 21) {
+                    //getHandTotals().at(0) is the baseTotal, which is the lowest possible total
+                    //if this total is already > 21, then the player busts (is out of the round)
+                    endTurn = true;
+                }
+                else if (p->getBestHand() == 21) {
+                    endTurn = true;
+                }
+
+                else {
+                    // gets player action (passes in dealer's top card so user can see it)
+                    int playerAction = p->takeTurn(players.at(players.size() - 1)->getHand().at(0));
+                    switch (playerAction) {
+                        case 0: // stand
+                            endTurn = true;
+                            break;
+                        case 1: // hit
+                            p->giveCard(unusedPile->getTopCard()); //places card into player's hand and then deletes the card
+                            discard(unusedPile->removeTopCard()); //places card in discardPile cardStack
+                            break;
+                        case 2: // double down
+                            p->giveCard(unusedPile->getTopCard()); //places card into player's hand and then deletes the card
+                            discard(unusedPile->removeTopCard()); //places card in discardPile cardStack
+                            bets.at(i) = bets.at(i) * 2;
+                            endTurn = true;
+                            break;
+                        case 3: // surrender
+                            bets.at(i) = bets.at(i) / 2;
+                            surrendered.at(i) = true;
+                            endTurn = true;
+                            break;
+                    }
+                }
+            }
+        }
+
+        // stores the dealer
+        Player * dealer = players.at(players.size() - 1);
+
+        // runs through each player and compares their hand to the dealer
+        for (int i = 0; i < players.size() - 1; i++) {
+            Player * player = players.at(i);
+            // if the player busts, remove their bet from their money
+            // and give it to the dealer
+            if (player->getBestHand() > 21 or surrendered.at(i)) {
+                player->updateMoney(bets.at(i) * -1);
+                dealer->updateMoney(bets.at(i));
+                player->lostGame();
+            }
+                // else if the dealer busts or player beats them,
+                // the player gets their bet back matched
+                // and the dealer loses that much
+            else if (dealer->getBestHand() > 21 or player->getBestHand() > dealer->getBestHand()) {
+                player->updateMoney(bets.at(i));
+                dealer->updateMoney(bets.at(i) * -1);
+                player->wonGame();
+            }
+                // else if the dealer wins, settle bets
+            else if (dealer->getBestHand() > player->getBestHand()) {
+                player->updateMoney(bets.at(i) * -1);
+                dealer->updateMoney(bets.at(i));
+                player->lostGame();
+            }
+                // else, its a stand and nothing happens with the bets
+            else {
+                player->tiedGame();
+            }
+        }
+
+        // clears players' hands
+        for (Player * p : players) {
+            p->clearHand();
+        }
+
+        if (roundCounter - lastRoundShuffled > 6) {
+            unusedPile = new DeckStack(6);
+            discardPile = new DeckStack(0);
+            lastRoundShuffled = roundCounter;
+        }
+
+    }
+    for (int i = 0; i < numPlayers; i++) {
+        Player * p = players.at(i);
+        cout << "Player " << p->getPlayerIdentity() << ":\n";
+        cout << "Total money: " << p->getMoney();
+        cout << "\nWon games: " << p->getWins();
+        cout << "\nLost games: " << p->getLosses();
+        cout << "\nTied games: " << p->getTies() << endl;
+    }
 }
 
 void Game::gamePlay() {
@@ -262,4 +428,13 @@ void Game::discard(Card * card) {
         p->cardCount(card);
     }
     discardPile->addCard(card);
+}
+
+bool Game::doPeopleHaveMoney() {
+    int numRichPlayas = 0;
+    for (int i = 0; i < numPlayers; i++) {
+        if (players.at(i)->getMoney() >= tableBuyIn)
+            numRichPlayas++;
+    }
+    return (numRichPlayas >= 2);
 }

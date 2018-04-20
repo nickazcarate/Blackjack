@@ -19,6 +19,7 @@ private:
     vector<Player *> players;
     DeckStack * unusedPile;
     DeckStack * discardPile;
+    int lastRoundShuffled;
 public:
     Game(int userGameTypeChoice);
     void runPlayingMode();
@@ -31,6 +32,7 @@ public:
     void getAmountMoney();
     void getMinBet();
     void discard(Card *);
+    bool doPeopleHaveMoney();
 };
 
 

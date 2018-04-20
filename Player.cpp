@@ -411,22 +411,21 @@ int Player::getBestHand() {
 
 // gets the user's bet
 // add minimum?
-// default bet $15?
-int Player::getBet() {
+int Player::getBet(int tableBuyIn) {
     if(playerIdentity == 0) {
         cout << "You currently have $" << money << "."<< endl;
         int bet = 0;
-        while (bet < 15 || bet > money ) {
-            cout <<  "How much money would you like to bet? ";
+        while (bet < tableBuyIn || bet > money ) {
+            cout <<  "How much money would you like to bet? (minimum bet is $" << tableBuyIn << ")";
             cin >> bet;
             if (bet <= 0) {
-                cout << "Invalid input - bet must be a positive integer.\n\n";
+                cout << "Invalid input, bet must be a positive integer.\n\n";
             }
-            else if(bet < 15){
-               cout << "Invalid input - table minimum bet is $15.\n\n";
+            else if(bet < tableBuyIn){
+               cout << "Invalid input, table minimum bet is $" << tableBuyIn << "\n\n";
             }
             else if (bet > money) {
-                cout << "Invalid input - insufficient funds.\n\n";
+                cout << "Invalid input, insufficient funds.\n\n";
             }
         }
         return bet;
@@ -435,7 +434,7 @@ int Player::getBet() {
         return 0;
     }
     else {
-        return 15;
+        return tableBuyIn;
     }
 }
 
