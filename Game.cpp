@@ -47,10 +47,10 @@ void Game::runPlayingMode() {
 
         // deals two cards to every player
         for (Player* p : players) {
-            discardPile->getCardStack().push_back(unusedPile->getCardStack()[0]); //places card in discardPile cardStack
-            p->giveCard(unusedPile->removeTopCard());// places card in user's hand and then deletes it from unusedPile
-            discardPile->getCardStack().push_back(unusedPile->getCardStack()[0]); //places card in discardPile cardStack
-            p->giveCard(unusedPile->removeTopCard());
+            p->giveCard(unusedPile->getTopCard());// places card in user's hand and then deletes it from unusedPile
+            discard(unusedPile->removeTopCard()); //places card in discardPile cardStack
+            p->giveCard(unusedPile->getTopCard());
+            discard(unusedPile->removeTopCard()); //places card in discardPile cardStack
         }
 
         // each player takes turn
@@ -79,8 +79,8 @@ void Game::runPlayingMode() {
                             endTurn = true;
                             break;
                         case 1: // hit
-                            discardPile->getCardStack().push_back(unusedPile->getCardStack()[0]); //places card in discardPile cardStack
-                            p->giveCard(unusedPile->removeTopCard()); //places card into player's hand and then deletes the card
+                            p->giveCard(unusedPile->getTopCard()); //places card into player's hand and then deletes the card
+                            discard(unusedPile->removeTopCard()); //places card in discardPile cardStack
                     }
                 }
             }
@@ -176,4 +176,11 @@ void Game::getMinBet() {
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
     }
+}
+
+void Game::discard(Card * card) {
+    for (Player * p : players) {
+        p->cardCount(card);
+    }
+    discardPile->addCard(card);
 }

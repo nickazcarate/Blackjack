@@ -28,6 +28,8 @@ private:
     int getProbability(int cardValue);
     int runningCount;
     int truCount;
+    vector<Card *> rememberedDiscards; // used by identity 2 (super card counter)
+    int discardTally; // used by identity 3 (regular card counter)
 public:
     Player(int money, int playerIdentity);
     int getMoney();
@@ -56,6 +58,7 @@ public:
     int getPlayerIdentity();
     vector<int> getHandTotals();
     int getBestHand();
+    void cardCount(Card *);
 };
 
 

@@ -16,6 +16,7 @@ public:
     string getValue();
     string getSuit();
     string print();
+    int getNumericValue();
 };
 
 

@@ -23,7 +23,7 @@ public:
     Card * getTopCard();
     int getNumDecks();
     Card * removeTopCard(); // removes and returns to avoid having to call both functions
-
+    void addCard(Card *);
 
 
 };

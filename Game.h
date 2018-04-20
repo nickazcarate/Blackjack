@@ -30,6 +30,7 @@ public:
     void getNumPlayers();
     void getAmountMoney();
     void getMinBet();
+    void discard(Card *);
 };
 
 

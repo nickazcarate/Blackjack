@@ -83,9 +83,7 @@ int Player::getTies() {
 int Player::getProbability(int cardValue) {
 
     int probability = 0;
-
-    // call the getter for numberDecks within DeckStack
-    int deckCount = DeckStack->getNumDecks();
+    int deckCount = DeckStack->getNumDecks(); // call the getter for numberDecks within DeckStack
     int cardValCount = 0;
 
     for (int i = 0; i < DeckStack->getCardStack().size(); i++) {
@@ -165,7 +163,6 @@ int Player::dealerTurn(){
 
 // Randomly chooses to get card, double down, stand, surrender, of split insurance
 int Player::randoTurn(){
-
   int randNum = rand()%100 +1;
   if (randNum <= 70)      // 70% chance the bot will hit
         getCard();
@@ -182,13 +179,15 @@ int Player::randoTurn(){
 // This person uses a card counting strategy, remembering ALL of the cards
 int Player::superCardCounterTurn() {
 
-    int handValue = 16; //!!!!!!CHECK ACTUAL HAND VALUE!!!!!!!
+    int handValue = getBestHand();
     int bustChance = 0;
     int safeChance = 0;
     int twentyoneChance = getProbability(21-handValue);
 
     for (int i = 1; i < 11; i++) {
         if (i + handValue <= 21) {
+
+            //
             safeChance += getProbability(i);
         }
         else {
@@ -197,7 +196,7 @@ int Player::superCardCounterTurn() {
     }
 
     //check if chance for doubling down into 21 is good enough, if so double down
-    if (twentyoneChance >= .3) {
+    if (twentyoneChance > bustChance) {
         doubleDown();
     }
     else if (safeChance > bustChance) {
@@ -216,7 +215,7 @@ int Player::weakCardCounterTurn() {
 // will use "illustrious 18" strategy outlined here https://www.888casino.com/blog/blackjack-strategy-guide/blackjack-card-counting
     runCount();
     trueCount(runningCount);
-    int topCard = determineValue(dealer->hand.at(dealer->hand.size()-1)->getValue());       // gets dealer's top card
+    int topCard = dealer->hand.at(dealer->hand.size()-1)->getNumericValue();       // gets dealer's top card
     int handTotal = getHandTotals().at(0);      // gets soft total for hand
     if ((handTotal == 16) && (topCard == 9) && (truCount >= 5))     // if your hand is 16, the dealer's top card is 9, and the true count is +5 or above
         stand();                                                          // stand
@@ -255,7 +254,7 @@ void Player::runCount()      // adds or subtracts to the running count based on 
     int topCard;
     for (Player * p : Game->players)
     {
-        topCard = determineValue(p->hand.at(p->hand.size()-1)->getValue());     // sets the current top card value equal to the top card of the player in question
+        topCard = p->hand.at(p->hand.size()-1)->getNumericValue();     // sets the current top card value equal to the top card of the player in question
         if ((topCard >= 2) && (topCard <= 6))       // If the top card of the other player is b/w 2 and 6, add 1 to the running count
             runningCount++;
         else if((topCard == 10) || (topCard == 1))      // If the top card of the other player is a Jack, Queen, King, or Ace, subtract one from the running count
@@ -263,23 +262,14 @@ void Player::runCount()      // adds or subtracts to the running count based on 
     }
     return;
 }
+
 void Player::trueCount(int runningCount)     // computes the true count by dividing the running count by the number of decks in play
 {
     truCount = runningCount/DeckStack->numDecks;
     return;
 }
-int Player::determineValue(string value)
-{
-    if (value == "A") {                     // If the card value is Ace, return a 1 as the int value
-        return 1;
-    }
-    else if (value == "J" or value == "Q" or value == "K") {
-        return 10;                   // if the card value is a Jack, Queen, or King, returns 10 as the int value
-    }
-    else {
-        return stoi(value);          // All other cards return their card value, but in int form (which is what stoi() does)
-    }
-}
+
+
 // This person uses https://www.blackjackapprenticeship.com/resources/blackjack-strategy-charts/
 // strategy for hard totals
 int Player::basicHardTurn(){
@@ -491,5 +481,29 @@ int Player::getBet() {
     }
     else {
         return 15;
+    }
+}
+
+
+// puts the parameter Cards into the pile of Cards that the player remembers
+// based on their playerIdentity
+void Player::cardCount(Card * discard) {
+    switch (playerIdentity) {
+        case 2: // super card counter
+                rememberedDiscards.push_back(discard);
+            break;
+        case 3: // regular card counter keeps a running tally
+            if (discard->getNumericValue() >= 2 and discard->getNumericValue() <= 6) {
+                discardTally++;
+            }
+            else if (discard->getNumericValue() >= 7 and discard->getNumericValue() <= 9) {
+                // do nothing
+            }
+            else {
+                discardTally--;
+            }
+            break;
+        default:
+            break;
     }
 }

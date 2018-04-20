@@ -75,3 +75,7 @@ Card * DeckStack::removeTopCard(){
     cardStack.erase(cardStack.begin());
     return temp;
 }
+
+void DeckStack::addCard(Card * card) {
+    cardStack.push_back(card);
+}
