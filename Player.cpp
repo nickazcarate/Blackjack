@@ -452,7 +452,7 @@ int Player::getBet() {
     if(playerIdentity == 0) {
         cout << "You currently have $" << money << "."<< endl;
         int bet = 0;
-        while (bet <= 15 || bet > money ) {
+        while (bet < 15 || bet > money ) {
             cout <<  "How much money would you like to bet? ";
             cin >> bet;
             if (bet <= 0) {

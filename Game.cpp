@@ -4,6 +4,7 @@
 
 Game::Game(int userGameTypeChoice){
     unusedPile = new DeckStack(6);
+    discardPile = new DeckStack(0);
     if(userGameTypeChoice == 1){
         runPlayingMode();
     }
@@ -69,7 +70,6 @@ void Game::runPlayingMode() {
                     endTurn = true;
                 }
                 else if (p->getBestHand() == 21) {
-                    cout << "You have 21!\n";
                     endTurn = true;
                 }
 
