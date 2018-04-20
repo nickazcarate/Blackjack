@@ -42,7 +42,7 @@ void Game::runPlayingMode() {
     userIndex = determineUserIndex(); //determine at which index in the player vector is the user to be used throughout the game
     int roundCounter = 0;
     // goes as long as the user has enough money for another round
-    while (players.at(userIndex)->getMoney() > 15) { //should we change to table buy in??
+    while (players.at(userIndex)->getMoney() >= tableBuyIn) { //should we change to table buy in??
         roundCounter++;
         cout << "\nStarting Round #" <<roundCounter << ":\n";
         //stores player's bets
@@ -85,6 +85,41 @@ void Game::runPlayingMode() {
                             discard(unusedPile->removeTopCard()); //places card in discardPile cardStack
                     }
                 }
+            }
+        }
+
+        // stores the dealer
+        Player * dealer = players.at(players.size() - 1);
+
+        cout << "The dealer's hand is " << dealer->getBestHand() << endl;
+
+        // runs through each player and compares their hand to the dealer
+        for (int i = 0; i < players.size() - 1; i++) {
+            Player * player = players.at(i);
+            // if the player busts, remove their bet from their money
+            // and give it to the dealer
+            if (player->getBestHand() > 21) {
+                player->updateMoney(bets.at(i) * -1);
+                dealer->updateMoney(bets.at(i));
+                player->lostGame();
+            }
+            // else if the dealer busts or player beats them,
+            // the player gets their bet back matched
+            // and the dealer loses that much
+            else if (dealer->getBestHand() > 21 or player->getBestHand() > dealer->getBestHand()) {
+                player->updateMoney(bets.at(i));
+                dealer->updateMoney(bets.at(i) * -1);
+                player->wonGame();
+            }
+            // else if the dealer wins, settle bets
+            else if (dealer->getBestHand() > player->getBestHand()) {
+                player->updateMoney(bets.at(i) * -1);
+                dealer->updateMoney(bets.at(i));
+                player->lostGame();
+            }
+            // else, its a stand and nothing happens with the bets
+            else {
+                player->tiedGame();
             }
         }
     }

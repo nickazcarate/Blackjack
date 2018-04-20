@@ -401,8 +401,8 @@ int Player::basicSoftTurn(){
     }
 }
 
-void updateMoney(int difference){
-  
+void Player::updateMoney(int difference){
+    money += difference;
 }
 
 void Player::giveCard(Card * card) {
