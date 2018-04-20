@@ -60,7 +60,8 @@ void Game::runPlayingMode() {
         }
 
         // each player takes turn
-        for (Player * p : players) {
+        for (int i = 0; i < players.size(); i++) {
+            Player * p = players.at(i)
             // adds p's bet to bets
             bets.push_back(p->getBet());
 
@@ -86,6 +87,17 @@ void Game::runPlayingMode() {
                         case 1: // hit
                             p->giveCard(unusedPile->getTopCard()); //places card into player's hand and then deletes the card
                             discard(unusedPile->removeTopCard()); //places card in discardPile cardStack
+                            break;
+                        case 2: // double down
+                            p->giveCard(unusedPile->getTopCard()); //places card into player's hand and then deletes the card
+                            discard(unusedPile->removeTopCard()); //places card in discardPile cardStack
+                            bets.at(i) = bets.at(i) * 2;
+                            endTurn = true;
+                            break;
+                        case 3: // surrender
+                            bets.at(i) = bets.at(i) / 2;
+                            endTurn = true;
+                            break;
                     }
                 }
             }

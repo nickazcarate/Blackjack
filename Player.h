@@ -22,7 +22,7 @@ private:
     int getCard();
     int doubleDown();
     int stand();
-    void surrender();
+    int surrender();
     bool split();
     void purchaseInsurance();
     int getProbability(int cardValue);

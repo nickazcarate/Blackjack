@@ -12,7 +12,7 @@ int Player::getCard() {    // deal card
 
 // may implement later
 int Player::doubleDown() {
-    return 3;
+    return 2;
 }
 
 // implemented directly in takeTurn() for now
@@ -21,8 +21,8 @@ int Player::stand() {
 }
 
 // may implement later
-void Player::surrender() {
-
+int Player::surrender() {
+    return 3;
 }
 
 // may implement later
@@ -130,7 +130,7 @@ int Player::takeTurn(Card * dealersTop) {
                 for (Card *c : hand) {
                     cout << " " << c->getValue();
                 }
-                cout << "\nWhat would you like to do? (0 for stand, 1 for hit): ";
+                cout << "\nWhat would you like to do? (0 for stand, 1 for hit, 2 for double down, 3 for surrender): ";
                 string temp;
                 cin >> temp;
                 if (temp == "1" or temp == "0") {
