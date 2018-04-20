@@ -143,6 +143,11 @@ void Game::runPlayingMode() {
                 player->tiedGame();
             }
         }
+
+        // clears players' hands
+        for (Player * p : players) {
+            p->clearHand();
+        }
     }
 }
 
@@ -195,11 +200,10 @@ void Game::getNumPlayers() {
 }
 
 void Game::getAmountMoney() {
-    bool moneyCheck = true;
     cout << "\nHow much money should each player start with?\n";
     this_thread::sleep_for(chrono::milliseconds(600));
     cout << "Enter an integer greater than or equal to $100: ";
-    while (moneyCheck) {
+    while (true) {
         cin >> amountMoney;
 
         //Check for valid user input
@@ -217,11 +221,10 @@ void Game::getAmountMoney() {
 }
 
 void Game::getMinBet() {
-    bool betCheck = true;
     cout << "\nHow much should the minimum bet be?\n";
     this_thread::sleep_for(chrono::milliseconds(600));
     cout << "Enter an integer greater than or equal to $15: ";
-    while (betCheck) {
+    while (true) {
         cin >> tableBuyIn;
         //Check for valid user input
         if (tableBuyIn >= 15) {

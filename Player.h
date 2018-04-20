@@ -58,6 +58,7 @@ public:
     int getBestHand();
     void cardCount(Card *);
     void setNumDecks(int numDecks);
+    void clearHand();
 };
 
 
