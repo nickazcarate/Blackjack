@@ -11,9 +11,6 @@ Game::Game(int userGameTypeChoice){
     else if(userGameTypeChoice == 2){
         runSimulationMode();
     }
-    else{
-        //error handle
-    }
 }
 
 int Game::determineUserIndex() {
