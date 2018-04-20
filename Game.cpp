@@ -64,16 +64,32 @@ void Game::runPlayingMode() {
             Player * p = players.at(i);
             // adds p's bet to bets
             bets.push_back(p->getBet());
-
+            if(p->getPlayerIdentity() == 0) {
+                cout << "The dealer's top card is " << players[players.size() - 1]->getHand().at(0)->getValue();
+            }
             bool endTurn = false;
             while (!endTurn) {
                 // if their hand total is over 21, end turn
                 if (p->getHandTotals().at(0) > 21) {
                     //getHandTotals().at(0) is the baseTotal, which is the lowest possible total
                     //if this total is already > 21, then the player busts (is out of the round)
+                    if(p->getPlayerIdentity() == 0) {
+                        cout << "\nYour current hand is ";
+                        for (Card *c : p->getHand()) {
+                            cout << " " << c->getValue();
+                        }
+                        cout << "\t\tYou bust! :(\n";
+                    }
                     endTurn = true;
                 }
                 else if (p->getBestHand() == 21) {
+                    if(p->getPlayerIdentity() == 0) {
+                        cout << "\nYour current hand is ";
+                        for (Card *c : p->getHand()) {
+                            cout << " " << c->getValue();
+                        }
+                    }
+                    cout << "\n";
                     endTurn = true;
                 }
 
@@ -81,27 +97,21 @@ void Game::runPlayingMode() {
                     // gets player action (passes in dealer's top card so user can see it)
                     int playerAction = p->takeTurn(players.at(players.size() - 1)->getHand().at(0));
                     switch (playerAction) {
-                        case 0: // stand
-                            endTurn = true;
-                            break;
                         case 1: // hit
                             p->giveCard(unusedPile->getTopCard()); //places card into player's hand and then deletes the card
                             discard(unusedPile->removeTopCard()); //places card in discardPile cardStack
                             break;
-                        case 2: // double down
+                        case 2: // stand
+                            endTurn = true;
+                            break;
+                        case 3: // double down
                             p->giveCard(unusedPile->getTopCard()); //places card into player's hand and then deletes the card
                             discard(unusedPile->removeTopCard()); //places card in discardPile cardStack
                             bets.at(i) = bets.at(i) * 2;
                             endTurn = true;
                             break;
-                        case 3: // surrender
+                        case 4: // surrender
                             bets.at(i) = bets.at(i) / 2;
-                            endTurn = true;
-                            break;
-                        case 9:
-                            cout << "You have won " << p->getWins() << "games.\n";
-                            cout << "You have lost " << p->getLosses() << " games.\n";
-                            cout << "You have tied " << p->getTies() << "games.\n";
                             endTurn = true;
                             break;
                     }
@@ -116,7 +126,7 @@ void Game::runPlayingMode() {
 
         // runs through each player and compares their hand to the dealer
         for (int i = 0; i < players.size() - 1; i++) {
-            Player * player = players.at(i);
+            Player *player = players.at(i);
             // if the player busts, remove their bet from their money
             // and give it to the dealer
             if (player->getBestHand() > 21) {
@@ -124,23 +134,34 @@ void Game::runPlayingMode() {
                 dealer->updateMoney(bets.at(i));
                 player->lostGame();
             }
-            // else if the dealer busts or player beats them,
-            // the player gets their bet back matched
-            // and the dealer loses that much
+                // else if the dealer busts or player beats them,
+                // the player gets their bet back matched
+                // and the dealer loses that much
             else if (dealer->getBestHand() > 21 or player->getBestHand() > dealer->getBestHand()) {
                 player->updateMoney(bets.at(i));
                 dealer->updateMoney(bets.at(i) * -1);
                 player->wonGame();
+                if (dealer->getBestHand() > 21 and player->getPlayerIdentity() == 0) {
+                    cout << "\nDealer busts. You win!\n";
+                } else if (player->getBestHand() > dealer->getBestHand() and player->getPlayerIdentity() == 0) {
+                    cout << "\nYour hand is better than the Dealer's. You win!\n";
+                }
             }
-            // else if the dealer wins, settle bets
+                // else if the dealer wins, settle bets
             else if (dealer->getBestHand() > player->getBestHand()) {
                 player->updateMoney(bets.at(i) * -1);
                 dealer->updateMoney(bets.at(i));
                 player->lostGame();
-            }
-            // else, its a stand and nothing happens with the bets
-            else {
-                player->tiedGame();
+                if (player->getPlayerIdentity() == 0) {
+                    cout << "\nThe Dealer's hand is better yours. You lose!\n";
+                }
+                    // else, its a stand and nothing happens with the bets
+                else {
+                    player->tiedGame();
+                    if(player->getPlayerIdentity() == 0){
+                        cout <<"\nYou and the Dealer had the same hand. It's a tie!\n";
+                    }
+                }
             }
         }
 
@@ -173,7 +194,6 @@ int Game::getTableBuyIn(){
 
 void Game::getNumPlayers() {
     cout << "\nHow many other players do you want in the game?\n";
-    this_thread::sleep_for(chrono::milliseconds(600));
     cout << "Enter an integer from 0 to 5: ";
     while(true) {
         cin >> numPlayers;
@@ -201,7 +221,6 @@ void Game::getNumPlayers() {
 
 void Game::getAmountMoney() {
     cout << "\nHow much money should each player start with?\n";
-    this_thread::sleep_for(chrono::milliseconds(600));
     cout << "Enter an integer greater than or equal to $100: ";
     while (true) {
         cin >> amountMoney;
@@ -222,7 +241,6 @@ void Game::getAmountMoney() {
 
 void Game::getMinBet() {
     cout << "\nHow much should the minimum bet be?\n";
-    this_thread::sleep_for(chrono::milliseconds(600));
     cout << "Enter an integer greater than or equal to $15: ";
     while (true) {
         cin >> tableBuyIn;

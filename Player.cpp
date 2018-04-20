@@ -12,17 +12,17 @@ int Player::getCard() {    // deal card
 
 // may implement later
 int Player::doubleDown() {
-    return 2;
+    return 3;
 }
 
 // implemented directly in takeTurn() for now
 int Player::stand() {
-    return 0;
+    return 2;
 }
 
 // may implement later
 int Player::surrender() {
-    return 3;
+    return 4;
 }
 
 // may implement later
@@ -122,39 +122,37 @@ int Player::getProbability(int cardValue) {
 int Player::takeTurn(Card * dealersTop) {
     switch (playerIdentity) {
         case 0: {
-            cout << "The dealer's top card is " << dealersTop->print();
-            bool goodInput = false;
             int input;
-            while (!goodInput) {
+            while (true) {
                 cout << "\nYour current hand is";
                 for (Card *c : hand) {
                     cout << " " << c->getValue();
                 }
-                cout << "\nWhat would you like to do? (0 for stand, 1 for hit, 2 for double down, 3 for surrender, 9 for quit): ";
+                cout << "\n\nWhat would you like to do? (1 for hit, 2 for stand, 3 for double down, 4 for surrender): ";
                 string temp;
                 cin >> temp;
-                if (temp == "1" or temp == "0") {
-                    goodInput = true;
-                    input = temp == "0" ? 0 : 1;
-                } else {
+                if (temp == "1" or temp == "2" or temp == "3" or temp == "4") {
+                    input = stoi(temp);
+                    return input;
+                }
+                else {
                     cout << "Invalid input. Please enter 0 or 1\n";
                 }
             }
-            return input;
         }
 
         case 1:
-            return dealerTurn();
-        case 2:
             return randoTurn();
-        case 3:
+        case 2:
             return superCardCounterTurn();
-        case 4:
+        case 3:
             return weakCardCounterTurn(dealersTop);
-        case 5:
+        case 4:
             return basicSoftTurn(dealersTop);
-        case 6:
+        case 5:
             return basicHardTurn(dealersTop);
+        case 6:
+            return dealerTurn();
         default:
             return randoTurn();
     }
@@ -162,7 +160,7 @@ int Player::takeTurn(Card * dealersTop) {
 
 // Stops hitting at a hard 17. Will continue to hit if at a soft 17
 int Player::dealerTurn(){
-    if(getHandTotals().at(getHandTotals().size()-1) >= 17)
+    if(getHandTotals().at(0) >= 17)
     {
         return stand();
     }

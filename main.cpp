@@ -12,13 +12,11 @@ int userGameTypeChoice = 0;
 
 int beginMenu(){
     cout << "\nWelcome to Blackjack!\n\n";
-    this_thread::sleep_for(chrono::milliseconds(600));
     bool programRun = true;
     while (programRun) {
         cout << "You may run either:\n";
         cout << "\t1) Playing mode: play rounds of Blackjack against a dealer and other players\n";
         cout << "\t2) Simulation mode: run many simulations to test effectiveness of playing styles between our bots\n";
-        this_thread::sleep_for(chrono::milliseconds(600));
         cout << "Enter 1 or 2: ";
         cin >> userGameTypeChoice;
 

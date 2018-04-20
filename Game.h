@@ -12,7 +12,7 @@ using namespace std;
 
 class Game {
 private:
-    int numPlayers;
+    int numPlayers; //this number holds the number of people sitting across from the dealer (i.e. not including the dealer)
     int amountMoney;
     int tableBuyIn; // holds the minimum value that players must bet
     int userIndex;

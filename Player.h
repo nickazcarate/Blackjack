@@ -18,7 +18,7 @@ private:
     vector<Card *> hand;
     int playerIdentity;
         // 0 = user, 1 = random choices, 2 = incredible card counter, 3 = pretty good card counter,
-        // 4 = basic card strategy, 5 = SOMETHING_GOES_HERE, 6 = dealer
+        // 4 = basic card strategy SOFT , 5 = basic card strategy hard;), 6 = dealer
     int getCard();
     int doubleDown();
     int stand();
