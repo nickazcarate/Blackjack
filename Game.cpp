@@ -168,7 +168,7 @@ void Game::getMinBet() {
     while (betCheck) {
         cin >> tableBuyIn;
         //Check for valid user input
-        if (tableBuyIn >= 1) {
+        if (tableBuyIn >= 15) {
             return; //this is a valid input
         }
         else {
