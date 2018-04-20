@@ -79,17 +79,23 @@ int Player::getTies() {
     return gamesTied;
 }
 
+
+// sets numDecks, called once by Game before the game starts
+void Player::setNumDecks(int numDecks) {
+    this->numDecks = numDecks;
+}
+
 //Check probability that a card of a specified value would be drawn
 int Player::getProbability(int cardValue) {
 
     int probability = 0;
-    int deckCount = DeckStack->getNumDecks(); // call the getter for numberDecks within DeckStack
+    int deckCount = numDecks; // call the getter for numberDecks within DeckStack
     int cardValCount = 0;
 
-    for (int i = 0; i < DeckStack->getCardStack().size(); i++) {
+    for (int i = 0; i < rememberedDiscards.size(); i++) {
 
        //Grabs value of the card in the current space in the discardPile
-       int testValue = Card->getValue(DeckStack->getCardStack()[i]);
+       int testValue = rememberedDiscards.at(i)->getNumericValue();
 
        //If the current card is the same as the requested value,
        if (testValue == cardValue) {
@@ -101,12 +107,12 @@ int Player::getProbability(int cardValue) {
 
         //probability = number of cards of specified value remaining divided by total cards that are left
         // 16 = number of Jacks, Queens, Kings, and 10s in one deck of cards
-        probability = ((16*deckCount)-cardValCount)/((deckCount*52)-DeckStack->getCardStack().size());
+        probability = ((16*deckCount)-cardValCount)/((deckCount*52)-rememberedDiscards.size());
     }
     else {
 
         //probability = number of cards of specified value remaining divided by total cards that are left
-        probability = ((4*deckCount)-cardValCount)/((deckCount*52)-DeckStack->getCardStack().size()); //
+        probability = ((4*deckCount)-cardValCount)/((deckCount*52)-rememberedDiscards.size()); //
     }
 
     return probability;
@@ -208,14 +214,13 @@ int Player::superCardCounterTurn() {
 
 }
 
-int Player::weakCardCounterTurn() {
+int Player::weakCardCounterTurn(Card * dealersTop) {
 
 // This person uses a card counting strategy, using the true count and run count to make betting decisions
 // may use runCount and/or trueCount functions
 // will use "illustrious 18" strategy outlined here https://www.888casino.com/blog/blackjack-strategy-guide/blackjack-card-counting
-    runCount();
-    trueCount(runningCount);
-    int topCard = dealer->hand.at(dealer->hand.size()-1)->getNumericValue();       // gets dealer's top card
+    trueCount();
+    int topCard = dealersTop->getNumericValue();       // gets dealer's top card
     int handTotal = getHandTotals().at(0);      // gets soft total for hand
     if ((handTotal == 16) && (topCard == 9) && (truCount >= 5))     // if your hand is 16, the dealer's top card is 9, and the true count is +5 or above
         stand();                                                          // stand
@@ -249,23 +254,9 @@ int Player::weakCardCounterTurn() {
         getCard();
 }
 
-void Player::runCount()      // adds or subtracts to the running count based on the current top cards on the table
+void Player::trueCount()     // computes the true count by dividing the running count by the number of decks in play
 {
-    int topCard;
-    for (Player * p : Game->players)
-    {
-        topCard = p->hand.at(p->hand.size()-1)->getNumericValue();     // sets the current top card value equal to the top card of the player in question
-        if ((topCard >= 2) && (topCard <= 6))       // If the top card of the other player is b/w 2 and 6, add 1 to the running count
-            runningCount++;
-        else if((topCard == 10) || (topCard == 1))      // If the top card of the other player is a Jack, Queen, King, or Ace, subtract one from the running count
-            runningCount--;
-    }
-    return;
-}
-
-void Player::trueCount(int runningCount)     // computes the true count by dividing the running count by the number of decks in play
-{
-    truCount = runningCount/DeckStack->numDecks;
+    truCount = discardTally/numDecks;
     return;
 }
 
@@ -493,13 +484,12 @@ void Player::cardCount(Card * discard) {
                 rememberedDiscards.push_back(discard);
             break;
         case 3: // regular card counter keeps a running tally
+            // If the top card of the other player is b/w 2 and 6, add 1 to the running count
             if (discard->getNumericValue() >= 2 and discard->getNumericValue() <= 6) {
                 discardTally++;
             }
-            else if (discard->getNumericValue() >= 7 and discard->getNumericValue() <= 9) {
-                // do nothing
-            }
-            else {
+            // If the top card of the other player is a Jack, Queen, King, or Ace, subtract one from the running count
+            else if (discard->getNumericValue() == 1 or discard->getNumericValue() == 10) {
                 discardTally--;
             }
             break;

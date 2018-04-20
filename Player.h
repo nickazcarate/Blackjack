@@ -26,10 +26,10 @@ private:
     bool split();
     void purchaseInsurance();
     int getProbability(int cardValue);
-    int runningCount;
     int truCount;
     vector<Card *> rememberedDiscards; // used by identity 2 (super card counter)
-    int discardTally; // used by identity 3 (regular card counter)
+    int discardTally; // keeps a running count of the +/- card values on the table (for the reg card counter)
+    int numDecks;
 public:
     Player(int money, int playerIdentity);
     int getMoney();
@@ -44,9 +44,8 @@ public:
     int dealerTurn();              // Stops hitting at a hard 17. Will hit once more if at a soft 17
     int randoTurn();               // Randomly chooses to get card, double down, stand, surrender, of split insurance
     int superCardCounterTurn();    // This person uses a card counting strategy, remembering ALL of the cards
-    int weakCardCounterTurn();     // This person uses a card counting strategy, remembering only the previous 10 cards
-    void runCount();         // keeps a running count of the +/- card values on the table
-    void trueCount(int runningCount);        // computes the true count of cards played so far (run count / num decks)
+    int weakCardCounterTurn(Card * dealersTop);     // This person uses a card counting strategy, remembering only the previous 10 cards
+    void trueCount();        // computes the true count of cards played so far (run count / num decks)
     int determineValue(string value);           // returns int value of card's value
     int basicHardTurn();    // This person uses https://www.blackjackapprenticeship.com/resources/blackjack-strategy-charts/
                             // strategy for hard totals
@@ -59,6 +58,7 @@ public:
     vector<int> getHandTotals();
     int getBestHand();
     void cardCount(Card *);
+    void setNumDecks(int numDecks);
 };
 
 

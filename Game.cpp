@@ -33,6 +33,12 @@ void Game::runPlayingMode() {
     //add dealer as the last person in the vector
     players.push_back(new Player(0, 6));
 
+    // passes the number of decks in to each player
+    // used by card counting bots
+    for (Player * p : players) {
+        p->setNumDecks(unusedPile->getNumDecks());
+    }
+
     userIndex = determineUserIndex(); //determine at which index in the player vector is the user to be used throughout the game
     int roundCounter = 0;
     // goes as long as the user has enough money for another round
