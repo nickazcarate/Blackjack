@@ -154,7 +154,7 @@ int Player::takeTurn(Card * dealersTop) {
         case 5:
             return basicSoftTurn();
         case 6:
-            return basicHardTurn();
+            return basicHardTurn(dealersTop);
         default:
             return randoTurn();
     }
