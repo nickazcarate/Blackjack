@@ -61,7 +61,7 @@ void Game::runPlayingMode() {
 
         // each player takes turn
         for (int i = 0; i < players.size(); i++) {
-            Player * p = players.at(i)
+            Player * p = players.at(i);
             // adds p's bet to bets
             bets.push_back(p->getBet());
 
