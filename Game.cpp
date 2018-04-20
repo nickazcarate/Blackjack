@@ -1,7 +1,6 @@
 // Created by Nick Azcarate on 4/15/18.
 #include "Game.h"
 
-Card * dealersTopCard;
 
 Game::Game(int userGameTypeChoice){
     unusedPile = new DeckStack(6);
@@ -165,7 +164,7 @@ void Game::getMinBet() {
     bool betCheck = true;
     cout << "\nHow much should the minimum bet be?\n";
     this_thread::sleep_for(chrono::milliseconds(600));
-    cout << "Enter an integer greater than or equal to $1: ";
+    cout << "Enter an integer greater than or equal to $15: ";
     while (betCheck) {
         cin >> tableBuyIn;
         //Check for valid user input
@@ -173,7 +172,7 @@ void Game::getMinBet() {
             return; //this is a valid input
         }
         else {
-            cout << "\nInvalid input. Please enter an integer greater than or equal to $1: ";
+            cout << "\nInvalid input. Please enter an integer greater than or equal to $15: ";
             //clears the input stream to allow the user to input an acceptable value
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
