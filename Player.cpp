@@ -130,7 +130,7 @@ int Player::takeTurn(Card * dealersTop) {
                 for (Card *c : hand) {
                     cout << " " << c->getValue();
                 }
-                cout << "\nWhat would you like to do? (0 for stand, 1 for hit, 2 for double down, 3 for surrender): ";
+                cout << "\nWhat would you like to do? (0 for stand, 1 for hit, 2 for double down, 3 for surrender, 9 for quit): ";
                 string temp;
                 cin >> temp;
                 if (temp == "1" or temp == "0") {

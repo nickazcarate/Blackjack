@@ -98,6 +98,12 @@ void Game::runPlayingMode() {
                             bets.at(i) = bets.at(i) / 2;
                             endTurn = true;
                             break;
+                        case 9:
+                            cout << "You have won " << p->getWins() << "games.\n";
+                            cout << "You have lost " << p->getLosses() << " games.\n";
+                            cout << "You have tied " << p->getTies() << "games.\n";
+                            endTurn = true;
+                            break;
                     }
                 }
             }
