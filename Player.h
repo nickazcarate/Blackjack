@@ -48,7 +48,7 @@ public:
     void trueCount();        // computes the true count of cards played so far (run count / num decks)
     int basicHardTurn(Card * dealersTop);    // This person uses https://www.blackjackapprenticeship.com/resources/blackjack-strategy-charts/
                             // strategy for hard totals
-    int basicSoftTurn();    // This person uses https://www.blackjackapprenticeship.com/resources/blackjack-strategy-charts/
+    int basicSoftTurn(Card * dealersTop);    // This person uses https://www.blackjackapprenticeship.com/resources/blackjack-strategy-charts/
                             // strategy for hard totals
     void updateMoney(int difference);
     void giveCard(Card *);
