@@ -46,7 +46,7 @@ public:
     int superCardCounterTurn();    // This person uses a card counting strategy, remembering ALL of the cards
     int weakCardCounterTurn(Card * dealersTop);     // This person uses a card counting strategy, remembering only the previous 10 cards
     void trueCount();        // computes the true count of cards played so far (run count / num decks)
-    int basicHardTurn();    // This person uses https://www.blackjackapprenticeship.com/resources/blackjack-strategy-charts/
+    int basicHardTurn(Card * dealersTop);    // This person uses https://www.blackjackapprenticeship.com/resources/blackjack-strategy-charts/
                             // strategy for hard totals
     int basicSoftTurn();    // This person uses https://www.blackjackapprenticeship.com/resources/blackjack-strategy-charts/
                             // strategy for hard totals

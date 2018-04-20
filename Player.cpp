@@ -268,69 +268,50 @@ void Player::trueCount()     // computes the true count by dividing the running 
 
 // This person uses https://www.blackjackapprenticeship.com/resources/blackjack-strategy-charts/
 // strategy for hard totals
-int Player::basicHardTurn(){
-    string dealerTopCard = hand.at(hand.size()-1)->getValue();      // returns the card value on the hand of the dealer (assuming the top card is the last card in the hand)
-    int dealerTopCardNumVal;                                        // creates an int variable to hold the int value of the card value (which is originally string)
-    if (dealerTopCard == "A") {                     // If the card value is Ace, return a 1 as the int value
-        dealerTopCardNumVal = 1;
-    }
-    else if (dealerTopCard == "J" or dealerTopCard == "Q" or dealerTopCard == "K") {
-        dealerTopCardNumVal = 10;                   // if the card value is a Jack, Queen, or King, returns 10 as the int value
-    }
-    else {
-        dealerTopCardNumVal = stoi(dealerTopCard);          // All other cards return their card value, but in int form (which is what stoi() does)
-    }
+int Player::basicHardTurn(Card * dealersTop){
+    int dealerTopCardNumVal = dealersTop->getNumericValue();        // returns the dealer's top card value
     switch(getHandTotals().at(getHandTotals().size()-1)){        // gives the current card total
         case 17:                // always stand
-            stand();
-            break;
+            return stand();
         case 16:                // stand if dealer's upcard is 2-6, hit if 7-Ace
             if ((dealerTopCardNumVal >= 2) && (dealerTopCardNumVal <= 6))
-                stand();
+                return stand();
             else
-                getCard();
-            break;
+                return getCard();
         case 15:                // stand if dealer's upcard is 2-6, hit if 7-Ace
             if ((dealerTopCardNumVal >= 2) && (dealerTopCardNumVal <= 6))
-                stand();
+                return stand();
             else
-                getCard();
-            break;
+                return getCard();
         case 14:                // stand if dealer's upcard is 2-6, hit if 7-Ace
             if ((dealerTopCardNumVal >= 2) && (dealerTopCardNumVal <= 6))
-                stand();
+                return stand();
             else
-                getCard();
-            break;
+                return getCard();
         case 13:                // stand if dealer's upcard is 2-6, hit if 7-Ace
             if ((dealerTopCardNumVal >= 2) && (dealerTopCardNumVal <= 6))
-                stand();
+                return stand();
             else
-                getCard();
-            break;
+                return getCard();
         case 12:                // stand if dealer's upcard is 4-6, hit if 2, 3, or 7-Ace
             if ((dealerTopCardNumVal >= 4) && (dealerTopCardNumVal <= 6))
-                stand();
+                return stand();
             else
-                getCard();
-            break;
+                return getCard();
         case 11:                // always double down
-            doubleDown();
-            break;
+            return doubleDown();
         case 10:                // double down if dealer's upcard is 2-9, hit if 10, face, or Ace
             if ((dealerTopCardNumVal >= 2 && dealerTopCardNumVal <= 9))
-                doubleDown();
+                return doubleDown();
             else
-                getCard();
-            break;
+                return getCard();
         case 9:                 // double down if dealer's upcard is 3-6, hit if 2, or 7-Ace
             if ((dealerTopCardNumVal >= 3 && dealerTopCardNumVal <= 6))
-                doubleDown();
+                return doubleDown();
             else
-                getCard();
-            break;
+                return getCard();
         default:                // always hit
-            getCard();
+            return getCard();
     }
 }
 
