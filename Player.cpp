@@ -192,9 +192,9 @@ int Player::superCardCounterTurn(Card * dealersTop) {
 
     int topCard = dealersTop->getNumericValue();       // gets dealer's top card
     int handValue = getBestHand();
-    int bustChance = 0;
-    int safeChance = 0;
-    int riskValue = 0;
+    double bustChance = 0;
+    double safeChance = 0;
+    double riskValue = 0;
     int twentyOneChance = getProbability(21-handValue);
 
     //The bot plays riskier depending on the card the dealer shows. With Ace being the riskiest and
