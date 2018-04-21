@@ -43,6 +43,7 @@ int beginMenu(){
         }
     }
 }
+
 void beginTutorial()
 {
     bool responseBool = true;       // is true when firstTime is not a valid input, turns false when it becomes "Yes" or "No"
@@ -52,23 +53,27 @@ void beginTutorial()
     cout << "\nWelcome to BlackJack!\n\n"
             "Is this your first time playing? (Yes or No)";
     cin >> firstTime;
+    transform(firstTime.begin(), firstTime.end(), firstTime.begin(), ::tolower);
+
     while (responseBool)
     {
-        if (firstTime.compare("Yes") == 0)
+        if (firstTime.compare("yes") == 0)
         {
             responseBool = false;           // can now exit the loop asking if it is their first time
             bool responseLearn = true;      // this variable tracks if the user has an appropriate response to "would you like to play"
             cout << "\nAwesome! Would you like to learn how to play? (Yes or No)";
             cin >> learnToPlay;
+            transform(learnToPlay.begin(), learnToPlay.end(), learnToPlay.begin(), ::tolower);
+
             while (responseLearn)
             {
-               if (learnToPlay.compare("Yes") == 0)
+               if (learnToPlay.compare("yes") == 0)
                {
                    cout << "\nWonderful! We'll give you a brief overview of the rules and how to play!";
                    responseLearn = false;       // can now exit the loop asking if they would like to learn how to play
                    learnYes = true;             // activates that they must be given the rules
                }
-               else if (learnToPlay.compare("No") == 0)
+               else if (learnToPlay.compare("no") == 0)
                {
                    cout << "\nRisky?! We like it!";
                    return;                      // no further action needed. Exit can go to the menu
@@ -82,7 +87,7 @@ void beginTutorial()
                }
             }
         }
-        else if (firstTime.compare("No") == 0)
+        else if (firstTime.compare("no") == 0)
         {
             cout << "\nGreat! Let's get right to it then!";
             return;                             // no further action needed. Exit can go to the menu
@@ -93,6 +98,7 @@ void beginTutorial()
             cin.clear();                        // clears input stream
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             cin >> firstTime;
+            transform(firstTime.begin(), firstTime.end(), firstTime.begin(), ::tolower);
         }
     }
     if (learnYes)               // if true, states the rules of BlackJack
@@ -119,5 +125,5 @@ int main() {
     srand (unsigned (time(0)));
     beginTutorial();            // asks the user if they would like to hear the rules of blackjack
     beginMenu();                // asks the user which mode they want to run (playing or simulation)
-    Game * game = new Game(userGameTypeChoice);
+    Game game(userGameTypeChoice);
 }

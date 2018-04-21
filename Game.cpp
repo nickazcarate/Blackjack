@@ -223,13 +223,27 @@ void Game::runSimulationMode() {
         p->setNumDecks(unusedPile->getNumDecks());
     }
 
+    vector<Player *> outPlayers;
+
+    cout << numPlayers;
+
     int roundCounter = 0;
     // goes as long as the user has enough money for another round
     while (doPeopleHaveMoney() and roundCounter < 10000) {
+
+        for (int i = 0; i < players.size(); i++) {
+            if (players.at(i)->getMoney() < tableBuyIn) {
+                outPlayers.push_back(players.at(i));
+                players.erase(players.begin() + i);
+            }
+        }
+
         roundCounter++;
         //stores player's bets
         vector<int> bets(numPlayers);
         vector<bool> surrendered(numPlayers);
+
+
 
         // deals two cards to every player
         for (Player* p : players) {
@@ -246,8 +260,6 @@ void Game::runSimulationMode() {
             bets.push_back(p->getBet(tableBuyIn));
 
             bool endTurn = false;
-
-            if ()
 
             while (!endTurn) {
                 // if their hand total is over 21, end turn
@@ -332,8 +344,18 @@ void Game::runSimulationMode() {
         }
 
     }
-    for (int i = 0; i < numPlayers; i++) {
+
+    for (int i = 0; i < players.size(); i++) {
         Player * p = players.at(i);
+        cout << "Player " << p->getPlayerIdentity() << ":\n";
+        cout << "Total money: " << p->getMoney();
+        cout << "\nWon games: " << p->getWins();
+        cout << "\nLost games: " << p->getLosses();
+        cout << "\nTied games: " << p->getTies() << endl;
+    }
+
+    for (int i = 0; i < outPlayers.size(); i++) {
+        Player * p = outPlayers.at(i);
         cout << "Player " << p->getPlayerIdentity() << ":\n";
         cout << "Total money: " << p->getMoney();
         cout << "\nWon games: " << p->getWins();
