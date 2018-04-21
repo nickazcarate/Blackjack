@@ -31,6 +31,8 @@ void Game::runPlayingMode() {
     getAmountMoney();
     getMinBet();
 
+    lastRoundShuffled = 0;
+
     for(int i = 0; i < numPlayers; i++){
         players.push_back(new Player(amountMoney, i)); //creates the number of other players desired
     }
@@ -165,8 +167,8 @@ void Game::runPlayingMode() {
                 if (player->getPlayerIdentity() == 0) {
                     cout << "\nThe Dealer's hand is better yours. You lose!\n";
                 }
-                    // else, its a stand and nothing happens with the bets
             }
+            // else, its a stand and nothing happens with the bets
             else {
                 player->tiedGame();
                 if(player->getPlayerIdentity() == 0){
@@ -211,7 +213,9 @@ void Game::runSimulationMode() {
     getAmountMoney();
     getMinBet();
 
-    for(int i = 1; i <= numPlayers; i++){
+    lastRoundShuffled = 0;
+
+    for(int i = 1; i < numPlayers; i++){
         players.push_back(new Player(amountMoney, i)); //creates the number of other players desired
     }
     random_shuffle(players.begin(), players.end(), myRandom1); //shuffles the players to have random placement around the table
@@ -226,13 +230,11 @@ void Game::runSimulationMode() {
 
     vector<Player *> outPlayers;
 
-    cout << numPlayers;
-
     int roundCounter = 0;
     // goes as long as the user has enough money for another round
-    while (doPeopleHaveMoney() and roundCounter < 10000) {
+    while (doPeopleHaveMoney() and roundCounter < 1000) {
 
-        for (int i = 0; i < players.size(); i++) {
+        for (int i = 0; i < players.size() - 1; i++) {
             if (players.at(i)->getMoney() < tableBuyIn) {
                 outPlayers.push_back(players.at(i));
                 players.erase(players.begin() + i);
@@ -241,7 +243,7 @@ void Game::runSimulationMode() {
 
         roundCounter++;
         //stores player's bets
-        vector<int> bets(numPlayers);
+        vector<int> bets;
         vector<bool> surrendered(numPlayers);
 
 
@@ -344,9 +346,13 @@ void Game::runSimulationMode() {
             lastRoundShuffled = roundCounter;
         }
 
+        if (roundCounter == 500) {
+
+        }
+
     }
 
-    for (int i = 0; i < players.size(); i++) {
+    for (int i = 0; i < players.size() - 1; i++) {
         Player * p = players.at(i);
         cout << "Player " << p->getPlayerIdentity() << ":\n";
         cout << "Total money: " << p->getMoney();
@@ -462,10 +468,9 @@ void Game::discard(Card * card) {
 }
 
 bool Game::doPeopleHaveMoney() {
-    int numRichPlayas = 0;
-    for (int i = 0; i < numPlayers; i++) {
+    for (int i = 0; i < players.size() - 1; i++) {
         if (players.at(i)->getMoney() >= tableBuyIn)
-            numRichPlayas++;
+            return true;
     }
-    return (numRichPlayas >= 2);
+    return false;
 }

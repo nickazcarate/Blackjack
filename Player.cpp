@@ -12,17 +12,17 @@ int Player::getCard() {    // deal card
 
 // may implement later
 int Player::doubleDown() {
-    return 3;
+    return 2;
 }
 
 // implemented directly in takeTurn() for now
 int Player::stand() {
-    return 2;
+    return 0;
 }
 
 // may implement later
 int Player::surrender() {
-    return 4;
+    return 3;
 }
 
 // may implement later
@@ -428,7 +428,7 @@ int Player::getBet(int tableBuyIn) {
         }
         return bet;
     }
-    else if (playerIdentity == 1) {
+    else if (playerIdentity == 6) {
         return 0;
     }
     else {
