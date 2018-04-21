@@ -2,6 +2,7 @@
 
 #ifndef BLACKJACK_DECKSTACK_H
 #define BLACKJACK_DECKSTACK_H
+
 #include "Card.h"
 
 #include <cstring>
@@ -9,21 +10,26 @@
 #include <iostream>
 #include <vector>
 using namespace std;
+
+//Initialize the DeckStack Object
 class DeckStack {
 private:
+
     void createDeck();
     vector<Card *> cardStack;
     int numberDecks;
+
 public:
+
     DeckStack(int numDecks);
-    void printDeck();
     void shuffleDeck();
     vector<Card *> getCardStack();
     Card * getTopCard();
     int getNumDecks();
-    Card * removeTopCard(); // removes and returns to avoid having to call both functions
-    void addCard(Card *);
 
+    // removes and returns to avoid having to call both functions
+    Card * removeTopCard();
+    void addCard(Card *);
 
 };
 

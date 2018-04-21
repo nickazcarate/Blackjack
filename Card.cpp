@@ -3,35 +3,38 @@
 #include "Card.h"
 
 
-Card::Card(string value, string suit){
-    //test comment HERE
+// Constructor for the Card Object
+Card::Card(string value, string suit) {
+
     this->value = value;
     this->suit = suit;
 }
 
-//Getters for the Card object's point value and suit
-string Card::getValue(){
+// Getter for a card's point value
+string Card::getValue() {
     return this->value;
 }
-string Card::getSuit(){
+
+// Getter for a card's suit (for GUI purposes)
+string Card::getSuit() {
     return this->suit;
 }
 
+// Getter for a cards point value in blackjack (A being 11 or 1 depending on the hand, and the face cards all being 10), as an int
+int Card::getNumericValue() {
 
-string Card::print() {
-    return (value + " of " + suit);
-}
-
-
-int Card::getNumericValue()
-{
-    if (value == "A") {                     // If the card value is Ace, return a 1 as the int value
+    // If the card value is Ace, return a 1 as the int value
+    if (value == "A") {
         return 1;
     }
+
+    // if the card value is a Jack, Queen, or King, returns 10 as the int value
     else if (value == "J" or value == "Q" or value == "K") {
-        return 10;                   // if the card value is a Jack, Queen, or King, returns 10 as the int value
+        return 10;
     }
     else {
-        return stoi(value);          // All other cards return their card value, but in int form (which is what stoi() does)
+
+        // All other cards return their card value, but in int form (which is what stoi() does)
+        return stoi(value);
     }
 }
