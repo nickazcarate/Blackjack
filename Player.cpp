@@ -140,7 +140,7 @@ int Player::takeTurn(Card * dealersTop) {
                 string temp;
                 cin >> temp;
                 if (temp == "1" or temp == "2" or temp == "3" or temp == "4") {
-                    input = stoi(temp) + 1;
+                    input = stoi(temp);
                     return input;
                 }
                 else {
