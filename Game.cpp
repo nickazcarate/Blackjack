@@ -102,12 +102,12 @@ void Game::runPlayingMode() {
                     // gets player action (passes in dealer's top card so user can see it)
                     int playerAction = p->takeTurn(players.at(players.size() - 1)->getHand().at(0));
                     switch (playerAction) {
-                        case 1: // hit
+                        case 1: // stand
+                            endTurn = true;
+                            break;
+                        case 2: // hit
                             p->giveCard(unusedPile->getTopCard()); //places card into player's hand and then deletes the card
                             discard(unusedPile->removeTopCard()); //places card in discardPile cardStack
-                            break;
-                        case 2: // stand
-                            endTurn = true;
                             break;
                         case 3: // double down
                             p->giveCard(unusedPile->getTopCard()); //places card into player's hand and then deletes the card
@@ -277,20 +277,20 @@ void Game::runSimulationMode() {
                     // gets player action (passes in dealer's top card so user can see it)
                     int playerAction = p->takeTurn(players.at(players.size() - 1)->getHand().at(0));
                     switch (playerAction) {
-                        case 0: // stand
+                        case 1: // stand
                             endTurn = true;
                             break;
-                        case 1: // hit
+                        case 2: // hit
                             p->giveCard(unusedPile->getTopCard()); //places card into player's hand and then deletes the card
                             discard(unusedPile->removeTopCard()); //places card in discardPile cardStack
                             break;
-                        case 2: // double down
+                        case 3: // double down
                             p->giveCard(unusedPile->getTopCard()); //places card into player's hand and then deletes the card
                             discard(unusedPile->removeTopCard()); //places card in discardPile cardStack
                             bets.at(i) = bets.at(i) * 2;
                             endTurn = true;
                             break;
-                        case 3: // surrender
+                        case 4: // surrender
                             bets.at(i) = bets.at(i) / 2;
                             surrendered.at(i) = true;
                             endTurn = true;
@@ -440,7 +440,7 @@ void Game::getMinBet() {
             return; //this is a valid input
         }
         else {                                  // if input is not valid, generally says "invalid input"
-            cout << "\nInvalid input.";
+            cout << "\nInvalid input, enter an integer between $2 and $500 (and below player's starting money): ";
             //clears the input stream to allow the user to input an acceptable value
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');

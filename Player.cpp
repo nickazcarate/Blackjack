@@ -7,22 +7,22 @@
 
 // implemented directly in takeTurn() for now
 int Player::getCard() {    // deal card
-    return 1;
+    return 2;
 }
 
 // may implement later
 int Player::doubleDown() {
-    return 2;
+    return 3;
 }
 
 // implemented directly in takeTurn() for now
 int Player::stand() {
-    return 0;
+    return 1;
 }
 
 // may implement later
 int Player::surrender() {
-    return 3;
+    return 4;
 }
 
 // may implement later
@@ -136,7 +136,7 @@ int Player::takeTurn(Card * dealersTop) {
                     return input;
                 }
                 else {
-                    cout << "Invalid input. Please enter 0 or 1\n";
+                    cout << "Invalid input, please enter 0 or 1\n";
                 }
             }
         }
