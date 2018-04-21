@@ -2,13 +2,12 @@
 
 #ifndef BLACKJACK_GAME_H
 #define BLACKJACK_GAME_H
-using namespace std;
 #include <iostream>
 #include <vector>
 #include "Player.h"
 #include "DeckStack.h"
 #include <thread>
-
+using namespace std;
 
 class Game {
 private:
