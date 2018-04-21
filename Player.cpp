@@ -198,7 +198,10 @@ int Player::randoTurn(){
 // This person uses a card counting strategy, remembering ALL of the cards
 int Player::superCardCounterTurn(Card * dealersTop) {
 
-    int topCard = dealersTop->getNumericValue();       // gets dealer's top card
+    // gets dealer's top card
+    int topCard = dealersTop->getNumericValue();
+
+    // Gets the hand value (If A can be 11 without total hand value being greater than 21, it is set to 11)
     int handValue = getBestHand();
     double bustChance = 0;
     double safeChance = 0;
@@ -207,17 +210,16 @@ int Player::superCardCounterTurn(Card * dealersTop) {
 
     //The bot plays riskier depending on the card the dealer shows. With Ace being the riskiest and
     if (topCard == 1) {
-        riskValue = 5;
+        riskValue = 6;
     }
     else if (topCard == 10) {
-        riskValue = 4;
-    }
-    else if (topCard == 9 || topCard == 8) {
-        riskValue = 3;
+        riskValue = 5.5;
     }
     else {
-        riskValue = 2;
+        riskValue = 5;
     }
+
+    //Check probability of That any card drawn will bust them and puts the value in the appropriate variable
     for (int i = 1; i <= 10; i++) {
         if (i + handValue <= 21) {
             safeChance += getProbability(i);
