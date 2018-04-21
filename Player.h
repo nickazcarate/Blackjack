@@ -25,7 +25,7 @@ private:
     int surrender();
     bool split();
     void purchaseInsurance();
-    int getProbability(int cardValue);
+    double getProbability(int cardValue);
     int truCount;
     vector<Card *> rememberedDiscards; // used by identity 2 (super card counter)
     int discardTally; // keeps a running count of the +/- card values on the table (for the reg card counter)
@@ -57,6 +57,7 @@ public:
     vector<int> getHandTotals();
     int getBestHand();
     void cardCount(Card *);
+    void resetCounting();
     void setNumDecks(int numDecks);
     void clearHand();
 };

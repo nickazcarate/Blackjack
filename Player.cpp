@@ -86,15 +86,15 @@ void Player::setNumDecks(int numDecks) {
 }
 
 //Check probability that a card of a specified value would be drawn
-int Player::getProbability(int cardValue) {
+double Player::getProbability(int cardValue) {
 
-    int probability = 0;
+    double probability = 0;
     int deckCount = numDecks; // call the getter for numberDecks within DeckStack
     int cardValCount = 0;
 
     for (Card * card : rememberedDiscards) {
 
-       //Grabs value of the card in the current space in the discardPile
+       //Grabs value of the card in the current space in rememberedDiscards
        int testValue = card->getNumericValue();
 
        //If the current card is the same as the requested value,
@@ -107,12 +107,12 @@ int Player::getProbability(int cardValue) {
 
         //probability = number of cards of specified value remaining divided by total cards that are left
         // 16 = number of Jacks, Queens, Kings, and 10s in one deck of cards
-        probability = ((16*deckCount)-cardValCount)/((deckCount*52)-rememberedDiscards.size());
+        probability = (double)((16*deckCount)-cardValCount)/(double)((deckCount*52)-rememberedDiscards.size());
     }
     else {
 
         //probability = number of cards of specified value remaining divided by total cards that are left
-        probability = ((4*deckCount)-cardValCount)/((deckCount*52)-rememberedDiscards.size()); //
+        probability = (double)((4*deckCount)-cardValCount)/(double)((deckCount*52)-rememberedDiscards.size()); //
     }
 
     return probability;
@@ -128,11 +128,11 @@ int Player::takeTurn(Card * dealersTop) {
                 for (Card *c : hand) {
                     cout << " " << c->getValue();
                 }
-                cout << "\n\nWhat would you like to do? (1 for hit, 2 for stand, 3 for double down, 4 for surrender): ";
+                cout << "\n\nWhat would you like to do? (1 for stand, 2 for hit, 3 for double down, 4 for surrender): ";
                 string temp;
                 cin >> temp;
                 if (temp == "1" or temp == "2" or temp == "3" or temp == "4") {
-                    input = stoi(temp);
+                    input = stoi(temp) + 1;
                     return input;
                 }
                 else {
@@ -210,7 +210,7 @@ int Player::superCardCounterTurn(Card * dealersTop) {
     else {
         riskValue = 3;
     }
-    for (int i = 1; i < 11; i++) {
+    for (int i = 1; i <= 10; i++) {
         if (i + handValue <= 21) {
             safeChance += getProbability(i);
         }
@@ -539,6 +539,11 @@ void Player::cardCount(Card * discard) {
         default:
             break;
     }
+}
+
+void Player::resetCounting() {
+    rememberedDiscards.clear();
+    discardTally = 0;
 }
 
 
