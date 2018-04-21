@@ -197,8 +197,6 @@ int Player::superCardCounterTurn() {
 
     for (int i = 1; i < 11; i++) {
         if (i + handValue <= 21) {
-
-            //
             safeChance += getProbability(i);
         }
         else {
@@ -210,7 +208,7 @@ int Player::superCardCounterTurn() {
     if (twentyoneChance > bustChance) {
         return doubleDown();
     }
-    else if (safeChance > bustChance) {
+    else if (bustChance < 0.3) {
         return getCard();
     }
     else {
