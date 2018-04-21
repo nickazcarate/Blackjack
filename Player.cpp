@@ -199,16 +199,16 @@ int Player::superCardCounterTurn(Card * dealersTop) {
 
     //The bot plays riskier depending on the card the dealer shows. With Ace being the riskiest and
     if (topCard == 1) {
-        riskValue = 6;
-    }
-    else if (topCard == 10) {
         riskValue = 5;
     }
-    else if (topCard == 9 || topCard == 8) {
+    else if (topCard == 10) {
         riskValue = 4;
     }
-    else {
+    else if (topCard == 9 || topCard == 8) {
         riskValue = 3;
+    }
+    else {
+        riskValue = 2;
     }
     for (int i = 1; i <= 10; i++) {
         if (i + handValue <= 21) {
