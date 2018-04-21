@@ -441,8 +441,8 @@ void Game::runSimulationMode() {
 
     for (int i = 1; i < numPlayers; i++) {
         Player * p = findPlayer(i);
-        cout << "Player " << p->getPlayerIdentity() << ":\n";
-        cout << "Total money: " << p->getMoney();
+        cout << "\nPlayer " << p->getPlayerIdentity() << ":";
+        cout << "\nTotal money: " << p->getMoney();
         cout << "\nWon games: " << p->getWins();
         cout << "\nLost games: " << p->getLosses();
         cout << "\nTied games: " << p->getTies();

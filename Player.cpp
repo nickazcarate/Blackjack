@@ -100,7 +100,7 @@ void Player::setNumDecks(int numDecks) {
     this->numDecks = numDecks;
 }
 
-//Check probability that a card of a specified value would be drawn
+// Check probability that a card of a specified value would be drawn
 double Player::getProbability(int cardValue) {
     double probability = 0;
     int cardValCount = 0;
@@ -111,9 +111,11 @@ double Player::getProbability(int cardValue) {
     // Goes through the list of cards that are currently in play or have been in play since the last time the deck was shuffled.
     for (Card * card : rememberedDiscards) {
 
-       //Grabs value of the card in the current space in rememberedDiscards
+       // Grabs value of the card in the current space in rememberedDiscards
        int testValue = card->getNumericValue();
 
+       // If the current card is the same as the requested value,
+       // increment its count
        if (testValue == cardValue) {
             cardValCount++;
        }
@@ -121,7 +123,7 @@ double Player::getProbability(int cardValue) {
 
     if (cardValue == 10) {
 
-        //probability = number of cards of specified value remaining divided by total cards that are left
+        // probability = number of cards of specified value remaining divided by total cards that are left
         // 16 = number of Jacks, Queens, Kings, and 10s in one deck of cards
         probability = (double)((16*deckCount)-cardValCount)/(double)((deckCount*52)-rememberedDiscards.size());
     }
@@ -151,8 +153,7 @@ int Player::takeTurn(Card * dealersTop) {
                 cin >> temp;
                 if (temp == "1" or temp == "2" or temp == "3" or temp == "4") {
                     input = stoi(temp);
-
-                    // Will return the user's choice so game can use it
+                    // Returns the user's choice so game can use it
                     return input;
                 }
                 else {
@@ -173,7 +174,8 @@ int Player::takeTurn(Card * dealersTop) {
         case 5:
             return basicHardTurn(dealersTop);
 
-        case 6:        // Dealer
+        // Dealer
+        case 6:
             return dealerTurn();
         default:
             return randoTurn();
@@ -213,6 +215,7 @@ int Player::superCardCounterTurn(Card * dealersTop) {
 
     // Gets the hand value (If A can be 11 without total hand value being greater than 21, it is set to 11)
     int handValue = getBestHand();
+
     double bustChance = 0;
     double safeChance = 0;
     double riskValue = 0;
@@ -220,7 +223,7 @@ int Player::superCardCounterTurn(Card * dealersTop) {
 
     //The bot plays riskier depending on the card the dealer shows. With Ace being the riskiest and
     if (topCard == 1) {
-        riskValue = 6;
+        riskValue = 6.0;
     }
     else if (topCard == 10) {
         riskValue = 5.5;
@@ -243,7 +246,7 @@ int Player::superCardCounterTurn(Card * dealersTop) {
     if (twentyOneChance > bustChance) {
         return doubleDown();
     }
-    else if (bustChance < (riskValue) / 10.0) {
+    else if (bustChance < riskValue / 10.0) {
         return getCard();
     }
     else {
@@ -255,56 +258,56 @@ int Player::superCardCounterTurn(Card * dealersTop) {
 // This person uses a card counting strategy, using the true count and run count to make betting decisions
 // Uses "illustrious 18" strategy outlined here https://www.888casino.com/blog/blackjack-strategy-guide/blackjack-card-counting
 int Player::weakCardCounterTurn(Card *dealersTop) {
-    trueCount();
+    updateTrueCount();
     int topCard = dealersTop->getNumericValue();            // gets dealer's top card
     int handTotal = getHandTotals().at(0);                  // gets soft total for hand
     switch (handTotal)
     {
         case 16:                                            // if your hand is 16
-            if ((topCard == 10) && (truCount >= 0))         // the dealer's top card is 9, and the true count is +5 or above
+            if ((topCard == 10) && (trueCount >= 0))         // the dealer's top card is 9, and the true count is +5 or above
                 return stand();
-            else if ((topCard == 9) && (truCount >= 5))     // the dealer's top card is 10, Jack, Queen, or King, and the true count is 0 or above
+            else if ((topCard == 9) && (trueCount >= 5))     // the dealer's top card is 10, Jack, Queen, or King, and the true count is 0 or above
                 return stand();
             else
                 return getCard();
         case 15:                                            // if your hand is 15
-            if ((topCard == 10) && (truCount >= 4))         // the dealer's top card is 10, Jack, Queen, or King, and the true count is +4 or above
+            if ((topCard == 10) && (trueCount >= 4))         // the dealer's top card is 10, Jack, Queen, or King, and the true count is +4 or above
                 return stand();
             else getCard();
         case 13:                                            // if your hand is 13
-            if ((topCard == 2) && (truCount >= -1))         // the dealer's top card is 2, and the true count is -1 or above
+            if ((topCard == 2) && (trueCount >= -1))         // the dealer's top card is 2, and the true count is -1 or above
                 return stand();
-            else if ((topCard == 3) && (truCount >= -2))    // the dealer's top card is 3, and the true count is -2 or above
+            else if ((topCard == 3) && (trueCount >= -2))    // the dealer's top card is 3, and the true count is -2 or above
                 return stand();
             else
                 return getCard();
         case 12:                                            // if your hand is 12
-            if ((topCard == 2) && (truCount >= 4))
+            if ((topCard == 2) && (trueCount >= 4))
                 return stand();
-            else if ((topCard == 3) && (truCount >= 2))     // the dealer's top card is 3, and the true count is +2 or above
+            else if ((topCard == 3) && (trueCount >= 2))     // the dealer's top card is 3, and the true count is +2 or above
                 return stand();
-            else if ((topCard == 4) && (truCount >= 0))     // the dealer's top card is 4, and the true count is 0 or above
+            else if ((topCard == 4) && (trueCount >= 0))     // the dealer's top card is 4, and the true count is 0 or above
                 return stand();
-            else if (((topCard == 5) || (topCard == 6)) && (truCount >= -1))         // the dealer's top card is a 5 or 6, and the true count is -1 or above
+            else if (((topCard == 5) || (topCard == 6)) && (trueCount >= -1))         // the dealer's top card is a 5 or 6, and the true count is -1 or above
                 return stand();
             else
                 return getCard();
         case 11:                                            // if your hand is 11
-            if ((topCard == 1) && (truCount >= 1))          // the dealer's top card is an Ace, and the true count is +1 or above
+            if ((topCard == 1) && (trueCount >= 1))          // the dealer's top card is an Ace, and the true count is +1 or above
                 return doubleDown();
             else
                 return getCard();
         case 10:                                            // if your hand is 10
-            if ((topCard == 10) && (truCount >= 4))         // the dealer's top card is 10, Jack, Queen, or King, and the true count is +4 or above
+            if ((topCard == 10) && (trueCount >= 4))         // the dealer's top card is 10, Jack, Queen, or King, and the true count is +4 or above
                 return doubleDown();
-            else if ((topCard == 1) && (truCount >= 4))     // the dealer's top card is an Ace, and the true count is +4 or above
+            else if ((topCard == 1) && (trueCount >= 4))     // the dealer's top card is an Ace, and the true count is +4 or above
                 return doubleDown();
             else
                 return getCard();
         case 9:                                            // if your hand is 9
-            if ((topCard == 2) && (truCount >= 1))         // the dealer's top card is 2, and the true count is +1 or above
+            if ((topCard == 2) && (trueCount >= 1))         // the dealer's top card is 2, and the true count is +1 or above
                 return doubleDown();
-            else if ((topCard == 7) && (truCount >= 4))    // the dealer's top card is 7, and the true count is +4 or above
+            else if ((topCard == 7) && (trueCount >= 4))    // the dealer's top card is 7, and the true count is +4 or above
                 return doubleDown();
             else
                 return getCard();
@@ -315,9 +318,9 @@ int Player::weakCardCounterTurn(Card *dealersTop) {
                 return getCard();                          // hit
     }
 }
-void Player::trueCount()     // computes the true count by dividing the running count by the number of decks in play
+void Player::updateTrueCount()     // computes the true count by dividing the running count by the number of decks in play
 {
-    truCount = discardTally/numDecks;
+    trueCount = (runningCount)/(numDecks * 52.0 - discardTally) * 52.0;
 }
 
 // This person uses https://www.blackjackapprenticeship.com/resources/blackjack-strategy-charts/
@@ -422,7 +425,8 @@ int Player::basicSoftTurn(Card * dealersTop){
     }
 }
 
-// Update money to either take away or add money to the total
+// Update money to either taking away (negative parameter)
+// or adding (positive parameter) money to the total
 void Player::updateMoney(int difference){
     money += difference;
 }
@@ -451,7 +455,6 @@ vector<int> Player::getHandTotals() {
 
     //if there is 1 or more aces, add 10 to the total
     if(hasAce){
-
         //note that in Blackjack, only 1 ace can be 11 (in a hand with multiple), the remainder are 1s
         totals.push_back(baseTotal + 10);
     }
@@ -496,6 +499,35 @@ int Player::getBet(int tableBuyIn) {
         }
         return bet;
     }
+    else if(playerIdentity == 3) {
+        updateTrueCount();
+        int bet = tableBuyIn;
+        /*
+        if (trueCount >= 5) {
+            bet = tableBuyIn * 4;
+            num12++;
+        }
+        else if (trueCount >= 4) {
+            bet = tableBuyIn * 3;
+            num8++;
+        }
+        else if (trueCount >= 3) {
+            bet = tableBuyIn * 2;
+            num4++;
+        }
+        else if (trueCount >= 2) {
+            bet = tableBuyIn * 1;
+            num2++;
+        }
+        else {
+            num1++;
+        }
+         */
+        if (canBet(bet))
+            return bet;
+        else
+            return money;
+    }
     else if (playerIdentity == 6) {
         return 0;
     }
@@ -504,24 +536,64 @@ int Player::getBet(int tableBuyIn) {
     }
 }
 
-// puts the parameter Cards into the pile of Cards that the player remembers based on their playerIdentity
+/*
+// puts the parameter Cards into the pile of Cards that the player remembers
+// based on their playerIdentity
+// Hi-Lo method
 void Player::cardCount(Card * discard) {
     switch (playerIdentity) {
-        case 2:                     // super card counter
-                rememberedDiscards.push_back(discard);
+        case 2:                     // super card counter remembers everything
+            rememberedDiscards.push_back(discard);
             break;
-        case 3:                     // regular card counter keeps a running tally
 
+        case 3:                     // regular card counter keeps a running tally
             // If the top card of the other player is b/w 2 and 6, add 1 to the running count
             if (discard->getNumericValue() >= 2 and discard->getNumericValue() <= 6) {
-                discardTally++;
+                runningCount++;
             }
 
             // If the top card of the other player is a Jack, Queen, King, or Ace, subtract one from the running count
             else if (discard->getNumericValue() == 1 or discard->getNumericValue() == 10) {
-                discardTally--;
+                runningCount--;
             }
             break;
+
+        default:
+            break;
+    }
+}
+ */
+
+// puts the parameter Cards into the pile of Cards that the player remembers
+// based on their playerIdentity
+// Halves method
+void Player::cardCount(Card * discard) {
+    switch (playerIdentity) {
+        case 2: // super card counter
+            rememberedDiscards.push_back(discard);
+            break;
+
+        case 3: // regular card counter keeps a running tally
+            // If the top card of the other player is b/w 2 and 6, add 1 to the running count
+            if (discard->getNumericValue() == 2 or discard->getNumericValue() == 7) {
+                runningCount += .5;
+            }
+                // If the top card of the other player is a Jack, Queen, King, or Ace, subtract one from the running count
+            else if (discard->getNumericValue() == 3 or discard->getNumericValue() == 4 or discard->getNumericValue() == 6) {
+                runningCount += 1;
+            }
+            else if (discard->getNumericValue() == 5) {
+                runningCount += 1.5;
+            }
+            else if (discard->getNumericValue() == 9) {
+                runningCount -= .5;
+            }
+            else if (discard->getNumericValue() == 10 or discard->getNumericValue() == 1) {
+                runningCount -= 1;
+            }
+            discardTally++;
+            break;
+
         default:
             break;
     }
@@ -530,10 +602,15 @@ void Player::cardCount(Card * discard) {
 // Empties rememberedDiscards for the card counting bots when the decks are shuffled.
 void Player::resetCounting() {
     rememberedDiscards.clear();
+    runningCount = 0;
     discardTally = 0;
 }
 
 // removes the cards from the player's hand at the end of the round
 void Player::clearHand() {
     hand.clear();
+}
+
+bool Player::canBet(int bet) {
+    return (bet <= money);
 }
