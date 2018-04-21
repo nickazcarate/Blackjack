@@ -15,6 +15,7 @@ private:
     int gamesWon;
     int gamesLost;
     int gamesTied;
+    bool hasNatural;
     vector<Card *> hand;
     int playerIdentity;
         // 0 = user, 1 = random choices, 2 = incredible card counter, 3 = pretty good card counter,
@@ -40,6 +41,8 @@ public:
     int getWins();
     int getLosses();
     int getTies();
+    bool getNatural();
+    void gotNatural();
     int takeTurn(Card * dealersTop);
     int dealerTurn();              // Stops hitting at a hard 17. Will hit once more if at a soft 17
     int randoTurn();               // Randomly chooses to get card, double down, stand, surrender, of split insurance

@@ -63,7 +63,6 @@ void Game::runPlayingMode() {
             p->giveCard(unusedPile->getTopCard());
             discard(unusedPile->removeTopCard()); //places card in discardPile cardStack
         }
-
         // each player takes turn
         for (int i = 0; i < players.size(); i++) {
             Player * p = players.at(i);
@@ -73,6 +72,22 @@ void Game::runPlayingMode() {
                 cout << "The dealer's top card is " << players[players.size() - 1]->getHand().at(0)->getValue();
             }
             bool endTurn = false;
+            if (p->getBestHand() == 21)                 // if you start with 21
+            {
+                endTurn = true;                         // your turn automatically ends
+                if (p->getPlayerIdentity() == 0)        // if you are the human player
+                {
+                    cout << "\nYour current hand is";
+                    for (Card *c : p->getHand()) {
+                        cout << " " << c->getValue();
+                    }
+                    cout << "\nYou have 21!";
+                }
+                if ((players[players.size()-1]->getBestHand() != 21))      // if the dealer does not have 21
+                {
+                   p->gotNatural();                     // mark that they have a natural
+                }
+            }
             while (!endTurn) {
                 // if their hand total is over 21, end turn
                 if (p->getHandTotals().at(0) > 21) {
@@ -145,6 +160,16 @@ void Game::runPlayingMode() {
                 player->updateMoney(bets.at(i) * -1);
                 dealer->updateMoney(bets.at(i));
                 player->lostGame();
+            }
+                // else if the player got a natural, and the dealer didn't
+                // the player gets 1.5x their original bet
+                // the dealer loses 1.5x the player's bet
+            else if (player->getNatural())
+            {
+                player->updateMoney((bets.at(i) * 3)/2);
+                dealer->updateMoney((bets.at(i) * -3)/2);
+                player->wonGame();
+                cout << "\nYou got a natural and the dealer didn't. You win!\n";
             }
                 // else if the dealer busts or player beats them,
                 // the player gets their bet back matched

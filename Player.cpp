@@ -45,6 +45,7 @@ Player::Player(int money, int playerIdentity){
     gamesWon = 0;
     gamesLost = 0;
     gamesTied = 0;
+    hasNatural = false;
 }
 
 int Player::getMoney(){
@@ -79,6 +80,13 @@ int Player::getTies() {
     return gamesTied;
 }
 
+void Player::gotNatural() {
+    hasNatural = true;
+}
+
+bool Player::getNatural() {
+    return hasNatural;
+}
 
 // sets numDecks, called once by Game before the game starts
 void Player::setNumDecks(int numDecks) {
@@ -231,47 +239,6 @@ int Player::superCardCounterTurn(Card * dealersTop) {
     }
 
 }
-/*
-int Player::weakCardCounterTurn(Card * dealersTop) {
-
-// This person uses a card counting strategy, using the true count and run count to make betting decisions
-// may use runCount and/or trueCount functions
-// will use "illustrious 18" strategy outlined here https://www.888casino.com/blog/blackjack-strategy-guide/blackjack-card-counting
-    trueCount();
-    int topCard = dealersTop->getNumericValue();       // gets dealer's top card
-    int handTotal = getHandTotals().at(0);      // gets soft total for hand
-    if ((handTotal == 16) && (topCard == 9) && (truCount >= 5))     // if your hand is 16, the dealer's top card is 9, and the true count is +5 or above
-        return stand();                                                          // stand
-    else if ((handTotal == 16) && (topCard == 10) && (truCount >= 0))     // if your hand is 16, the dealer's top card is 10, and the true count is 0 or above)
-        return stand();
-    else if ((handTotal == 15) && (topCard == 10) && (truCount >= 4))     // if your hand is 15, the dealer's top card is 10, and the true count is +4 or above)
-        return stand();
-    else if ((handTotal == 13) && (topCard == 2) && (truCount >= -1))     // if your hand is 13, the dealer's top card is 2, and the true count is -1 or above)
-        return stand();
-    else if ((handTotal == 13) && (topCard == 3) && (truCount >= -2))     // if your hand is 13, the dealer's top card is 3, and the true count is -2 or above)
-        return stand();
-    else if ((handTotal == 12) && (topCard == 2) && (truCount >= 4))     // if your hand is 12, the dealer's top card is 2, and the true count is +4 or above)
-        return stand();
-    else if ((handTotal == 12) && (topCard == 3) && (truCount >= 2))     // if your hand is 12, the dealer's top card is 3, and the true count is +2 or above)
-        return stand();
-    else if ((handTotal == 12) && (topCard == 4) && (truCount >= 0))     // if your hand is 12, the dealer's top card is 4, and the true count is 0 or above)
-        return stand();
-    else if ((handTotal == 12) && ((topCard == 5) || (topCard == 6)) && (truCount >= -1))     // if your hand is 12, the dealer's top card is a 5 or 6, and the true count is -1 or above)
-        return stand();
-    else if ((handTotal == 11) && (topCard == 1) && (truCount >= 1))     // if your hand is 11, the dealer's top card is Ace, and the true count is +1 or above)
-        return doubleDown();
-    else if ((handTotal == 10) && (topCard == 10) && (truCount >= 4))     // if your hand is 10, the dealer's top card is 10, Jack, Queen, or King, and the true count is +4 or above)
-        return doubleDown();
-    else if ((handTotal == 10) && (topCard == 1) && (truCount >= 4))     // if your hand is 10, the dealer's top card is Ace, and the true count is +4 or above)
-        return doubleDown();
-    else if ((handTotal == 9) && (topCard == 2) && (truCount >= 1))     // if your hand is 9, the dealer's top card is 2, and the true count is +1 or above)
-        return doubleDown();
-    else if ((handTotal == 9) && (topCard == 7) && (truCount >= 4))     // if your hand is 9, the dealer's top card is 7, and the true count is +4 or above)
-        return doubleDown();
-    else
-        return getCard();
-}
-*/
 // This person uses a card counting strategy, using the true count and run count to make betting decisions
 // Uses "illustrious 18" strategy outlined here https://www.888casino.com/blog/blackjack-strategy-guide/blackjack-card-counting
 int Player::weakCardCounterTurn(Card *dealersTop) {
