@@ -165,7 +165,7 @@ int Player::takeTurn(Card * dealersTop) {
 
 // Stops hitting at a hard 17. Will continue to hit if at a soft 17
 int Player::dealerTurn(){
-    if(getHandTotals().at(0) >= 17)
+    if((getHandTotals().at(0) >= 17) or (getHandTotals().at(getHandTotals().size() - 1) >= 18))
     {
         return stand();
     }
