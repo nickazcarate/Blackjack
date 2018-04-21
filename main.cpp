@@ -1,4 +1,3 @@
-using namespace std;
 #include <iostream>
 #include "Card.h"
 #include "DeckStack.h"
@@ -6,10 +5,11 @@ using namespace std;
 #include <thread>
 #include <chrono>
 
+using namespace std;
 int numPlayers = 0;
 int userGameTypeChoice = 0;
 
-int beginMenu(){
+void beginMenu(){
     //cout << "\nWelcome to Blackjack!\n\n";
     this_thread::sleep_for(chrono::milliseconds(600));
     bool programRun = true;
