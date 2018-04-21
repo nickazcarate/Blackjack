@@ -69,23 +69,24 @@ void Game::runPlayingMode() {
             // adds p's bet to bets
             bets.push_back(p->getBet(tableBuyIn));
             if(p->getPlayerIdentity() == 0) {
-                cout << "The dealer's top card is " << players[players.size() - 1]->getHand().at(0)->getValue();
+                cout << "The dealer's top card is: " << players[players.size() - 1]->getHand().at(0)->getValue();
             }
             bool endTurn = false;
+            p->setNatural(false);
             if (p->getBestHand() == 21)                 // if you start with 21
             {
                 endTurn = true;                         // your turn automatically ends
                 if (p->getPlayerIdentity() == 0)        // if you are the human player
                 {
-                    cout << "\nYour current hand is";
+                    cout << "\nYour current hand is: ";
                     for (Card *c : p->getHand()) {
-                        cout << " " << c->getValue();
+                        cout << c->getValue() << " ";
                     }
-                    cout << "\nYou have 21!";
+                    cout << "\nYou have 21!\n";
                 }
                 if ((players[players.size()-1]->getBestHand() != 21))      // if the dealer does not have 21
                 {
-                   p->gotNatural();                     // mark that they have a natural
+                   p->setNatural(true);                     // mark that they have a natural
                 }
             }
             while (!endTurn) {
@@ -94,7 +95,7 @@ void Game::runPlayingMode() {
                     //getHandTotals().at(0) is the baseTotal, which is the lowest possible total
                     //if this total is already > 21, then the player busts (is out of the round)
                     if(p->getPlayerIdentity() == 0) {
-                        cout << "\nYour current hand is ";
+                        cout << "\nYour current hand is: ";
                         for (Card *c : p->getHand()) {
                             cout << " " << c->getValue();
                         }
@@ -104,7 +105,7 @@ void Game::runPlayingMode() {
                 }
                 else if (p->getBestHand() == 21) {
                     if(p->getPlayerIdentity() == 0) {
-                        cout << "\nYour current hand is ";
+                        cout << "\nYour current hand is: ";
                         for (Card *c : p->getHand()) {
                             cout << " " << c->getValue();
                         }
@@ -128,17 +129,18 @@ void Game::runPlayingMode() {
                             p->giveCard(unusedPile->getTopCard()); //places card into player's hand and then deletes the card
                             discard(unusedPile->removeTopCard()); //places card in discardPile cardStack
                             bets.at(i) = bets.at(i) * 2;
+                            if(p->getPlayerIdentity() == 0) {
+                                cout << "\nYour current hand is: ";
+                                for (Card *c : p->getHand()) {
+                                    cout << c->getValue() << " ";
+                                }
+                            }
+                            cout << endl;
                             endTurn = true;
                             break;
                         case 4: // surrender
                             bets.at(i) = bets.at(i) / 2;
                             surrendered.at(i) = true;
-                            endTurn = true;
-                            break;
-                        case 9:
-                            cout << "You won " << p->getWins() << "games.\n";
-                            cout << "You lost " << p->getLosses() << " games.\n";
-                            cout << "You tied " << p->getTies() << "games.\n";
                             endTurn = true;
                             break;
                     }
@@ -149,7 +151,11 @@ void Game::runPlayingMode() {
         // stores the dealer
         Player * dealer = players.at(players.size() - 1);
 
-        cout << "The dealer's hand is " << dealer->getBestHand() << endl;
+        cout << "The dealer's hand is: ";
+        for (Card *c : dealer->getHand()) {
+            cout << c->getValue() << " ";
+        }
+        cout << endl;
 
         // runs through each player and compares their hand to the dealer
         for (int i = 0; i < players.size() - 1; i++) {
@@ -169,7 +175,9 @@ void Game::runPlayingMode() {
                 player->updateMoney((bets.at(i) * 3)/2);
                 dealer->updateMoney((bets.at(i) * -3)/2);
                 player->wonGame();
-                cout << "\nYou got a natural and the dealer didn't. You win!\n";
+                if(player->getPlayerIdentity()== 0) {
+                    cout << "\nYou got a natural and the dealer didn't. You win!\n";
+                }
             }
                 // else if the dealer busts or player beats them,
                 // the player gets their bet back matched

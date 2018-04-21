@@ -78,12 +78,12 @@ int Player::getTies() {
     return gamesTied;
 }
 
-void Player::gotNatural() {
-    hasNatural = true;
-}
-
 bool Player::getNatural() {
     return hasNatural;
+}
+
+void Player::setNatural(bool value) {
+    hasNatural = value;
 }
 
 // sets numDecks, called once by Game before the game starts
@@ -93,7 +93,6 @@ void Player::setNumDecks(int numDecks) {
 
 //Check probability that a card of a specified value would be drawn
 double Player::getProbability(int cardValue) {
-
     double probability = 0;
     int deckCount = numDecks; // call the getter for numberDecks within DeckStack
     int cardValCount = 0;

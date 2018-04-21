@@ -42,7 +42,7 @@ public:
     int getLosses();
     int getTies();
     bool getNatural();
-    void gotNatural();
+    void setNatural(bool value);
     int takeTurn(Card * dealersTop);
     int dealerTurn();              // Stops hitting at a hard 17. Will hit once more if at a soft 17
     int randoTurn();               // Randomly chooses to get card, double down, stand, surrender, of split insurance
