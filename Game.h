@@ -16,6 +16,7 @@ private:
     int tableBuyIn; // holds the minimum value that players must bet
     int userIndex;
     vector<Player *> players;
+    vector<Player *> outPlayers;
     DeckStack * unusedPile;
     DeckStack * discardPile;
     int lastRoundShuffled;
@@ -32,6 +33,7 @@ public:
     void getMinBet();
     void discard(Card *);
     bool doPeopleHaveMoney();
+    Player * findPlayer(int playerIdentity);
 };
 
 

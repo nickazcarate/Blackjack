@@ -228,11 +228,9 @@ void Game::runSimulationMode() {
         p->setNumDecks(unusedPile->getNumDecks());
     }
 
-    vector<Player *> outPlayers;
-
     int roundCounter = 0;
     // goes as long as the user has enough money for another round
-    while (doPeopleHaveMoney() and roundCounter < 1000) {
+    while (doPeopleHaveMoney() and roundCounter < 10000) {
 
         for (int i = 0; i < players.size() - 1; i++) {
             if (players.at(i)->getMoney() < tableBuyIn) {
@@ -340,10 +338,14 @@ void Game::runSimulationMode() {
             p->clearHand();
         }
 
-        if (roundCounter - lastRoundShuffled > 6) {
+        //if (roundCounter - lastRoundShuffled > 6) {
+        if (unusedPile->getCardStack().size() < 52) {
             unusedPile = new DeckStack(6);
             discardPile = new DeckStack(0);
             lastRoundShuffled = roundCounter;
+            for (Player * p : players) {
+                p->resetCounting();
+            }
         }
 
         if (roundCounter == 500) {
@@ -352,23 +354,17 @@ void Game::runSimulationMode() {
 
     }
 
-    for (int i = 0; i < players.size() - 1; i++) {
-        Player * p = players.at(i);
+    for (int i = 1; i < numPlayers; i++) {
+        Player * p = findPlayer(i);
         cout << "Player " << p->getPlayerIdentity() << ":\n";
         cout << "Total money: " << p->getMoney();
         cout << "\nWon games: " << p->getWins();
         cout << "\nLost games: " << p->getLosses();
-        cout << "\nTied games: " << p->getTies() << endl;
+        cout << "\nTied games: " << p->getTies();
+        cout << "\nWin percent: " << p->getWins() * 100 / (p->getLosses() + p->getWins()) << "%";
+        cout << "\nTotal rounds: " << p->getWins() + p->getLosses() + p->getTies() << endl;
     }
 
-    for (int i = 0; i < outPlayers.size(); i++) {
-        Player * p = outPlayers.at(i);
-        cout << "Player " << p->getPlayerIdentity() << ":\n";
-        cout << "Total money: " << p->getMoney();
-        cout << "\nWon games: " << p->getWins();
-        cout << "\nLost games: " << p->getLosses();
-        cout << "\nTied games: " << p->getTies() << endl;
-    }
 }
 
 void Game::gamePlay() {
@@ -473,4 +469,18 @@ bool Game::doPeopleHaveMoney() {
             return true;
     }
     return false;
+}
+
+Player * Game::findPlayer(int playerIdentity) {
+    for (Player * p : players) {
+        if (p->getPlayerIdentity() == playerIdentity) {
+            return p;
+        }
+    }
+    for (Player * p : outPlayers) {
+        if (p->getPlayerIdentity() == playerIdentity) {
+            return p;
+        }
+    }
+    return NULL;
 }
