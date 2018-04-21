@@ -3,9 +3,9 @@
 #ifndef BLACKJACK_CARD_H
 #define BLACKJACK_CARD_H
 
-using namespace std;
 #include <cstring>
 #include <string>
+using namespace std;
 
 class Card {
 private:
