@@ -166,11 +166,11 @@ void Game::runPlayingMode() {
                     cout << "\nThe Dealer's hand is better yours. You lose!\n";
                 }
                     // else, its a stand and nothing happens with the bets
-                else {
-                    player->tiedGame();
-                    if(player->getPlayerIdentity() == 0){
-                        cout <<"\nYou and the Dealer had the same hand. It's a tie!\n";
-                    }
+            }
+            else {
+                player->tiedGame();
+                if(player->getPlayerIdentity() == 0){
+                    cout <<"\nYou and the Dealer had the same hand. It's a tie!\n";
                 }
             }
         }
@@ -430,18 +430,26 @@ void Game::getAmountMoney() {
 
 void Game::getMinBet() {
     cout << "\nHow much should the minimum bet be?\n";
-    cout << "Enter an integer greater than or equal to $15: ";
-    while (true) {
+    cout << "Enter an integer between $2 and $500 (and below player's starting money): ";
+    while (true) {                  // while statement that error handles, printing the specific error
         cin >> tableBuyIn;
         //Check for valid user input
-        if (tableBuyIn >= 15) {
+        if ((tableBuyIn >= 2) && (tableBuyIn <= 500) && (tableBuyIn < amountMoney)) {
             return; //this is a valid input
         }
-        else {
-            cout << "\nInvalid input. Please enter an integer greater than or equal to $15: ";
+        else {                                  // if input is not valid, generally says "invalid input"
+            cout << "\nInvalid input.";
             //clears the input stream to allow the user to input an acceptable value
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            if (tableBuyIn < amountMoney)       // prints error that input is above player's starting money
+            {
+                cout << " Please make sure the integer is below player's starting money.";
+            }
+            if ((tableBuyIn <= 2) && (tableBuyIn >= 500))       // prints error that input is not b/w $2 and $500
+            {
+                cout << " Please make sure the integer is between $2 and $500.";
+            }
         }
     }
 }
