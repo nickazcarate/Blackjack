@@ -208,7 +208,7 @@ void Game::runPlayingMode() {
         }
 
         while (true) {
-            cout << "Would you like to keep playing? (0 for no, 1 for yes) ";
+            cout << "\nWould you like to keep playing? (0 for no, 1 for yes) ";
             string keepPlaying;
             cin >> keepPlaying;
 
@@ -396,7 +396,6 @@ void Game::gamePlay() {
     while(true){
         //if();
         //game runs if at least one person has money
-
     }
 }
 

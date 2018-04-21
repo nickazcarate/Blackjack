@@ -463,7 +463,7 @@ int Player::getBet(int tableBuyIn) {
         cout << "You currently have $" << money << "."<< endl;
         int bet = 0;
         while (bet < tableBuyIn || bet > money ) {
-            cout <<  "How much money would you like to bet? (minimum bet is $" << tableBuyIn << ")";
+            cout <<  "How much money would you like to bet? (minimum bet is $" << tableBuyIn << "): ";
             cin >> bet;
             if (bet <= 0) {
                 cout << "Invalid input, bet must be a positive integer.\n\n";
