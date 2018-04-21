@@ -43,7 +43,7 @@ public:
     int takeTurn(Card * dealersTop);
     int dealerTurn();              // Stops hitting at a hard 17. Will hit once more if at a soft 17
     int randoTurn();               // Randomly chooses to get card, double down, stand, surrender, of split insurance
-    int superCardCounterTurn();    // This person uses a card counting strategy, remembering ALL of the cards
+    int superCardCounterTurn(Card * dealersTop);    // This person uses a card counting strategy, remembering ALL of the cards
     int weakCardCounterTurn(Card * dealersTop);     // This person uses a card counting strategy, remembering only the previous 10 cards
     void trueCount();        // computes the true count of cards played so far (run count / num decks)
     int basicHardTurn(Card * dealersTop);    // This person uses https://www.blackjackapprenticeship.com/resources/blackjack-strategy-charts/

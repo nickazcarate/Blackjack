@@ -144,7 +144,7 @@ int Player::takeTurn(Card * dealersTop) {
         case 1:
             return randoTurn();
         case 2:
-            return superCardCounterTurn();
+            return superCardCounterTurn(dealersTop);
         case 3:
             return weakCardCounterTurn(dealersTop);
         case 4:
@@ -188,13 +188,28 @@ int Player::randoTurn(){
 }
 
 // This person uses a card counting strategy, remembering ALL of the cards
-int Player::superCardCounterTurn() {
+int Player::superCardCounterTurn(Card * dealersTop) {
 
+    int topCard = dealersTop->getNumericValue();       // gets dealer's top card
     int handValue = getBestHand();
     int bustChance = 0;
     int safeChance = 0;
-    int twentyoneChance = getProbability(21-handValue);
+    int riskValue = 0;
+    int twentyOneChance = getProbability(21-handValue);
 
+    //The bot plays riskier depending on the card the dealer shows. With Ace being the riskiest and
+    if (topCard == 1) {
+        riskValue = 6;
+    }
+    else if (topCard == 10) {
+        riskValue = 5;
+    }
+    else if (topCard == 9 || topCard == 8) {
+        riskValue = 4;
+    }
+    else {
+        riskValue = 3;
+    }
     for (int i = 1; i < 11; i++) {
         if (i + handValue <= 21) {
             safeChance += getProbability(i);
@@ -205,10 +220,10 @@ int Player::superCardCounterTurn() {
     }
 
     //check if chance for doubling down into 21 is good enough, if so double down
-    if (twentyoneChance > bustChance) {
+    if (twentyOneChance > bustChance) {
         return doubleDown();
     }
-    else if (bustChance < 0.3) {
+    else if (bustChance < riskValue/10) {
         return getCard();
     }
     else {
