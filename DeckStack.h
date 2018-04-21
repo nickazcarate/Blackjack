@@ -4,12 +4,11 @@
 #define BLACKJACK_DECKSTACK_H
 #include "Card.h"
 
-using namespace std;
 #include <cstring>
 #include <string>
 #include <iostream>
 #include <vector>
-
+using namespace std;
 class DeckStack {
 private:
     void createDeck();
