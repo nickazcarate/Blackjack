@@ -48,6 +48,10 @@ void Game::runPlayingMode() {
 
     userIndex = determineUserIndex(); //determine at which index in the player vector is the user to be used throughout the game
     int roundCounter = 0;
+
+    // stores the dealer
+    Player * dealer = players.at(players.size() - 1);
+
     // goes as long as the user has enough money for another round
     while (players.at(userIndex)->getMoney() >= tableBuyIn) {
         roundCounter++;
@@ -63,19 +67,26 @@ void Game::runPlayingMode() {
             p->giveCard(unusedPile->getTopCard());
             discard(unusedPile->removeTopCard()); //places card in discardPile cardStack
         }
+        bool dealerHasNatural = false;
+        // checks if the dealer has a natural, if he does, boolean is tripped no one plays the round
+        if (dealer->getBestHand() == 21)
+        {
+            dealerHasNatural = true;
+        }
         // each player takes turn
         for (int i = 0; i < players.size(); i++) {
             Player * p = players.at(i);
             // adds p's bet to bets
             bets.push_back(p->getBet(tableBuyIn));
             if(p->getPlayerIdentity() == 0) {
-                cout << "The dealer's top card is: " << players[players.size() - 1]->getHand().at(0)->getValue();
+                cout << "The dealer's top card is: " << dealer->getHand().at(0)->getValue();
             }
             bool endTurn = false;
-            p->setNatural(false);
+            p->setNatural(false);                       // sets that the player does not have a natural at the beginning of the turn
             if (p->getBestHand() == 21)                 // if you start with 21
             {
                 endTurn = true;                         // your turn automatically ends
+                p->setNatural(true);                    // mark they have a natural
                 if (p->getPlayerIdentity() == 0)        // if you are the human player
                 {
                     cout << "\nYour current hand is: ";
@@ -84,12 +95,20 @@ void Game::runPlayingMode() {
                     }
                     cout << "\nYou have 21!\n";
                 }
-                if ((players[players.size()-1]->getBestHand() != 21))      // if the dealer does not have 21
+            }
+            // prints your cards if the dealer has a natural and you do not
+            if ((p->getBestHand() != 21) and (dealerHasNatural))       // if dealer has natural and you do not
+            {
+                if (p->getPlayerIdentity() == 0)        // if you are the human player
                 {
-                   p->setNatural(true);                     // mark that they have a natural
+                    cout << "\nYour current hand is: ";
+                    for (Card *c : p->getHand()) {
+                        cout << c->getValue() << " ";
+                    }
+                    cout << "\nYou have 21!\n";
                 }
             }
-            while (!endTurn) {
+            while (!endTurn and !dealerHasNatural) {
                 // if their hand total is over 21, end turn
                 if (p->getHandTotals().at(0) > 21) {
                     //getHandTotals().at(0) is the baseTotal, which is the lowest possible total
@@ -148,10 +167,7 @@ void Game::runPlayingMode() {
             }
         }
 
-        // stores the dealer
-        Player * dealer = players.at(players.size() - 1);
-
-        cout << "The dealer's hand is: ";
+        cout << "\nThe dealer's hand is: ";
         for (Card *c : dealer->getHand()) {
             cout << c->getValue() << " ";
         }
@@ -167,10 +183,34 @@ void Game::runPlayingMode() {
                 dealer->updateMoney(bets.at(i));
                 player->lostGame();
             }
+                // else if the dealer got a natural
+            else if (dealerHasNatural) {
+                // if the player also got a natural, it's a tie
+                // the player does not lose money, nor the dealer gets money
+                if (player->getNatural())
+                {
+                    player->tiedGame();
+                    if (player->getPlayerIdentity() == 0) {
+                        cout << "\nYou and the Dealer both have naturals. You tie!\n";
+                    }
+                }
+                    // if the player did not get a natural, they lose
+                    // the player loses his bet
+                    // the dealer gets the player's bet
+                else
+                {
+                    player->updateMoney(bets.at(i) * -1);
+                    dealer->updateMoney(bets.at(i));
+                    player->lostGame();
+                    if (player->getPlayerIdentity() == 0) {
+                        cout << "\nThe Dealer has a natural and you don't. You lose!\n";
+                    }
+                }
+            }
                 // else if the player got a natural, and the dealer didn't
                 // the player gets 1.5x their original bet
                 // the dealer loses 1.5x the player's bet
-            else if (player->getNatural())
+            else if (player->getNatural()  and !(dealerHasNatural))
             {
                 player->updateMoney((bets.at(i) * 3)/2);
                 dealer->updateMoney((bets.at(i) * -3)/2);
@@ -224,6 +264,10 @@ void Game::runPlayingMode() {
                 return;
             }
             else if (keepPlaying == "1") {
+                if (players.at(userIndex)->getMoney() <= tableBuyIn)
+                {
+                    cout << "\nToo bad, you ran out of money! :(\n";
+                }
                 break;
             }
             else {
@@ -236,9 +280,17 @@ void Game::runPlayingMode() {
             discardPile = new DeckStack(0);
             lastRoundShuffled = roundCounter;
         }
-
     }
-
+    for (int i = 0; i < numPlayers; i++) {
+        Player * p = findPlayer(i);
+        cout << "Player " << p->getPlayerIdentity() << ":\n";
+        cout << "Total money: " << p->getMoney();
+        cout << "\nWon games: " << p->getWins();
+        cout << "\nLost games: " << p->getLosses();
+        cout << "\nTied games: " << p->getTies();
+        cout << "\nWin percent: " << p->getWins() * 100 / (p->getLosses() + p->getWins()) << "%";
+        cout << "\nTotal rounds: " << p->getWins() + p->getLosses() + p->getTies() << endl;
+    }
 }
 
 void Game::runSimulationMode() {
