@@ -2,6 +2,7 @@
 
 #ifndef BLACKJACK_GAME_H
 #define BLACKJACK_GAME_H
+
 #include <iostream>
 #include <vector>
 #include "Player.h"
@@ -9,18 +10,25 @@
 #include <thread>
 using namespace std;
 
+//Initialize the Game class and its respective functions
 class Game {
 private:
-    int numPlayers; //this number holds the number of people sitting across from the dealer (i.e. not including the dealer)
+
+    //this number holds the number of people sitting across from the dealer (i.e. not including the dealer)
+    int numPlayers;
     int amountMoney;
-    int tableBuyIn; // holds the minimum value that players must bet
+
+    // holds the minimum value that players must bet
+    int tableBuyIn;
     int userIndex;
     vector<Player *> players;
     vector<Player *> outPlayers;
     DeckStack * unusedPile;
     DeckStack * discardPile;
     int lastRoundShuffled;
+
 public:
+
     Game(int userGameTypeChoice);
     void runPlayingMode();
     void runSimulationMode();
@@ -34,6 +42,7 @@ public:
     void discard(Card *);
     bool doPeopleHaveMoney();
     Player * findPlayer(int playerIdentity);
+
 };
 
 
