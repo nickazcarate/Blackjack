@@ -2,8 +2,6 @@
 
 #include "Player.h"
 
-// #include "Game.h"
-
 
 // implemented directly in takeTurn() for now
 int Player::getCard() {    // deal card
