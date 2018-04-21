@@ -23,6 +23,7 @@ int Game::determineUserIndex() {
             return i;
         }
     }
+    return -1;
 }
 
 void Game::runPlayingMode() {
