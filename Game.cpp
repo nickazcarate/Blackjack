@@ -1,4 +1,9 @@
-// Project created by Nick Azcarate, Colby Lathrop, Gregory DeCanio, Asher Johnson Hogan, Davis Washburn, Spencer Warren on 4/14/18.
+/*
+ * Game.cpp
+ *
+ * by Asher Johnson Hogan, Nicolas Azcarate, Gregory DeCanio
+ * Davis Washburn, Colby Lathrop, and Spencer Warren
+ */
 
 #include "Game.h"
 
@@ -63,10 +68,10 @@ void Game::runPlayingMode() {
 
         // deals two cards to every player
         for (Player* p : players) {
-            p->giveCard(unusedPile->getTopCard());// places card in user's hand and then deletes it from unusedPile
-            discard(unusedPile->removeTopCard()); //places card in discardPile cardStack
+            p->giveCard(unusedPile->getTopCard()); // places card in user's hand and then deletes it from unusedPile
+            discard(unusedPile->removeTopCard());  // places card in discardPile cardStack
             p->giveCard(unusedPile->getTopCard());
-            discard(unusedPile->removeTopCard()); //places card in discardPile cardStack
+            discard(unusedPile->removeTopCard());  // places card in discardPile cardStack
         }
 
         // checks if the dealer has a natural, if he does, boolean is tripped no one plays the round
@@ -468,8 +473,7 @@ void Game::runSimulationMode() {
             p->clearHand();
         }
 
-        //if (roundCounter - lastRoundShuffled > 6) {
-        if (unusedPile->getCardStack().size() < 52) {
+        if (roundCounter - lastRoundShuffled > 6) {
             unusedPile = new DeckStack(6);
             discardPile = new DeckStack(0);
             lastRoundShuffled = roundCounter;

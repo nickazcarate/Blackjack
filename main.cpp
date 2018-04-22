@@ -1,4 +1,16 @@
-// Project created by Nick Azcarate, Colby Lathrop, Gregory DeCanio, Asher Johnson Hogan, Davis Washburn, Spencer Warren on 4/14/18.
+/*
+ * COP3503 Semester Project
+ * Spring 2018
+ *
+ * Blackjack
+ *
+ * Project Team 55
+ * Asher Johnson Hogan, Nicolas Azcarate, Gregory DeCanio
+ * Davis Washburn, Colby Lathrop, and Spencer Warren
+ *
+ * main.cpp
+ *
+ */
 
 #include <iostream>
 #include "Card.h"

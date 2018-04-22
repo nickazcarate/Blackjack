@@ -1,4 +1,9 @@
-// Project created by Nick Azcarate, Colby Lathrop, Gregory DeCanio, Asher Johnson Hogan, Davis Washburn, Spencer Warren on 4/14/18.
+/*
+ * Game.cpp
+ *
+ * by Asher Johnson Hogan, Nicolas Azcarate, Gregory DeCanio
+ * Davis Washburn, Colby Lathrop, and Spencer Warren
+ */
 
 #ifndef BLACKJACK_GAME_H
 #define BLACKJACK_GAME_H

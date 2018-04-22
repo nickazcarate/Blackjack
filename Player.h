@@ -1,4 +1,9 @@
-// Project created by Nick Azcarate, Colby Lathrop, Gregory DeCanio, Asher Johnson Hogan, Davis Washburn, Spencer Warren on 4/14/18.
+/*
+ * Player.h
+ *
+ * by Asher Johnson Hogan, Nicolas Azcarate, Gregory DeCanio
+ * Davis Washburn, Colby Lathrop, and Spencer Warren
+ */
 
 #ifndef BLACKJACK_PLAYER_H
 #define BLACKJACK_PLAYER_H
