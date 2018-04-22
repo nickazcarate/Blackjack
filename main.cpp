@@ -21,9 +21,9 @@ void printInstructions(){
             "\t- \"hit\" (ask for another card in the hopes of getting close to, or on, 21)\n"
             "\t- \"double down\" (double your bet, but only receive one more card)\n"
             "\t- \"surrender\" (at the beginning of your turn, lose half of your bet and end your turn)\n";
-    cout << "- A \"natural\" is when a player is initially dealt 21 in their first two cards.\n";
-    "\t - If the player has a natural, they win 1.5 times their original bet. If the dealer has a natural, the round ends and the dealers takes all bets.\n";
-    "\t - If a player gets a hand total over 21, they bust and automatically lose the round and their bet.\n";
+    cout << "- A \"natural\" is when a player is initially dealt 21 in their first two cards.\n"
+            "\t - If the player has a natural, they win 1.5 times their original bet. If the dealer has a natural, the round ends and the dealers takes all bets.\n"
+            "\t - If a player gets a hand total over 21, they bust and automatically lose the round and their bet.\n";
     cout << "- If the dealer is showing an Ace, a player can \"purchase insurance\", which costs half of your bet \n"
             "\t - If the dealer has a natural 21, then the player loses the original bet but is paid 2:1 on the insurance bet\n"
             "\t - If the dealer doesn't have a natural 21, then the player loses the insurance bet and the round continues\n";
