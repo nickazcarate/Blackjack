@@ -182,6 +182,9 @@ void Game::runPlayingMode() {
                 player->updateMoney(bets.at(i) * -1);
                 dealer->updateMoney(bets.at(i));
                 player->lostGame();
+                if (player->getPlayerIdentity() == 0) {
+                    cout <<"\nYou bust. You lose!\n";
+                }
             }
                 // else if the dealer got a natural
             else if (dealerHasNatural) {
@@ -191,7 +194,7 @@ void Game::runPlayingMode() {
                 {
                     player->tiedGame();
                     if (player->getPlayerIdentity() == 0) {
-                        cout << "\nYou and the Dealer both have naturals. You tie!\n";
+                        cout << "\nYou and the dealer both have naturals. You tie!\n";
                     }
                 }
                     // if the player did not get a natural, they lose
@@ -203,7 +206,7 @@ void Game::runPlayingMode() {
                     dealer->updateMoney(bets.at(i));
                     player->lostGame();
                     if (player->getPlayerIdentity() == 0) {
-                        cout << "\nThe Dealer has a natural and you don't. You lose!\n";
+                        cout << "\nThe dealer has a natural and you don't. You lose!\n";
                     }
                 }
             }
@@ -229,7 +232,7 @@ void Game::runPlayingMode() {
                 if (dealer->getBestHand() > 21 and player->getPlayerIdentity() == 0) {
                     cout << "\nDealer busts. You win!\n";
                 } else if (player->getBestHand() > dealer->getBestHand() and player->getPlayerIdentity() == 0) {
-                    cout << "\nYour hand is better than the Dealer's. You win!\n";
+                    cout << "\nYour hand is better than the dealer's. You win!\n";
                 }
             }
                 // else if the dealer wins, settle bets
@@ -238,14 +241,14 @@ void Game::runPlayingMode() {
                 dealer->updateMoney(bets.at(i));
                 player->lostGame();
                 if (player->getPlayerIdentity() == 0) {
-                    cout << "\nThe Dealer's hand is better yours. You lose!\n";
+                    cout << "\nThe dealer's hand is better yours. You lose!\n";
                 }
             }
             // else, its a stand and nothing happens with the bets
             else {
                 player->tiedGame();
                 if(player->getPlayerIdentity() == 0){
-                    cout <<"\nYou and the Dealer had the same hand. It's a tie!\n";
+                    cout <<"\nYou and the dealer had the same hand. It's a tie!\n";
                 }
             }
         }
