@@ -68,12 +68,10 @@ void Game::runPlayingMode() {
             p->giveCard(unusedPile->getTopCard());
             discard(unusedPile->removeTopCard()); //places card in discardPile cardStack
         }
-        bool dealerHasNatural = false;
+
         // checks if the dealer has a natural, if he does, boolean is tripped no one plays the round
-        if (dealer->getBestHand() == 21)
-        {
-            dealerHasNatural = true;
-        }
+        bool dealerHasNatural = dealer->getBestHand() == 21;
+
         // each player takes turn
         for (int i = 0; i < players.size(); i++) {
             Player * p = players.at(i);
@@ -342,9 +340,9 @@ void Game::runSimulationMode() {
         roundCounter++;
         //stores player's bets
         vector<int> bets;
-        vector<bool> surrendered(numPlayers);
 
-
+        // stores the dealer
+        Player * dealer = players.at(players.size() - 1);
 
         // deals two cards to every player
         for (Player* p : players) {
@@ -354,15 +352,23 @@ void Game::runSimulationMode() {
             discard(unusedPile->removeTopCard()); //places card in discardPile cardStack
         }
 
+        // checks if the dealer has a natural, if he does, boolean is tripped no one plays the round
+        bool dealerHasNatural = dealer->getBestHand() == 21;
+
         // each player takes turn
         for (int i = 0; i < players.size(); i++) {
             Player * p = players.at(i);
             // adds p's bet to bets
             bets.push_back(p->getBet(tableBuyIn));
-
             bool endTurn = false;
+            p->setNatural(false);                       // sets that the player does not have a natural at the beginning of the turn
+            if (p->getBestHand() == 21)                 // if you start with 21
+            {
+                endTurn = true;                         // your turn automatically ends
+                p->setNatural(true);                    // mark they have a natural
+            }
 
-            while (!endTurn) {
+            while (!endTurn and !dealerHasNatural) {
                 // if their hand total is over 21, end turn
                 if (p->getHandTotals().at(0) > 21) {
                     //getHandTotals().at(0) is the baseTotal, which is the lowest possible total
@@ -390,28 +396,48 @@ void Game::runSimulationMode() {
                             bets.at(i) = bets.at(i) * 2;
                             endTurn = true;
                             break;
-                        case 4: // surrender
-                            bets.at(i) = bets.at(i) / 2;
-                            surrendered.at(i) = true;
-                            endTurn = true;
-                            break;
                     }
                 }
             }
         }
 
-        // stores the dealer
-        Player * dealer = players.at(players.size() - 1);
 
         // runs through each player and compares their hand to the dealer
         for (int i = 0; i < players.size() - 1; i++) {
             Player * player = players.at(i);
             // if the player busts, remove their bet from their money
             // and give it to the dealer
-            if (player->getBestHand() > 21 or surrendered.at(i)) {
+            if (player->getBestHand() > 21) {
                 player->updateMoney(bets.at(i) * -1);
                 dealer->updateMoney(bets.at(i));
                 player->lostGame();
+            }
+                // else if the dealer got a natural
+            else if (dealerHasNatural) {
+                // if the player also got a natural, it's a tie
+                // the player does not lose money, nor the dealer gets money
+                if (player->getNatural())
+                {
+                    player->tiedGame();
+                }
+                    // if the player did not get a natural, they lose
+                    // the player loses his bet
+                    // the dealer gets the player's bet
+                else
+                {
+                    player->updateMoney(bets.at(i) * -1);
+                    dealer->updateMoney(bets.at(i));
+                    player->lostGame();
+                }
+            }
+                // else if the player got a natural, and the dealer didn't
+                // the player gets 1.5x their original bet
+                // the dealer loses 1.5x the player's bet
+            else if (player->getNatural()  and !(dealerHasNatural))
+            {
+                player->updateMoney((bets.at(i) * 3)/2);
+                dealer->updateMoney((bets.at(i) * -3)/2);
+                player->wonGame();
             }
                 // else if the dealer busts or player beats them,
                 // the player gets their bet back matched
