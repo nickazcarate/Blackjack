@@ -105,7 +105,6 @@ void Game::runPlayingMode() {
                     for (Card *c : p->getHand()) {
                         cout << c->getValue() << " ";
                     }
-                    cout << "\nYou have 21!\n";
                 }
             }
             while (!endTurn and !dealerHasNatural) {
