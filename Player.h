@@ -1,4 +1,4 @@
-// Created by Nick Azcarate on 4/14/18.
+// Project created by Nick Azcarate, Colby Lathrop, Gregory DeCanio, Asher Johnson Hogan, Davis Washburn, Spencer Warren on 4/14/18.
 
 #ifndef BLACKJACK_PLAYER_H
 #define BLACKJACK_PLAYER_H

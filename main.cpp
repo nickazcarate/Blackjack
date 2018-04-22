@@ -1,3 +1,5 @@
+// Project created by Nick Azcarate, Colby Lathrop, Gregory DeCanio, Asher Johnson Hogan, Davis Washburn, Spencer Warren on 4/14/18.
+
 #include <iostream>
 #include "Card.h"
 #include "DeckStack.h"
