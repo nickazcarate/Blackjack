@@ -153,8 +153,11 @@ void Game::runPlayingMode() {
                                 for (Card *c : p->getHand()) {
                                     cout << c->getValue() << " ";
                                 }
+                                cout << endl;
+                                if (p->getBestHand() > 21) {
+                                    cout <<"\nYou bust. You lose!";
+                                }
                             }
-                            cout << endl;
                             endTurn = true;
                             break;
                         case 4: // surrender
@@ -182,9 +185,6 @@ void Game::runPlayingMode() {
                 player->updateMoney(bets.at(i) * -1);
                 dealer->updateMoney(bets.at(i));
                 player->lostGame();
-                if (player->getPlayerIdentity() == 0) {
-                    cout <<"\nYou bust. You lose!\n";
-                }
             }
                 // else if the dealer got a natural
             else if (dealerHasNatural) {
