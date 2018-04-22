@@ -261,6 +261,16 @@ void Game::runPlayingMode() {
             cin >> keepPlaying;
 
             if (keepPlaying == "0") {
+                for (int i = 0; i < numPlayers; i++) {
+                    Player * p = findPlayer(i);
+                    cout << "Player " << p->getPlayerIdentity() << ":\n";
+                    cout << "Total money: " << p->getMoney();
+                    cout << "\nWon games: " << p->getWins();
+                    cout << "\nLost games: " << p->getLosses();
+                    cout << "\nTied games: " << p->getTies();
+                    cout << "\nWin percent: " << p->getWins() * 100 / (p->getLosses() + p->getWins()) << "%";
+                    cout << "\nTotal rounds: " << p->getWins() + p->getLosses() + p->getTies() << endl;
+                }
                 return;
             }
             else if (keepPlaying == "1") {
@@ -530,11 +540,11 @@ void Game::getMinBet() {
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             if (tableBuyIn < amountMoney)       // prints error that input is above player's starting money
             {
-                cout << " Please make sure the integer is below player's starting money.";
+                cout << " Please make sure the integer is below player's starting money.\n";
             }
             if ((tableBuyIn <= 2) && (tableBuyIn >= 500))       // prints error that input is not b/w $2 and $500
             {
-                cout << " Please make sure the integer is between $2 and $500.";
+                cout << " Please make sure the integer is between $2 and $500.\n";
             }
         }
     }

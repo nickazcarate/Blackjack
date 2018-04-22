@@ -31,6 +31,7 @@ private:
     double runningCount; // keeps a running count of the +/- card values on the table (for the reg card counter)
     int discardTally;
     int numDecks;
+    int curBet; // stores the player's most recent bet to see if they can double down
 
 public:
     Player(int money, int playerIdentity);

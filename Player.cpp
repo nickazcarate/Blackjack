@@ -3,6 +3,11 @@
 #include "Player.h"
 
 
+// Called in takeTurn() in Game.cpp
+int Player::stand() {
+    return 1;
+}
+
 // Called in Game.cpp
 int Player::getCard() {
     return 2;
@@ -10,12 +15,10 @@ int Player::getCard() {
 
 // Called in Game.cpp
 int Player::doubleDown() {
+    if (curBet * 2 > money) {
+        return getCard();
+    }
     return 3;
-}
-
-// Called in takeTurn() in Game.CPP
-int Player::stand() {
-    return 1;
 }
 
 // may implement later
@@ -151,13 +154,18 @@ int Player::takeTurn(Card * dealersTop) {
                 cout << "\n\nWhat would you like to do? (1 for stand, 2 for hit, 3 for double down, 4 for surrender): ";
                 string temp;
                 cin >> temp;
-                if (temp == "1" or temp == "2" or temp == "3" or temp == "4") {
-                    input = stoi(temp);
+                if (temp == "1" or temp == "2" or temp == "4") {
                     // Returns the user's choice so game can use it
-                    return input;
+                    return stoi(temp);
+                }
+                else if (temp == "3") {
+                    if (curBet * 2 > money)
+                        cout << "Invalid input, you don't have enough money to double down.\n";
+                    else
+                        return stoi(temp);
                 }
                 else {
-                    cout << "Invalid input, please enter 0 or 1\n";
+                    cout << "Invalid input, please enter 1, 2, 3, or 4.\n";
                 }
             }
         }
@@ -203,8 +211,6 @@ int Player::randoTurn(){
     }
     else                                            // 30% chance the bot will stand
         return stand();
-
-
 }
 
 // This person uses a card counting strategy, remembering ALL of the cards
@@ -497,6 +503,7 @@ int Player::getBet(int tableBuyIn) {
                 cout << "Invalid input, insufficient funds.\n\n";
             }
         }
+        curBet = bet;
         return bet;
     }
     else if(playerIdentity == 3) {
@@ -523,15 +530,21 @@ int Player::getBet(int tableBuyIn) {
             num1++;
         }
          */
-        if (canBet(bet))
+        if (canBet(bet)) {
+            curBet = bet;
             return bet;
-        else
+        }
+        else {
+            curBet = money;
             return money;
+        }
     }
     else if (playerIdentity == 6) {
+        curBet = 0;
         return 0;
     }
     else {
+        curBet = tableBuyIn;
         return tableBuyIn;
     }
 }
