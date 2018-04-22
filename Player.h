@@ -20,11 +20,10 @@ private:
     int playerIdentity;
         // 0 = user, 1 = random choices, 2 = incredible card counter, 3 = pretty good card counter,
         // 4 = basic card strategy SOFT , 5 = basic card strategy hard;), 6 = dealer
+    int stand();
     int getCard();
     int doubleDown();
-    int stand();
     int surrender();
-    void purchaseInsurance();
     double getProbability(int cardValue);
     double trueCount;
     vector<Card *> rememberedDiscards; // used by identity 2 (super card counter)
@@ -66,12 +65,6 @@ public:
     void setNumDecks(int numDecks);
     void clearHand();
     bool canBet(int bet);
-
-    int num1;
-    int num2;
-    int num4;
-    int num8;
-    int num12;
 };
 
 

@@ -154,7 +154,7 @@ void Game::runPlayingMode() {
                                 }
                                 cout << endl;
                                 if (p->getBestHand() > 21) {
-                                    cout <<"\nYou bust. You lose!";
+                                    cout <<"\nYou bust! :(";
                                 }
                             }
                             endTurn = true;
@@ -270,7 +270,8 @@ void Game::runPlayingMode() {
                     cout << "\nWon games: " << p->getWins();
                     cout << "\nLost games: " << p->getLosses();
                     cout << "\nTied games: " << p->getTies();
-                    cout << "\nWin percent: " << p->getWins() * 100 / (p->getLosses() + p->getWins()) << "%";
+                    if (p->getLosses() != 0 || p->getWins() != 0) // prevents divide by zero error
+                        cout << "\nWin percent: " << p->getWins() * 100 / (p->getLosses() + p->getWins()) << "%";
                     cout << "\nTotal rounds: " << p->getWins() + p->getLosses() + p->getTies() << endl;
                 }
                 return;
@@ -300,7 +301,8 @@ void Game::runPlayingMode() {
         cout << "\nWon games: " << p->getWins();
         cout << "\nLost games: " << p->getLosses();
         cout << "\nTied games: " << p->getTies();
-        cout << "\nWin percent: " << p->getWins() * 100 / (p->getLosses() + p->getWins()) << "%";
+        if (p->getLosses() != 0 || p->getWins() != 0) // prevents divide by zero error
+            cout << "\nWin percent: " << p->getWins() * 100 / (p->getLosses() + p->getWins()) << "%";
         cout << "\nTotal rounds: " << p->getWins() + p->getLosses() + p->getTies() << endl;
     }
 }
@@ -458,7 +460,8 @@ void Game::runSimulationMode() {
         cout << "\nWon games: " << p->getWins();
         cout << "\nLost games: " << p->getLosses();
         cout << "\nTied games: " << p->getTies();
-        cout << "\nWin percent: " << p->getWins() * 100 / (p->getLosses() + p->getWins()) << "%";
+        if (p->getLosses() != 0 || p->getWins() != 0) // prevents divide by zero error
+            cout << "\nWin percent: " << p->getWins() * 100 / (p->getLosses() + p->getWins()) << "%";
         cout << "\nTotal rounds: " << p->getWins() + p->getLosses() + p->getTies() << endl;
     }
 

@@ -26,11 +26,6 @@ int Player::surrender() {
     return 4;
 }
 
-// may implement later
-void Player::purchaseInsurance() {
-
-}
-
 // Getter for player type (Specific bot strategy, dealer, or human player)
 int Player::getPlayerIdentity(){
     return this->playerIdentity;
@@ -512,39 +507,6 @@ int Player::getBet(int tableBuyIn) {
         curBet = bet;
         return bet;
     }
-    else if(playerIdentity == 3) {
-        updateTrueCount();
-        int bet = tableBuyIn;
-        /*
-        if (trueCount >= 5) {
-            bet = tableBuyIn * 4;
-            num12++;
-        }
-        else if (trueCount >= 4) {
-            bet = tableBuyIn * 3;
-            num8++;
-        }
-        else if (trueCount >= 3) {
-            bet = tableBuyIn * 2;
-            num4++;
-        }
-        else if (trueCount >= 2) {
-            bet = tableBuyIn * 1;
-            num2++;
-        }
-        else {
-            num1++;
-        }
-         */
-        if (canBet(bet)) {
-            curBet = bet;
-            return bet;
-        }
-        else {
-            curBet = money;
-            return money;
-        }
-    }
     else if (playerIdentity == 6) {
         curBet = 0;
         return 0;
@@ -554,34 +516,6 @@ int Player::getBet(int tableBuyIn) {
         return tableBuyIn;
     }
 }
-
-/*
-// puts the parameter Cards into the pile of Cards that the player remembers
-// based on their playerIdentity
-// Hi-Lo method
-void Player::cardCount(Card * discard) {
-    switch (playerIdentity) {
-        case 2:                     // super card counter remembers everything
-            rememberedDiscards.push_back(discard);
-            break;
-
-        case 3:                     // regular card counter keeps a running tally
-            // If the top card of the other player is b/w 2 and 6, add 1 to the running count
-            if (discard->getNumericValue() >= 2 and discard->getNumericValue() <= 6) {
-                runningCount++;
-            }
-
-            // If the top card of the other player is a Jack, Queen, King, or Ace, subtract one from the running count
-            else if (discard->getNumericValue() == 1 or discard->getNumericValue() == 10) {
-                runningCount--;
-            }
-            break;
-
-        default:
-            break;
-    }
-}
- */
 
 // puts the parameter Cards into the pile of Cards that the player remembers
 // based on their playerIdentity
