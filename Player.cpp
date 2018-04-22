@@ -154,13 +154,19 @@ int Player::takeTurn(Card * dealersTop) {
                 cout << "\n\nWhat would you like to do? (1 for stand, 2 for hit, 3 for double down, 4 for surrender): ";
                 string temp;
                 cin >> temp;
-                if (temp == "1" or temp == "2" or temp == "4") {
+                if (temp == "1" or temp == "2") {
                     // Returns the user's choice so game can use it
                     return stoi(temp);
                 }
                 else if (temp == "3") {
                     if (curBet * 2 > money)
                         cout << "Invalid input, you don't have enough money to double down.\n";
+                    else
+                        return stoi(temp);
+                }
+                else if (temp == "4") {
+                    if (hand.size() > 2)
+                        cout << "Invalid input, you can only surrender at the beginning of your turn.\n";
                     else
                         return stoi(temp);
                 }
@@ -200,7 +206,7 @@ int Player::dealerTurn(){
     }
 }
 
-// Randomly chooses to get card, double down, stand, surrender, of split insurance
+// Randomly chooses to get card, double down, or stand
 int Player::randoTurn(){
     int randNum = rand()%100 +1;
     if (randNum <= 65) {                            // 65% chance the bot will hit
