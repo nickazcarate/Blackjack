@@ -142,10 +142,11 @@ int Player::takeTurn(Card * dealersTop) {
         case 0: {
             int input;
             while (true) {
-                cout << "\nYour current hand is";
+                cout << "\nYour current hand is: ";
                 for (Card *c : hand) {
-                    cout << " " << c->getValue();
+                    cout << c->getValue() << " ";
                 }
+                cout << "\t Hand total: " << getBestHand();
                 cout << "\n\nWhat would you like to do? (1 for stand, 2 for hit, 3 for double down, 4 for surrender): ";
                 string temp;
                 cin >> temp;
@@ -495,6 +496,7 @@ int Player::getBet(int tableBuyIn) {
         while (bet < tableBuyIn || bet > money ) {
             cout <<  "How much money would you like to bet? (minimum bet is $" << tableBuyIn << "): ";
             cin >> bet;
+            cout << endl;
             if (bet <= 0) {
                 cout << "Invalid input, bet must be a positive integer.\n\n";
             }

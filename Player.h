@@ -67,5 +67,4 @@ public:
     bool canBet(int bet);
 };
 
-
 #endif //BLACKJACK_PLAYER_H

@@ -19,16 +19,16 @@ void printInstructions(){
             "- Once all the bets have been placed, the Dealer will give one card, face up, to each player and himself.\n"
             "- Another round is dealt, each player receiving a face up card, but the dealer receives a face down card.\n";
     cout << "- Each player then has the option to:\n"
-            "\t- \"stand\" (end your turn),\n"
-            "\t- \"hit\" (ask for another card in the hopes of getting close to, or on, 21)\n"
-            "\t- \"double down\" (double your bet, but only receive one more card)\n"
-            "\t- \"surrender\" (at the beginning of your turn, lose half of your bet and end your turn)\n";
+                "\t- \"stand\" (end your turn),\n"
+                "\t- \"hit\" (ask for another card in the hopes of getting close to, or on, 21)\n"
+                "\t- \"double down\" (double your bet, but only receive one more card)\n"
+                "\t- \"surrender\" (at the beginning of your turn, lose half of your bet and end your turn)\n";
     cout << "- A \"natural\" is when a player is initially dealt 21 in their first two cards.\n"
-            "\t - If the player has a natural, they win 1.5 times their original bet. If the dealer has a natural, the round ends and the dealers takes all bets.\n"
-            "\t - If a player gets a hand total over 21, they bust and automatically lose the round and their bet.\n";
+                "\t - If the player has a natural, they win 1.5 times their original bet. If the dealer has a natural, the round ends and the dealers takes all bets.\n"
+                "\t - If a player gets a hand total over 21, they bust and automatically lose the round and their bet.\n";
     cout << "- If the dealer is showing an Ace, a player can \"purchase insurance\", which costs half of your bet \n"
-            "\t - If the dealer has a natural 21, then the player loses the original bet but is paid 2:1 on the insurance bet\n"
-            "\t - If the dealer doesn't have a natural 21, then the player loses the insurance bet and the round continues\n";
+                "\t - If the dealer has a natural 21, then the player loses the original bet but is paid 2:1 on the insurance bet\n"
+                "\t - If the dealer doesn't have a natural 21, then the player loses the insurance bet and the round continues\n";
 
     cout << "- At the end of the round the dealer will play. If they bust (go above 21), you win, and the dealer will pay you 1:1 what you originally bet.\n"
             "- If the dealer doesn't bust but is higher than your hand total, the dealer wins and keeps your bet.\n"

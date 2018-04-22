@@ -104,6 +104,7 @@ void Game::runPlayingMode() {
                     for (Card *c : p->getHand()) {
                         cout << c->getValue() << " ";
                     }
+                    cout << "\t Hand total: " << p->getBestHand();
                 }
             }
             while (!endTurn and !dealerHasNatural) {
@@ -116,7 +117,8 @@ void Game::runPlayingMode() {
                         for (Card *c : p->getHand()) {
                             cout << " " << c->getValue();
                         }
-                        cout << "\t\tYou bust! :(\n";
+                        cout << "\t Hand total: " << p->getBestHand() << endl;
+                        cout << "You bust! :(\n";
                     }
                     endTurn = true;
                 }
@@ -126,6 +128,7 @@ void Game::runPlayingMode() {
                         for (Card *c : p->getHand()) {
                             cout << " " << c->getValue();
                         }
+                        cout << "\tYou got 21!";
                     }
                     cout << "\n";
                     endTurn = true;
@@ -151,7 +154,7 @@ void Game::runPlayingMode() {
                                 for (Card *c : p->getHand()) {
                                     cout << c->getValue() << " ";
                                 }
-                                cout << endl;
+                                cout << "\t Hand total: " << p->getBestHand() << endl;
                                 if (p->getBestHand() > 21) {
                                     cout <<"\nYou bust! :(";
                                 }
@@ -168,10 +171,11 @@ void Game::runPlayingMode() {
             }
         }
 
-        cout << "\nThe dealer's hand is: ";
+        cout << "\n\nThe dealer's hand is: ";
         for (Card *c : dealer->getHand()) {
             cout << c->getValue() << " ";
         }
+        cout << "\t Hand total: " << dealer->getBestHand();
         cout << endl;
 
         // runs through each player and compares their hand to the dealer
@@ -549,8 +553,8 @@ void Game::getAmountMoney() {
 }
 
 void Game::getMinBet() {
-    cout << "\nHow much should the minimum bet be?\n";
-    cout << "Enter an integer between $2 and $500 (and below player's starting money): ";
+    cout << "\nHow much should the minimum bet per round be?\n";
+    cout << "Enter an integer between $2 and $500: ";
     while (true) {                  // while statement that error handles, printing the specific error
         cin >> tableBuyIn;
         // Check for valid user input
