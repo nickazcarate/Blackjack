@@ -488,26 +488,18 @@ void Game::getNumPlayers() {
     cout << "Enter an integer from 0 to 5: ";
     while(true) {
         cin >> numPlayers;
-        numPlayers++; //adding a player to account for the user running the game
+        numPlayers++; // adding a player to account for the user running the game
 
-        //Check for valid input
-        //what happens when we have a decimal
-        //
+        // Check for valid user input
         if (numPlayers > 0 && numPlayers < 7) {
-            return; //this is a valid input
+            return; // this is a valid input
         }
         cout << "\nInvalid input. Please enter an integer from 0 to 5: ";
-        //clears the input stream to allow the user to input an acceptable value
+
+        // clears the input stream to allow the user to input an acceptable value
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
     }
-    //FINISH do something about not allowing users to input decimals. even if they put 6.4, we dont want this to work.
-//    if(numPlayers == 1){
-//        cout << "You will be playing 1 on 1 against the dealer";
-//    }
-//    else{
-//        cout << numPlayers - 1 << " other players in game entered.";
-//    }
 }
 
 void Game::getAmountMoney() {
@@ -516,14 +508,14 @@ void Game::getAmountMoney() {
     while (true) {
         cin >> amountMoney;
 
-        //Check for valid user input
+        // Check for valid user input
         if (amountMoney >= 100) {
             return; //this is a valid input
         }
         else {
             cout << "\nInvalid input. Please enter an integer greater than or equal to $100: ";
 
-            //clears the input stream to allow the user to input an acceptable value
+            // clears the input stream to allow the user to input an acceptable value
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
@@ -535,20 +527,22 @@ void Game::getMinBet() {
     cout << "Enter an integer between $2 and $500 (and below player's starting money): ";
     while (true) {                  // while statement that error handles, printing the specific error
         cin >> tableBuyIn;
-        //Check for valid user input
+        // Check for valid user input
         if ((tableBuyIn >= 2) && (tableBuyIn <= 500) && (tableBuyIn < amountMoney)) {
-            return; //this is a valid input
+            return; // this is a valid input
         }
         else {                                  // if input is not valid, generally says "invalid input"
             cout << "\nInvalid input, enter an integer between $2 and $500 (and below player's starting money): ";
-            //clears the input stream to allow the user to input an acceptable value
+
+            // clears the input stream to allow the user to input an acceptable value
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            if (tableBuyIn < amountMoney)       // prints error that input is above player's starting money
-            {
+            // prints error that input is above player's starting money
+            if (tableBuyIn < amountMoney) {
                 cout << " Please make sure the integer is below player's starting money.\n";
             }
-            if ((tableBuyIn <= 2) && (tableBuyIn >= 500))       // prints error that input is not b/w $2 and $500
+            // prints error that input is not b/w $2 and $500
+            if ((tableBuyIn <= 2) && (tableBuyIn >= 500))
             {
                 cout << " Please make sure the integer is between $2 and $500.\n";
             }
