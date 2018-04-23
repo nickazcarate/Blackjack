@@ -1,8 +1,8 @@
 /*
  * Game.cpp
  *
- * by Asher Johnson Hogan, Nicolas Azcarate, Gregory DeCanio
- * Davis Washburn, Colby Lathrop, and Spencer Warren
+ * by Nicolas Azcarate, Gregory DeCanio, Asher Johnson Hogan,
+ * Colby Lathrop, Spencer Warren, and Davis Washburn
  */
 
 #include "Game.h"
