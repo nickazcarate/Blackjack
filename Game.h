@@ -18,7 +18,6 @@ using namespace std;
 //Initialize the Game class and its respective functions
 class Game {
 private:
-
     //this number holds the number of people sitting across from the dealer (i.e. not including the dealer)
     int numPlayers;
     int amountMoney;
@@ -33,7 +32,6 @@ private:
     int lastRoundShuffled;
 
 public:
-
     Game(int userGameTypeChoice);
     void runPlayingMode();
     void runSimulationMode();
@@ -46,7 +44,14 @@ public:
     void getMinBet();
     void discard(Card *);
     bool doPeopleHaveMoney();
+    vector<int> bets; //stores player's bets
+    vector<bool> surrendered;
+    void stand(Player * p);
+    void hit(Player * p);
+    void doubleDown(Player * p);
+    void surrender(Player * p);
     Player * findPlayer(int playerIdentity);
+    int findPlayerSeat(Player * p);
 
 };
 

@@ -40,6 +40,8 @@ string Player::getPlayerName(){
     return this->playerName;
 }
 
+
+
 // Initialize the Player Object
 Player::Player(int money, int playerIdentity, string playerName) {
 
@@ -66,6 +68,14 @@ vector<Card*> Player::getHand() {
 // Increment number of games won
 void Player::wonGame() {
     gamesWon++;
+}
+
+void Player::setEndTurn(bool value){
+    endTurn = value;
+}
+
+bool Player::getEndTurn(){
+    return endTurn;
 }
 
 // Increment number of games lost

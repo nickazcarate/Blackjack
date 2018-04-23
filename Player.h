@@ -21,6 +21,7 @@ private:
     int gamesLost;
     int gamesTied;
     bool hasNatural;
+    bool endTurn;
     vector<Card *> hand;
     string playerName;
     int playerIdentity;
@@ -70,6 +71,8 @@ public:
     void cardCount(Card *);
     void resetCounting();
     void setNumDecks(int numDecks);
+    void setEndTurn(bool value);
+    bool getEndTurn();
     void clearHand();
     bool canBet(int bet);
 };

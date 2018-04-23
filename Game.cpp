@@ -8,8 +8,12 @@
 #include "Game.h"
 
 Game::Game(int userGameTypeChoice){
+    getNumPlayers();
+    getAmountMoney();
+    getMinBet();
     unusedPile = new DeckStack(6);
     discardPile = new DeckStack(0);
+    surrendered = *(new vector <bool> (numPlayers));
 
     if(userGameTypeChoice == 1){
         runPlayingMode();
@@ -23,6 +27,40 @@ int myRandom1(int i){
     return rand()%i;
 }
 
+void Game::stand(Player * p){
+    p->setEndTurn(true);
+}
+
+void Game::hit(Player * p){
+    p->giveCard(unusedPile->getTopCard()); //places card into player's hand and then deletes the card
+    discard(unusedPile->removeTopCard()); //places card in discardPile cardStack
+}
+
+void Game::doubleDown(Player * p) {
+    int seat = findPlayerSeat(p);
+    p->giveCard(unusedPile->getTopCard()); //places card into player's hand and then deletes the card
+    discard(unusedPile->removeTopCard()); //places card in discardPile cardStack
+    bets.at(seat) = bets.at(seat) * 2;
+    p->setEndTurn(true);
+}
+
+void Game::surrender(Player * p) {
+    // surrender
+    int seat = findPlayerSeat(p);
+    bets.at(seat) = bets.at(seat) / 2;
+    surrendered.at(seat) = true;
+    p->setEndTurn(true);
+}
+
+int Game::findPlayerSeat(Player * p) {
+    for(int i = 0; i < players.size(); i++){
+        if(players[i]->getPlayerIdentity() == p->getPlayerIdentity()){ //if this player is the one we're looking for, return the index of their seat
+            return i;
+        }
+    }
+    return -1;
+}
+
 int Game::determineUserIndex() {
     for(int i = 0; i < players.size(); i++){
         if(players[i]->getPlayerIdentity() == 0){ //if this player is the user, return the index
@@ -33,10 +71,6 @@ int Game::determineUserIndex() {
 }
 
 void Game::runPlayingMode() {
-    getNumPlayers();
-    getAmountMoney();
-    getMinBet();
-
     lastRoundShuffled = 0;
     vector<string> names = {"You", "RandomBot", "SuperCounterBot", "ModerateCounterBot", "BasicStrategyBot1", "BasicStrategyBot2"};
     for(int i = 0; i < numPlayers; i++){
@@ -63,9 +97,6 @@ void Game::runPlayingMode() {
     while (players.at(userIndex)->getMoney() >= tableBuyIn) {
         roundCounter++;
         cout << "\nStarting Round #" <<roundCounter << ":\n";
-        //stores player's bets
-        vector<int> bets;
-        vector<bool> surrendered(numPlayers);
 
         // deals two cards to every player
         for (Player* p : players) {
@@ -86,11 +117,11 @@ void Game::runPlayingMode() {
             if(p->getPlayerIdentity() == 0) {
                 cout << "The dealer's top card is: " << dealer->getHand().at(0)->getValue();
             }
-            bool endTurn = false;
+            p->setEndTurn(false);
             p->setNatural(false);                       // sets that the player does not have a natural at the beginning of the turn
             if (p->getBestHand() == 21)                 // if you start with 21
             {
-                endTurn = true;                         // your turn automatically ends
+                p->setEndTurn(true);                         // your turn automatically ends
                 p->setNatural(true);                    // mark they have a natural
                 if (p->getPlayerIdentity() == 0)        // if you are the human player
                 {
@@ -112,8 +143,9 @@ void Game::runPlayingMode() {
                     }
                     cout << "\t Hand total: " << p->getBestHand();
                 }
+                cout << endl;
             }
-            while (!endTurn and !dealerHasNatural) {
+            while (!p->getEndTurn() and !dealerHasNatural) {
                 // if their hand total is over 21, end turn
                 if (p->getHandTotals().at(0) > 21) {
                     //getHandTotals().at(0) is the baseTotal, which is the lowest possible total
@@ -124,9 +156,9 @@ void Game::runPlayingMode() {
                             cout << " " << c->getValue();
                         }
                         cout << "\t Hand total: " << p->getBestHand() << endl;
-                        cout << "You bust! :(\n";
+                        cout << "You bust! :( \n";
                     }
-                    endTurn = true;
+                    p->setEndTurn(true);
                 }
                 else if (p->getBestHand() == 21) {
                     if(p->getPlayerIdentity() == 0) {
@@ -134,10 +166,9 @@ void Game::runPlayingMode() {
                         for (Card *c : p->getHand()) {
                             cout << " " << c->getValue();
                         }
-                        cout << "\tYou got 21!";
+                        cout << "\tYou got 21!\n";
                     }
-                    cout << "\n";
-                    endTurn = true;
+                    p->setEndTurn(true);
                 }
 
                 else {
@@ -145,39 +176,23 @@ void Game::runPlayingMode() {
                     int playerAction = p->takeTurn(players.at(players.size() - 1)->getHand().at(0));
                     switch (playerAction) {
                         case 1: // stand
-                            endTurn = true;
+                            stand(p);
                             break;
                         case 2: // hit
-                            p->giveCard(unusedPile->getTopCard()); //places card into player's hand and then deletes the card
-                            discard(unusedPile->removeTopCard()); //places card in discardPile cardStack
+                            hit(p);
                             break;
                         case 3: // double down
-                            p->giveCard(unusedPile->getTopCard()); //places card into player's hand and then deletes the card
-                            discard(unusedPile->removeTopCard()); //places card in discardPile cardStack
-                            bets.at(i) = bets.at(i) * 2;
-                            if(p->getPlayerIdentity() == 0) {
-                                cout << "\nYour current hand is: ";
-                                for (Card *c : p->getHand()) {
-                                    cout << c->getValue() << " ";
-                                }
-                                cout << "\t Hand total: " << p->getBestHand() << endl;
-                                if (p->getBestHand() > 21) {
-                                    cout <<"\nYou bust! :(";
-                                }
-                            }
-                            endTurn = true;
+                            doubleDown(p);
                             break;
                         case 4: // surrender
-                            bets.at(i) = bets.at(i) / 2;
-                            surrendered.at(i) = true;
-                            endTurn = true;
+                            surrender(p);
                             break;
                     }
                 }
             }
         }
 
-        cout << "\n\nThe dealer's hand is: ";
+        cout << "\nThe dealer's hand is: ";
         for (Card *c : dealer->getHand()) {
             cout << c->getValue() << " ";
         }
@@ -286,7 +301,7 @@ void Game::runPlayingMode() {
                 return;
             }
             else if (keepPlaying == "1") {
-                if (players.at(userIndex)->getMoney() <= tableBuyIn)
+                if (players.at(userIndex)->getMoney() < tableBuyIn)
                 {
                     cout << "\nToo bad, you ran out of money! :(\n";
                 }
@@ -317,10 +332,6 @@ void Game::runPlayingMode() {
 }
 
 void Game::runSimulationMode() {
-    getNumPlayers();
-    getAmountMoney();
-    getMinBet();
-
     lastRoundShuffled = 0;
     vector<string> names = {"You", "RandomBot", "SuperCounterBot", "ModerateCounterBot", "BasicStrategyBot1", "BasicStrategyBot2"};
 
@@ -371,23 +382,23 @@ void Game::runSimulationMode() {
             Player * p = players.at(i);
             // adds p's bet to bets
             bets.push_back(p->getBet(tableBuyIn));
-            bool endTurn = false;
+            p->setEndTurn(false);
             p->setNatural(false);                       // sets that the player does not have a natural at the beginning of the turn
             if (p->getBestHand() == 21)                 // if you start with 21
             {
-                endTurn = true;                         // your turn automatically ends
+                p->setEndTurn(true);                    // your turn automatically ends
                 p->setNatural(true);                    // mark they have a natural
             }
 
-            while (!endTurn and !dealerHasNatural) {
+            while (!p->getEndTurn() and !dealerHasNatural) {
                 // if their hand total is over 21, end turn
                 if (p->getHandTotals().at(0) > 21) {
                     //getHandTotals().at(0) is the baseTotal, which is the lowest possible total
                     //if this total is already > 21, then the player busts (is out of the round)
-                    endTurn = true;
+                    p->setEndTurn(true);
                 }
                 else if (p->getBestHand() == 21) {
-                    endTurn = true;
+                    p->setEndTurn(true);
                 }
 
                 else {
@@ -395,17 +406,16 @@ void Game::runSimulationMode() {
                     int playerAction = p->takeTurn(players.at(players.size() - 1)->getHand().at(0));
                     switch (playerAction) {
                         case 1: // stand
-                            endTurn = true;
+                            stand(p);
                             break;
                         case 2: // hit
-                            p->giveCard(unusedPile->getTopCard()); //places card into player's hand and then deletes the card
-                            discard(unusedPile->removeTopCard()); //places card in discardPile cardStack
+                            hit(p);
                             break;
                         case 3: // double down
-                            p->giveCard(unusedPile->getTopCard()); //places card into player's hand and then deletes the card
-                            discard(unusedPile->removeTopCard()); //places card in discardPile cardStack
-                            bets.at(i) = bets.at(i) * 2;
-                            endTurn = true;
+                            doubleDown(p);
+                            break;
+                        case 4: //surrender
+                            surrender(p);
                             break;
                     }
                 }
