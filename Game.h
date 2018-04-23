@@ -30,6 +30,7 @@ private:
     DeckStack * unusedPile;
     DeckStack * discardPile;
     int lastRoundShuffled;
+    int sleepTime = 1000;
 
 public:
     Game(int userGameTypeChoice);
