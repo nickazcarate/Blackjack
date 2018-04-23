@@ -122,9 +122,44 @@ void beginTutorial()
     }
 }
 
+void printBlackJack(){
+    cout << "\n\n\t\t ________      ___           ________      ________      ___  __           ___      ________      ________      ___  __       \n"
+            "\t\t|\\   __  \\    |\\  \\         |\\   __  \\    |\\   ____\\    |\\  \\|\\  \\        |\\  \\    |\\   __  \\    |\\   ____\\    |\\  \\|\\  \\     \n"
+            "\t\t\\ \\  \\|\\ /_   \\ \\  \\        \\ \\  \\|\\  \\   \\ \\  \\___|    \\ \\  \\/  /|_      \\ \\  \\   \\ \\  \\|\\  \\   \\ \\  \\___|    \\ \\  \\/  /|_   \n"
+            "\t\t \\ \\   __  \\   \\ \\  \\        \\ \\   __  \\   \\ \\  \\        \\ \\   ___  \\   __ \\ \\  \\   \\ \\   __  \\   \\ \\  \\        \\ \\   ___  \\  \n"
+            "\t\t  \\ \\  \\|\\  \\   \\ \\  \\____    \\ \\  \\ \\  \\   \\ \\  \\____    \\ \\  \\\\ \\  \\ |\\  \\\\_\\  \\   \\ \\  \\ \\  \\   \\ \\  \\____    \\ \\  \\\\ \\  \\ \n"
+            "\t\t   \\ \\_______\\   \\ \\_______\\   \\ \\__\\ \\__\\   \\ \\_______\\   \\ \\__\\\\ \\__\\\\ \\________\\   \\ \\__\\ \\__\\   \\ \\_______\\   \\ \\__\\\\ \\__\\\n"
+            "\t\t    \\|_______|    \\|_______|    \\|__|\\|__|    \\|_______|    \\|__| \\|__| \\|________|    \\|__|\\|__|    \\|_______|    \\|__| \\|__|\n\n" ;
+
+}
+
+void printCardSymbols(){
+    int sleepTime = 100;
+    cout << "\n";
+    this_thread::sleep_for(chrono::milliseconds(250));
+    cout << "\t\t\t     .-~~-.      \t\t\t\t       /\\       \t\t\t\t        /\\       \t\t\t\t   .-~~~-__-~~~-. \n";
+    this_thread::sleep_for(chrono::milliseconds(sleepTime));
+    cout << "\t\t\t    {      }     \t\t\t\t     .'  `.      \t\t\t\t      .'  `.      \t\t\t\t  {              }\n";
+    this_thread::sleep_for(chrono::milliseconds(sleepTime));
+    cout << "\t\t\t .-~-.    .-~-.  \t\t\t\t   .'      `.    \t\t\t\t     '      `.    \t\t\t\t   `.          .' \n";
+    this_thread::sleep_for(chrono::milliseconds(sleepTime));
+    cout << "\t\t\t{              } \t\t\t\t  <          >   \t\t\t\t  .'          `.  \t\t\t\t     `.      .'   \n";
+    this_thread::sleep_for(chrono::milliseconds(sleepTime));
+    cout << "\t\t\t `.__.'||`.__.'  \t\t\t\t   `.      .'    \t\t\t\t {              } \t\t\t\t       `.  .'     \n";
+    this_thread::sleep_for(chrono::milliseconds(sleepTime));
+    cout << "\t\t\t       ||        \t\t\t\t     `.  .'      \t\t\t\t  ~-...-||-...-~  \t\t\t\t         \\/      \n";
+    this_thread::sleep_for(chrono::milliseconds(sleepTime));
+    cout << "\t\t\t      '--`       \t\t\t\t       \\/       \t\t\t\t        ||        \t\t\t\t                   \n";
+    this_thread::sleep_for(chrono::milliseconds(sleepTime));
+    cout << "\t\t\t                 \t\t\t\t                 \t\t\t\t       '--`       \t\t\t\t                  \n";
+}
+
+
 void beginMenu(){
     bool programRun = true;
-    int sleepTime = 100;
+
+    printBlackJack();
+
     cout << "\nWelcome to BlackJack!\n\n"
             "The object of the game is to beat the dealer by getting a hand total as close to 21 as possible, without going over 21\n"
             "\tIn order to enhance the user experience, we have included bots for you to play against so you can see how well you match up against them!\n"
@@ -134,23 +169,9 @@ void beginMenu(){
             "\tBot 4: Uses a traditional playing strategy for when they have a \"soft\" hand\n"
             "\tBot 5: Uses a traditional playing strategy for when they have a \"hard\" hand\n"
             "\t\tWe hope you enjoy!\n\n";
-    cout << "\n";
-    this_thread::sleep_for(chrono::milliseconds(250));
-    cout << "     .-~~-.             /\\               /\\           .-~~~-__-~~~-. \n";
-    this_thread::sleep_for(chrono::milliseconds(sleepTime));
-    cout << "    {      }          .'  `.           .'  `.        {              }\n";
-    this_thread::sleep_for(chrono::milliseconds(sleepTime));
-    cout << " .-~-.    .-~-.     .'      `.        '      `.       `.          .' \n";
-    this_thread::sleep_for(chrono::milliseconds(sleepTime));
-    cout << "{              }   <          >    .'          `.       `.      .'   \n";
-    this_thread::sleep_for(chrono::milliseconds(sleepTime));
-    cout << " `.__.'||`.__.'     `.      .'    {              }        `.  .'     \n";
-    this_thread::sleep_for(chrono::milliseconds(sleepTime));
-    cout << "       ||             `.  .'       ~-...-||-...-~           \\/      \n";
-    this_thread::sleep_for(chrono::milliseconds(sleepTime));
-    cout << "      '--`              \\/               ||                          \n";
-    this_thread::sleep_for(chrono::milliseconds(sleepTime));
-    cout << "                                        '--`                         \n";
+
+    printCardSymbols();
+
     while (programRun) {
         cout << "You may run either:\n";
         cout << "\t1) Playing mode: play rounds of Blackjack against a dealer and other players\n";
