@@ -32,7 +32,7 @@ void printInstructions(){
     cout << "- Each player then has the option to:\n"
                 "\t- \"stand\" (end your turn)\n"
                 "\t- \"hit\" (ask for another card in the hopes of getting close to, or on, 21)\n"
-                "\t- \"double down\" (double your bet, but only receive one more card)\n"
+                "\t- \"double down\" (at the beginning of your turn, double your bet, but only receive one more card)\n"
                 "\t- \"surrender\" (at the beginning of your turn, lose half of your bet and end your turn)\n\n";
 
     cout << "- At the end of the round the dealer will play. If they bust (go above 21), you win, and the dealer will pay you 1:1 what you originally bet.\n"

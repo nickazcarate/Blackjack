@@ -20,7 +20,7 @@ int Player::getCard() {
 
 // Returns the int which represents double down (which is used in Game)
 int Player::doubleDown() {
-    if (curBet * 2 > money) {
+    if (curBet * 2 > money || hand.size() > 2) {
         return getCard();
     }
     return 3;
@@ -175,7 +175,9 @@ int Player::takeTurn(Card * dealersTop) {
                     return stoi(temp);
                 }
                 else if (temp == "3") {
-                    if (curBet * 2 > money)
+                    if(hand.size() > 2)
+                        cout << "Invalid input, you can only double down at the beginning of your turn. \n";
+                    else if (curBet * 2 > money)
                         cout << "Invalid input, you don't have enough money to double down.\n";
                     else
                         return stoi(temp);
