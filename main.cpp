@@ -1,57 +1,53 @@
-/*
- * COP3503 Semester Project
- * Spring 2018
- *
- * Blackjack
- *
- * Project Team 55
- * by Nicolas Azcarate, Gregory DeCanio, Asher Johnson Hogan,
- * Colby Lathrop, Spencer Warren, and Davis Washburn
- *
- * main.cpp
- *
- */
+#include "blackjacktable.h"
+#include <QApplication>
+#include <QmediaPlayer>
+#include "card.h"
+#include <iostream>
+#include "deckStack.h"
+#include "game.h"
+#include "player.h"
+#include <thread>
+#include <chrono>
+using namespace std;
+// Project created by Nick Azcarate, Colby Lathrop, Gregory DeCanio, Asher Johnson Hogan, Davis Washburn, Spencer Warren on 4/14/18.
 
 #include <iostream>
+#include "Card.h"
 #include "DeckStack.h"
 #include "Game.h"
-//#include <thread>
-//#include <chrono>
+#include <thread>
+#include <chrono>
 
 using namespace std;
+int numPlayers = 0;
 int userGameTypeChoice = 0;
 
 
-void printInstructions(){
-    cout << "- The object of the game is to beat the dealer by getting a hand total as close to 21 as possible, without going over 21\n"
-            "- Face cards are worth 10 points, Aces are worth 1 or 11 points, and all other cards are worth their individual point value.\n"
-            "- Before each round, the player places a bet (usually between $2 and $500).\n"
-            "- Once all the bets have been placed, the Dealer will give one card, face up, to each player and himself.\n"
-            "- Another round is dealt, each player receiving a face up card, but the dealer receives a face down card.\n\n";
+/*void printInstructions(){
+    cout << - The object of the game is to beat the dealer by getting a hand total as close to 21 as possible, without going over 21\n
+            - Face cards are worth 10 points, Aces are worth 1 or 11 points, and all other cards are worth their individual point value.\n
+            - Before each round, the player places a bet (usually between $2 and $500).\n
+            - Once all the bets have been placed, the Dealer will give one card, face up, to each player and himself.\n
+            - Another round is dealt, each player receiving a face up card, but the dealer receives a face down card.\n;
+    cout << - Each player then has the option to:\n
+            \t- \stand\ (end your turn),\n
+            \t- \hit\ (ask for another card in the hopes of getting close to, or on, 21)\n
+            \t- \double down (double your bet, but only receive one more card)\n
+            \t- \surrender\ (at the beginning of your turn, lose half of your bet and end your turn)\n;
+    cout << - A \natural\ is when a player is initially dealt 21 in their first two cards.\n
+            \t - If the player has a natural, they win 1.5 times their original bet. If the dealer has a natural, the round ends and the dealers takes all bets.\n
+            \t - If a player gets a hand total over 21, they bust and automatically lose the round and their bet.\n;
+    cout << - If the dealer is showing an Ace, a player can \purchase insurance\, which costs half of your bet \n
+            \t - If the dealer has a natural 21, then the player loses the original bet but is paid 2:1 on the insurance bet\n
+            \t - If the dealer doesn't have a natural 21, then the player loses the insurance bet and the round continues\n;
 
-    cout << "- Each player then has the option to:\n"
-                "\t- \"stand\" (end your turn)\n"
-                "\t- \"hit\" (ask for another card in the hopes of getting close to, or on, 21)\n"
-                "\t- \"double down\" (double your bet, but only receive one more card)\n"
-                "\t- \"surrender\" (at the beginning of your turn, lose half of your bet and end your turn)\n\n";
+    cout << - At the end of the round the dealer will play. If they bust (go above 21), you win, and the dealer will pay you 1:1 what you originally bet.\n"
+            - If the dealer doesn't bust but is higher than your hand total, the dealer wins and keeps your bet.\n
+            - If the dealer doesn't bust and is lower than your hand total, the dealer loses and will pay you 1:1 what you originally bet.
+            - If you and the dealer have the same hand totals, there is a tie and no money is paid out.;
+}*/
 
-    cout << "- At the end of the round the dealer will play. If they bust (go above 21), you win, and the dealer will pay you 1:1 what you originally bet.\n"
-            "- If a player gets a hand total over 21, they bust and automatically lose the round and their bet.\n";
-            "- If the dealer doesn't bust but is higher than your hand total, the dealer wins and keeps your bet.\n"
-            "- If the dealer doesn't bust and is lower than your hand total, the dealer loses and will pay you 1:1 what you originally bet.\n"
-            "- If you and the dealer have the same hand totals, there is a tie and no money is paid out.\n\n";
-
-    cout << "- A \"natural\" is when a player is initially dealt 21 in their first two cards.\n"
-                "\t - If the player has a natural, they win 1.5 times their original bet.\n"
-                "\t - If the dealer has a natural, the round ends and the dealers takes all bets.\n"
-                "\t - If both the player and dealer have a neutral, there is a tie and no money is paid out.\n\n";
-
-    cout << "- If the dealer is showing an Ace, a player can \"purchase insurance\", which costs half of your bet \n"
-                "\t - If the dealer has a natural 21, then the player loses the original bet but is paid 2:1 on the insurance bet\n"
-                "\t - If the dealer doesn't have a natural 21, then the player loses the insurance bet and the round continues\n\n";
-}
-
-void beginTutorial()
+/*void beginTutorial()
 {
     bool responseBool = true;       // is true when firstTime is not a valid input, turns false when it becomes "Yes" or "No"
     bool learnYes = false;          // tracks if user wants to see rules or not (true for rules, false for no rules)
@@ -64,7 +60,7 @@ void beginTutorial()
 
     while (responseBool)
     {
-        if (firstTime == "yes")
+        if (firstTime.compare("yes") == 0)
         {
             responseBool = false;           // can now exit the loop asking if it is their first time
             bool responseLearn = true;      // this variable tracks if the user has an appropriate response to "would you like to play"
@@ -74,13 +70,13 @@ void beginTutorial()
 
             while (responseLearn)
             {
-                if (learnToPlay == "yes")
+                if (learnToPlay.compare("yes") == 0)
                 {
                     cout << "\nWonderful! We'll give you a brief overview of the rules and how to play!\n\n";
                     responseLearn = false;       // can now exit the loop asking if they would like to learn how to play
                     learnYes = true;             // activates that they must be given the rules
                 }
-                else if (learnToPlay == "no")
+                else if (learnToPlay.compare("no") == 0)
                 {
                     cout << "\nRisky?! We like it!\n";
                     return;                      // no further action needed. Exit can go to the menu
@@ -94,7 +90,7 @@ void beginTutorial()
                 }
             }
         }
-        else if (firstTime == "no")
+        else if (firstTime.compare("no") == 0)
         {
             cout << "\nGreat! Let's get right to it then!\n";
             return;                             // no further action needed. Exit can go to the menu
@@ -112,9 +108,9 @@ void beginTutorial()
     {
         printInstructions();
     }
-}
+}*/
 
-void beginMenu(){
+/*void beginMenu(){
     bool programRun = true;
     cout << "\nWelcome to BlackJack!\n\n";
     while (programRun) {
@@ -147,10 +143,19 @@ void beginMenu(){
             }
         }
     }
-}
+}*/
 
-int main() {
-    srand (unsigned (time(0)));
-    beginMenu();                // asks the user which mode they want to run (playing or simulation)
-    Game game(userGameTypeChoice);
+int main(int argc, char *argv[])
+{
+    //beginTutorial();            // asks the user if they would like to hear the rules of blackjack
+        //beginMenu();                // asks the user which mode they want to run (playing or simulation)
+
+
+    QApplication a(argc, argv);
+    BlackJackTable w;
+    w.show();
+
+
+
+    return a.exec();
 }
