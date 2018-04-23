@@ -8,9 +8,14 @@
 #include "Game.h"
 
 Game::Game(int userGameTypeChoice){
-    getNumPlayers();
+    getNumPlayers(userGameTypeChoice);
+    while (userGameTypeChoice == 2 && numPlayers <= 1) {
+        cout << "Invalid input, you must have at least one other player for simulation mode.\n";
+        getNumPlayers(userGameTypeChoice);
+    }
     getAmountMoney();
     getMinBet();
+
     unusedPile = new DeckStack(6);
     discardPile = new DeckStack(0);
     bets = *(new vector<int> (numPlayers));
@@ -411,7 +416,7 @@ void Game::runPlayingMode() {
                     }
                 }
             }
-                // else if the dealer wins, settle bets
+            // else if the dealer wins, settle bets
             else if (dealer->getBestHand() > player->getBestHand()) {
                 player->updateMoney(bets.at(i) * -1);
                 dealer->updateMoney(bets.at(i));
@@ -532,6 +537,9 @@ void Game::runSimulationMode() {
 
         roundCounter++;
 
+        bets = *(new vector<int> (numPlayers));
+        surrendered = *(new vector <bool> (numPlayers));
+
         // stores the dealer
         Player * dealer = players.at(players.size() - 1);
 
@@ -550,7 +558,7 @@ void Game::runSimulationMode() {
         for (int i = 0; i < players.size(); i++) {
             Player * p = players.at(i);
             // adds p's bet to bets
-            bets.push_back(p->getBet(tableBuyIn));
+            bets.at(i) = p->getBet(tableBuyIn);
             p->setEndTurn(false);
             p->setNatural(false);                       // sets that the player does not have a natural at the beginning of the turn
             if (p->getBestHand() == 21)                 // if you start with 21
@@ -671,7 +679,7 @@ void Game::runSimulationMode() {
 
     for (int i = 1; i < numPlayers; i++) {
         Player * p = findPlayer(i);
-        cout << "\nPlayer " << p->getPlayerIdentity() << ":";
+        cout << "\n" << p->getPlayerName() << ":";
         cout << "\nTotal money: " << p->getMoney();
         cout << "\nWon games: " << p->getWins();
         cout << "\nLost games: " << p->getLosses();
@@ -698,26 +706,53 @@ int Game::getTableBuyIn(){
     return this->tableBuyIn;
 }
 
-void Game::getNumPlayers() {
-    cout << "\nHow many other players do you want in the game?\n";
-    cout << "Enter an integer from 0 to 5: ";
-    while(true) {
-        cin >> numPlayers;
+void Game::getNumPlayers(int userGameTypeChoice) {
+    if (userGameTypeChoice == 1) {
+        cout << "\nHow many other players do you want in the game?\n";
+        cout << "Enter an integer from 0 to 5: ";
 
-        cin.clear(); //clear the input stream
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        while (true) {
+            cin >> numPlayers;
 
-        numPlayers++; // adding a player to account for the user running the game
+            cin.clear(); //clear the input stream
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-        // Check for valid user input
-        if (numPlayers > 0 && numPlayers < 7) {
-            return; // this is a valid input
+            numPlayers++; // adding a player to account for the user running the game
+
+            // Check for valid user input
+            if (numPlayers > 0 && numPlayers < 7) {
+                return; // this is a valid input
+            }
+            cout << "\nInvalid input. Please enter an integer from 0 to 5: ";
+
+            // clears the input stream to allow the user to input an acceptable value
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
-        cout << "\nInvalid input. Please enter an integer from 0 to 5: ";
+    }
 
-        // clears the input stream to allow the user to input an acceptable value
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    else {
+        cout << "\nHow many players do you want in the game?\n";
+        cout << "Enter an integer from 1 to 5: ";
+
+        while (true) {
+            cin >> numPlayers;
+
+            cin.clear(); //clear the input stream
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+            numPlayers++; // adding a player to account for the user running the game
+
+            // Check for valid user input
+            if (numPlayers > 1 && numPlayers < 7) {
+                return; // this is a valid input
+            }
+            cout << "\nInvalid input. Please enter an integer from 1 to 5: ";
+
+            // clears the input stream to allow the user to input an acceptable value
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
     }
 }
 

@@ -40,7 +40,7 @@ public:
     void gamePlay();
     vector<Player *> getPlayers();
     int getTableBuyIn();
-    void getNumPlayers();
+    void getNumPlayers(int userGameTypeChoice);
     void getAmountMoney();
     void getMinBet();
     void discard(Card *);
