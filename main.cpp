@@ -36,7 +36,7 @@ void printInstructions(){
                 "\t- \"surrender\" (at the beginning of your turn, lose half of your bet and end your turn)\n\n";
 
     cout << "- At the end of the round the dealer will play. If they bust (go above 21), you win, and the dealer will pay you 1:1 what you originally bet.\n"
-            "- If a player gets a hand total over 21, they bust and automatically lose the round and their bet.\n";
+            "- If a player gets a hand total over 21, they bust and automatically lose the round and their bet.\n"
             "- If the dealer doesn't bust but is higher than your hand total, the dealer wins and keeps your bet.\n"
             "- If the dealer doesn't bust and is lower than your hand total, the dealer loses and will pay you 1:1 what you originally bet.\n"
             "- If you and the dealer have the same hand totals, there is a tie and no money is paid out.\n\n";
@@ -44,7 +44,7 @@ void printInstructions(){
     cout << "- A \"natural\" is when a player is initially dealt 21 in their first two cards.\n"
                 "\t - If the player has a natural, they win 1.5 times their original bet.\n"
                 "\t - If the dealer has a natural, the round ends and the dealers takes all bets.\n"
-                "\t - If both the player and dealer have a neutral, there is a tie and no money is paid out.\n\n";
+                "\t - If both the player and dealer have a natural, there is a tie and no money is paid out.\n\n";
 
 //    cout << "- If the dealer is showing an Ace, a player can \"purchase insurance\", which costs half of your bet \n"
 //                "\t - If the dealer has a natural 21, then the player loses the original bet but is paid 2:1 on the insurance bet\n"
