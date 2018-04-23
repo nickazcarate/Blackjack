@@ -38,13 +38,14 @@ void Game::runPlayingMode() {
     getMinBet();
 
     lastRoundShuffled = 0;
-
+    vector<string> names = {"You", "RandomBot", "SuperCounterBot", "ModerateCounterBot", "BasicStrategyBot1", "BasicStrategyBot2"};
     for(int i = 0; i < numPlayers; i++){
-        players.push_back(new Player(amountMoney, i)); //creates the number of other players desired
+        players.push_back(new Player(amountMoney, i, names[i])); //creates the number of other players desired
     }
     random_shuffle(players.begin(), players.end(), myRandom1); //shuffles the players to have random placement around the table
+
     //add dealer as the last person in the vector
-    players.push_back(new Player(0, 6));
+    players.push_back(new Player(0, 6, "Dealer"));
 
     // passes the number of decks in to each player
     // used by card counting bots
@@ -321,13 +322,14 @@ void Game::runSimulationMode() {
     getMinBet();
 
     lastRoundShuffled = 0;
+    vector<string> names = {"You", "RandomBot", "SuperCounterBot", "ModerateCounterBot", "BasicStrategyBot1", "BasicStrategyBot2"};
 
     for(int i = 1; i < numPlayers; i++){
-        players.push_back(new Player(amountMoney, i)); //creates the number of other players desired
+        players.push_back(new Player(amountMoney, i, names[i])); //creates the number of other players desired
     }
     random_shuffle(players.begin(), players.end(), myRandom1); //shuffles the players to have random placement around the table
     //add dealer as the last person in the vector
-    players.push_back(new Player(0, 6));
+    players.push_back(new Player(0, 6, "Dealer"));
 
     // passes the number of decks in to each player
     // used by card counting bots

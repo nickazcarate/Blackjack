@@ -22,6 +22,7 @@ private:
     int gamesTied;
     bool hasNatural;
     vector<Card *> hand;
+    string playerName;
     int playerIdentity;
         // 0 = user, 1 = random choices, 2 = incredible card counter, 3 = pretty good card counter,
         // 4 = basic card strategy SOFT , 5 = basic card strategy hard;), 6 = dealer
@@ -38,7 +39,7 @@ private:
     int curBet; // stores the player's most recent bet to see if they can double down
 
 public:
-    Player(int money, int playerIdentity);
+    Player(int money, int playerIdentity, string name);
     int getMoney();
     vector<Card *> getHand();
     void wonGame();
@@ -63,6 +64,7 @@ public:
     void giveCard(Card *);
     int getBet(int tableBuyIn);
     int getPlayerIdentity();
+    string getPlayerName();
     vector<int> getHandTotals();
     int getBestHand();
     void cardCount(Card *);

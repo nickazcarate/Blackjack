@@ -36,11 +36,16 @@ int Player::getPlayerIdentity(){
     return this->playerIdentity;
 }
 
+string Player::getPlayerName(){
+    return this->playerName;
+}
+
 // Initialize the Player Object
-Player::Player(int money, int playerIdentity) {
+Player::Player(int money, int playerIdentity, string playerName) {
 
     this->money = money;
     this->playerIdentity = playerIdentity;
+    this->playerName = playerName;
     gamesWon = 0;
     gamesLost = 0;
     gamesTied = 0;
