@@ -124,7 +124,33 @@ void beginTutorial()
 
 void beginMenu(){
     bool programRun = true;
-    cout << "\nWelcome to BlackJack!\n\n";
+    int sleepTime = 100;
+    cout << "\nWelcome to BlackJack!\n\n"
+            "The object of the game is to beat the dealer by getting a hand total as close to 21 as possible, without going over 21\n"
+            "\tIn order to enhance the user experience, we have included bots for you to play against so you can see how well you match up against them!\n"
+            "\tBot 1: Randomly chooses to stand, hit, or double down\n"
+            "\tBot 2: An incredible card counter that remembers each card that has been dealt before the deck is reshuffled!\n"
+            "\tBot 3: A weaker card counter that uses the traditional halves method for tracking the running count of the table\n"
+            "\tBot 4: Uses a traditional playing strategy for when they have a \"soft\" hand\n"
+            "\tBot 5: Uses a traditional playing strategy for when they have a \"hard\" hand\n"
+            "\t\tWe hope you enjoy!\n\n";
+    cout << "\n";
+    this_thread::sleep_for(chrono::milliseconds(250));
+    cout << "     .-~~-.             /\\               /\\           .-~~~-__-~~~-. \n";
+    this_thread::sleep_for(chrono::milliseconds(sleepTime));
+    cout << "    {      }          .'  `.           .'  `.        {              }\n";
+    this_thread::sleep_for(chrono::milliseconds(sleepTime));
+    cout << " .-~-.    .-~-.     .'      `.        '      `.       `.          .' \n";
+    this_thread::sleep_for(chrono::milliseconds(sleepTime));
+    cout << "{              }   <          >    .'          `.       `.      .'   \n";
+    this_thread::sleep_for(chrono::milliseconds(sleepTime));
+    cout << " `.__.'||`.__.'     `.      .'    {              }        `.  .'     \n";
+    this_thread::sleep_for(chrono::milliseconds(sleepTime));
+    cout << "       ||             `.  .'       ~-...-||-...-~           \\/      \n";
+    this_thread::sleep_for(chrono::milliseconds(sleepTime));
+    cout << "      '--`              \\/               ||                          \n";
+    this_thread::sleep_for(chrono::milliseconds(sleepTime));
+    cout << "                                        '--`                         \n";
     while (programRun) {
         cout << "You may run either:\n";
         cout << "\t1) Playing mode: play rounds of Blackjack against a dealer and other players\n";
