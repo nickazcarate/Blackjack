@@ -75,6 +75,8 @@ public:
     bool getEndTurn();
     void clearHand();
     bool canBet(int bet);
+    void printHand();
+    void printTop();
 };
 
 #endif //BLACKJACK_PLAYER_H

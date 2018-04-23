@@ -160,10 +160,8 @@ int Player::takeTurn(Card * dealersTop) {
     // Human Player
     if (playerIdentity == 0) {
         while (true) {
-            cout << "\nYour current hand is: ";
-            for (Card *c : hand) {
-                cout << c->getValue() << " ";
-            }
+            cout << "\nYour current hand is: \n";
+            printHand();
             cout << "\t Hand total: " << getBestHand();
             if (hand.size() == 2) {
                 cout << "\n\nWhat would you like to do? (1 for stand 2 for hit, 3 for double down, 4 for surrender): ";
@@ -606,4 +604,105 @@ void Player::clearHand() {
 // Checks whether the play can bet a certain amount (if they have enough money)
 bool Player::canBet(int bet) {
     return (bet <= money);
+}
+
+void Player::printHand() {
+    string line1;
+    string line2;
+    string line3;
+    string line4;
+    string line5;
+    string line6;
+    string line7;
+    string line8;
+    string line9;
+
+    for (Card * card : hand) {
+        line1 += "┌─────────┐";
+        if (card->getValue() != "10")
+            line2 += "│" + card->getValue() + "        │";
+        else
+            line2 += "│" + card->getValue() + "       │";
+        line3 += "│         │";
+        line4 += "│         │";
+        if (card->getSuit() == "Spades")
+            line5 += "│    ♠    │";
+        else if (card->getSuit() == "Diamonds")
+            line5 += "│    ♦    │";
+        else if (card->getSuit() == "Hearts")
+            line5 += "│    ♥    │";
+        else
+            line5 += "│    ♣    │";
+        line6 += "│         │";
+        line7 += "│         │";
+        if (card->getValue() != "10")
+            line8 += "│        " + card->getValue() + "│";
+        else
+            line8 += "│       " + card->getValue() + "│";
+        line9 += "└─────────┘";
+    }
+    cout << line1 << "\n" << line2 << "\n" << line3 << "\n" << line4 << "\n" << line5 << "\n" << line6 << "\n" << line7 << "\n" << line8 << "\n" << line9 << endl;
+
+/*
+ *  '┌─────────┐\n'
+ *  '│{}       │\n'
+ *  '│         │\n'
+ *  '│         │\n'
+ *  '│    {}   │\n'
+ *  '│         │\n'
+ *  '│         │\n'
+ *  '│       {}│\n'
+ *  '└─────────┘\n'
+ */
+
+}
+
+void Player::printTop() {
+    string line1;
+    string line2;
+    string line3;
+    string line4;
+    string line5;
+    string line6;
+    string line7;
+    string line8;
+    string line9;
+
+    Card * card = hand.at(0);
+
+    line1 += "┌─────────┐";
+    if (card->getValue() != "10")
+        line2 += "│" + card->getValue() + "        │";
+    else
+        line2 += "│" + card->getValue() + "       │";
+    line3 += "│         │";
+    line4 += "│         │";
+    if (card->getSuit() == "Spades")
+        line5 += "│    ♠    │";
+    else if (card->getSuit() == "Diamonds")
+        line5 += "│    ♦    │";
+    else if (card->getSuit() == "Hearts")
+        line5 += "│    ♥    │";
+    else
+        line5 += "│    ♣    │";
+    line6 += "│         │";
+    line7 += "│         │";
+    if (card->getValue() != "10")
+        line8 += "│        " + card->getValue() + "│";
+    else
+        line8 += "│       " + card->getValue() + "│";
+    line9 += "└─────────┘";
+
+    line1 += "┌─────────┐";
+    line2 += "│░░░░░░░░░│";
+    line3 += "│░░░░░░░░░│";
+    line4 += "│░░░░░░░░░│";
+    line5 += "│░░░░░░░░░│";
+    line6 += "│░░░░░░░░░│";
+    line7 += "│░░░░░░░░░│";
+    line8 += "│░░░░░░░░░│";
+    line9 += "└─────────┘";
+
+    cout << line1 << "\n" << line2 << "\n" << line3 << "\n" << line4 << "\n" << line5 << "\n" << line6 << "\n" << line7 << "\n" << line8 << "\n" << line9 << endl;
+
 }

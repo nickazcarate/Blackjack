@@ -53,7 +53,6 @@ public:
     void surrender(Player * p);
     Player * findPlayer(int playerIdentity);
     int findPlayerSeat(Player * p);
-
 };
 
 
