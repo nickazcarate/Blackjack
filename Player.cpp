@@ -164,10 +164,10 @@ int Player::takeTurn(Card * dealersTop) {
             printHand();
             cout << "\t Hand total: " << getBestHand();
             if (hand.size() == 2) {
-                cout << "\n\nWhat would you like to do? (1 for stand 2 for hit, 3 for double down, 4 for surrender): ";
+                cout << "\n\nWhat would you like to do? (1 for stand, 2 for hit, 3 for double down, 4 for surrender): ";
             }
             else {
-                cout << "\n\nWhat would you like to do? (1 for stand 2 for hit): ";
+                cout << "\n\nWhat would you like to do? (1 for stand, 2 for hit): ";
             }
             string temp;
             cin >> temp;
