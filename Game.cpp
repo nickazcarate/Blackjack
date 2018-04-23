@@ -8,17 +8,11 @@
 #include "Game.h"
 
 Game::Game(int userGameTypeChoice){
-    getNumPlayers(userGameTypeChoice);
-    while (userGameTypeChoice == 2 && numPlayers <= 1) {
-        cout << "Invalid input, you must have at least one other player for simulation mode.\n";
-        getNumPlayers(userGameTypeChoice);
-    }
+    getNumPlayers();
     getAmountMoney();
     getMinBet();
-
     unusedPile = new DeckStack(6);
     discardPile = new DeckStack(0);
-    bets = *(new vector<int> (numPlayers));
     surrendered = *(new vector <bool> (numPlayers));
 
     if(userGameTypeChoice == 1){
@@ -102,10 +96,11 @@ void Game::runPlayingMode() {
     // goes as long as the user has enough money for another round
     while (players.at(userIndex)->getMoney() >= tableBuyIn) {
         roundCounter++;
-        bets = *(new vector<int> (numPlayers));
-        surrendered = *(new vector <bool> (numPlayers));
-
         cout << "\nStarting Round #" <<roundCounter << ":\n\n";
+        //stores player's bets
+        vector<int> bets(numPlayers);
+        vector<bool> surrendered(numPlayers);
+        cout << "\nStarting Round #" <<roundCounter << ":\n";
 
         // deals two cards to every player
         for (Player* p : players) {
@@ -118,14 +113,15 @@ void Game::runPlayingMode() {
         // checks if the dealer has a natural, if he does, boolean is tripped no one plays the round
         bool dealerHasNatural = dealer->getBestHand() == 21;
 
+
+
         // adds p's bet to bets
-        for (int i = 0; i < players.size() - 1; i++) {
-            bets.at(i) = players.at(i)->getBet(tableBuyIn);
+        for (int i = 0; i < players.size(); i++) {
+            if (players.at(i)->getPlayerIdentity() != 0)
+                bets.at((players.at(i)->getBet(tableBuyIn)));
         }
 
-        cout << "The dealer shows: \n";
-        dealer->printTop();
-        this_thread::sleep_for(chrono::milliseconds(sleepTime));
+        cout << "The dealer's top card is: " << dealer->getHand().at(0)->getValue() << endl;
 
         // each player takes turn
         for (int i = 0; i < players.size(); i++) {
@@ -150,16 +146,18 @@ void Game::runPlayingMode() {
                 p->setNatural(true);                    // mark they have a natural
                 if (i == userIndex)        // if you are the human player
                 {
-                    cout << "\nYour current hand is: \n";
-                    p->printHand();
-                    this_thread::sleep_for(chrono::milliseconds(sleepTime));
+                    cout << "\nYour current hand is: ";
+                    for (Card * c : p->getHand()) {
+                        cout << c->getValue() << " ";
+                    }
                     cout << "\nYou have 21!\n";
                     this_thread::sleep_for(chrono::milliseconds(sleepTime));
                 }
                 else  { // for the bots and the dealer
-                    cout << "\n" << name << "'s current hand is: \n";
-                    p->printHand();
-                    this_thread::sleep_for(chrono::milliseconds(sleepTime));
+                    cout << "\n" << name << "'s current hand is: ";
+                    for (Card * c : p->getHand()) {
+                        cout << c->getValue() << " ";
+                    }
                     cout << "\n" << name << " has 21!\n";
                     this_thread::sleep_for(chrono::milliseconds(sleepTime));
                 }
@@ -170,16 +168,18 @@ void Game::runPlayingMode() {
             {
                 if (p->getPlayerIdentity() == 0)        // if you are the human player
                 {
-                    cout << "\nYour current hand is: \n";
-                    p->printHand();
-                    this_thread::sleep_for(chrono::milliseconds(sleepTime));
+                    cout << "\nYour current hand is: ";
+                    for (Card *c : p->getHand()) {
+                        cout << c->getValue() << " ";
+                    }
                     cout << "\t Hand total: " << p->getBestHand();
                     this_thread::sleep_for(chrono::milliseconds(sleepTime));
                 }
                 else if (i != players.size() - 1) { // for the bots, not the dealer
-                    cout << name << "'s current hand is: \n";
-                    p->printHand();
-                    this_thread::sleep_for(chrono::milliseconds(sleepTime));
+                    cout << name << "'s current hand is: ";
+                    for (Card * c : p->getHand()) {
+                        cout << c->getValue() << " ";
+                    }
                     cout << "\t Hand total: " << p->getBestHand();
                     this_thread::sleep_for(chrono::milliseconds(sleepTime));
                 }
@@ -191,17 +191,19 @@ void Game::runPlayingMode() {
                     //getHandTotals().at(0) is the baseTotal, which is the lowest possible total
                     //if this total is already > 21, then the player busts (is out of the round)
                     if(p->getPlayerIdentity() == 0) {
-                        cout << "\nYour current hand is: \n";
-                        p->printHand();
-                        this_thread::sleep_for(chrono::milliseconds(sleepTime));
+                        cout << "\nYour current hand is: ";
+                        for (Card *c : p->getHand()) {
+                            cout << " " << c->getValue();
+                        }
                         cout << "\t Hand total: " << p->getBestHand() << endl;
                         cout << "\nYou bust! :(\n";
                         this_thread::sleep_for(chrono::milliseconds(sleepTime));
                     }
                     else if (i != players.size() - 1) { // for the bots, not the dealer
-                        cout << "\n" << name << "'s current hand is: \n";
-                        p->printHand();
-                        this_thread::sleep_for(chrono::milliseconds(sleepTime));
+                        cout << "\n" << name << "'s current hand is: ";
+                        for (Card * c : p->getHand()) {
+                            cout << c->getValue() << " ";
+                        }
                         cout << "\t Hand total: " << p->getBestHand();
                         cout << "\n" << name << " busts!\n";
                         this_thread::sleep_for(chrono::milliseconds(sleepTime));
@@ -210,15 +212,17 @@ void Game::runPlayingMode() {
                 }
                 else if (p->getBestHand() == 21) {
                     if(p->getPlayerIdentity() == 0) {
-                        cout << "\nYour current hand is: \n";
-                        p->printHand();
-                        this_thread::sleep_for(chrono::milliseconds(sleepTime));
+                        cout << "\nYour current hand is: ";
+                        for (Card * c : p->getHand()) {
+                            cout << " " << c->getValue();
+                        }
                         cout << "\tYou got 21!\n";
                     }
                     else if (i != players.size() - 1) { // for the bots, not the dealer
-                        cout << "\n" << name << "'s current hand is: \n";
-                        p->printHand();
-                        this_thread::sleep_for(chrono::milliseconds(sleepTime));
+                        cout << "\n" << name << "'s current hand is: ";
+                        for (Card * c : p->getHand()) {
+                            cout << c->getValue() << " ";
+                        }
                         cout << "\t" << name << " got 21!\n";
                         this_thread::sleep_for(chrono::milliseconds(sleepTime));
                     }
@@ -230,9 +234,10 @@ void Game::runPlayingMode() {
                     int playerAction = p->takeTurn(players.at(players.size() - 1)->getHand().at(0));
 
                     if (i != userIndex) { // for the bots and the dealer
-                        cout << "\n" << name << "'s current hand is: \n";
-                        p->printHand();
-                        this_thread::sleep_for(chrono::milliseconds(sleepTime));
+                        cout << "\n" << name << "'s current hand is: ";
+                        for (Card *c : p->getHand()) {
+                            cout << c->getValue() << " ";
+                        }
                         cout << "\t Hand total: " << p->getBestHand();
                         this_thread::sleep_for(chrono::milliseconds(sleepTime));
                     }
@@ -254,10 +259,15 @@ void Game::runPlayingMode() {
                             break;
                         case 3: // double down
                             doubleDown(p);
+                            /*
+                            p->giveCard(unusedPile->getTopCard()); //places card into player's hand and then deletes the card
+                            discard(unusedPile->removeTopCard()); //places card in discardPile cardStack
+                            bets.at(i) = bets.at(i) * 2;
                             if(p->getPlayerIdentity() == 0) {
-                                cout << "\nYour hand is: \n";
-                                p->printHand();
-                                this_thread::sleep_for(chrono::milliseconds(sleepTime));
+                                cout << "\nYour current hand is: ";
+                                for (Card *c : p->getHand()) {
+                                    cout << c->getValue() << " ";
+                                }
                                 cout << "\t Hand total: " << p->getBestHand() << endl;
                                 if (p->getBestHand() > 21) {
                                     cout << "You bust! :(";
@@ -267,69 +277,78 @@ void Game::runPlayingMode() {
                             else { // for the bots, not the dealer
                                 cout << "\n" << name << " is doubling down.\n";
                                 this_thread::sleep_for(chrono::milliseconds(sleepTime));
-                                cout << "\n" << name << "'s hand is: \n";
-                                p->printHand();
-                                this_thread::sleep_for(chrono::milliseconds(sleepTime));
+                                cout << "\n" << name << "'s current hand is: ";
+                                for (Card *c : p->getHand()) {
+                                    cout << c->getValue() << " ";
+                                }
                                 cout << "\t Hand total: " << p->getBestHand() << endl;
                                 if (p->getBestHand() > 21) {
                                     cout << "\n" << name << " busts!";
                                 }
                                 this_thread::sleep_for(chrono::milliseconds(sleepTime));
                             }
+                            endTurn = true;
                             break;
+                             */
                         case 4: // surrender
                             surrender(p);
-                            cout << "You surrendered.\n";
                             break;
                     }
                 }
             }
         }
 
+        cout << "\nThe dealer's hand is: ";
+        for (Card *c : dealer->getHand()) {
+            cout << c->getValue() << " ";
+        }
+        cout << "\t Hand total: " << dealer->getBestHand() << endl;
+        this_thread::sleep_for(chrono::milliseconds(sleepTime));
+
         cout << "\n************************************************************************************************\n";
 
         cout << "\nThe dealer's hand is: ";
-        for (Card * card : dealer->getHand()) {
-            cout << card->getValue() << " ";
+        for (Card *c : dealer->getHand()) {
+            cout << c->getValue() << " ";
         }
-        cout << "\t Hand total: " << dealer->getBestHand() << "\n";
+        cout << "\t Hand total: " << dealer->getBestHand() << endl;
         this_thread::sleep_for(chrono::milliseconds(sleepTime));
 
         // runs through each player and compares their hand to the dealer
         for (int i = 0; i < players.size() - 1; i++) {
-
+            this_thread::sleep_for(chrono::milliseconds(sleepTime));
             Player * player = players.at(i);
             string name = player->getPlayerName();
 
             if(player->getPlayerIdentity() == 0) {
                 cout << "\nYour hand is: ";
-                for (Card * card : player->getHand()) {
-                    cout << card->getValue() << " ";
+                for (Card *c : player->getHand()) {
+                    cout << " " << c->getValue();
                 }
                 cout << "\t Hand total: " << player->getBestHand();
             }
             else if (i != players.size() - 1) { // for the bots, not the dealer
                 cout << "\n" << name << "'s hand is: ";
-                for (Card * card : player->getHand()) {
-                    cout << card->getValue() << " ";
+                for (Card * c : player->getHand()) {
+                    cout << c->getValue() << " ";
                 }
                 cout << "\t Hand total: " << player->getBestHand();
             }
 
             // if the player busts, remove their bet from their money
             // and give it to the dealer
-            if (player->getBestHand() > 21 || surrendered.at(i)) {
+            if (player->getBestHand() > 21 or surrendered.at(i)) {
 
                 if (player->getPlayerIdentity() == 0 and surrendered.at(i)) {
-                    cout << "\nYou surrendered. You lose $" << bets.at(i) << "!\n";
+                    cout << "\nYou surrendered. You lose!\n";
                     this_thread::sleep_for(chrono::milliseconds(sleepTime));
                 }
                 else if (player->getPlayerIdentity() == 0){
-                    cout << "\nYou busted. You lose $" << bets.at(i) << "!\n";
+                    cout << "\nYou busted. You lose!\n";
                     this_thread::sleep_for(chrono::milliseconds(sleepTime));
                 }
                 else if (i != players.size() - 1) { // for the bots, not the dealer
-                    cout << "\n" << name << " busted. They lose $" << bets.at(i) << "!\n";
+                    cout << "\n" << name << " busted. They lose!\n";
                     this_thread::sleep_for(chrono::milliseconds(sleepTime));
                 }
 
@@ -362,11 +381,11 @@ void Game::runPlayingMode() {
                     dealer->updateMoney(bets.at(i));
                     player->lostGame();
                     if (player->getPlayerIdentity() == 0) {
-                        cout << "\nThe dealer has a natural and you don't. You lose $" << bets.at(i) << "!\n";
+                        cout << "\nThe dealer has a natural and you don't. You lose!\n";
                         this_thread::sleep_for(chrono::milliseconds(sleepTime));
                     }
                     else if (i != players.size() - 1) { // for the bots, not the dealer
-                        cout << "\nThe dealer has a natural and " << name << " doesn't. They lose $" << bets.at(i) << "!\n";
+                        cout << "\nThe dealer has a natural and " << name << " doesn't. They lose!\n";
                         this_thread::sleep_for(chrono::milliseconds(sleepTime));
                     }
                 }
@@ -380,11 +399,11 @@ void Game::runPlayingMode() {
                 dealer->updateMoney((bets.at(i) * -3)/2);
                 player->wonGame();
                 if(player->getPlayerIdentity()== 0) {
-                    cout << "\nYou got a natural and the dealer didn't. You win $" << bets.at(i) << "!\n";
+                    cout << "\nYou got a natural and the dealer didn't. You win!\n";
                     this_thread::sleep_for(chrono::milliseconds(sleepTime));
                 }
                 else if (i != players.size() - 1) { // for the bots, not the dealer
-                    cout << "\n" << name << " got a natural and the dealer didn't. They win $" << bets.at(i) << "!\n";
+                    cout << "\n" << name << " got a natural and the dealer didn't. They win!\n";
                     this_thread::sleep_for(chrono::milliseconds(sleepTime));
                 }
             }
@@ -397,36 +416,36 @@ void Game::runPlayingMode() {
                 player->wonGame();
                 if (player->getPlayerIdentity() == 0) {
                     if (dealer->getBestHand() > 21) {
-                        cout << "\nDealer busts. You win $" << bets.at(i) << "!\n";
+                        cout << "\nDealer busts. You win!\n";
                         this_thread::sleep_for(chrono::milliseconds(sleepTime));
                     }
                     else if (player->getBestHand() > dealer->getBestHand()) {
-                        cout << "\nYour hand is better than the dealer's. You win $" << bets.at(i) << "!\n";
+                        cout << "\nYour hand is better than the dealer's. You win!\n";
                         this_thread::sleep_for(chrono::milliseconds(sleepTime));
                     }
                 }
                 else if (i != players.size() - 1) { // for the bots, not the dealer
                     if (dealer->getBestHand() > 21) {
-                        cout << "\nDealer busts. " << name << " wins $" << bets.at(i) << "!\n";
+                        cout << "\nDealer busts. " << name << " wins!\n";
                         this_thread::sleep_for(chrono::milliseconds(sleepTime));
                     }
                     else if (player->getBestHand() > dealer->getBestHand()) {
-                        cout << "\n" << name << "'s hand is better than the dealer's. They win $" << bets.at(i) << "!\n";
+                        cout << "\n" << name << "'s hand is better than the dealer's. They win!\n";
                         this_thread::sleep_for(chrono::milliseconds(sleepTime));
                     }
                 }
             }
-            // else if the dealer wins, settle bets
+                // else if the dealer wins, settle bets
             else if (dealer->getBestHand() > player->getBestHand()) {
                 player->updateMoney(bets.at(i) * -1);
                 dealer->updateMoney(bets.at(i));
                 player->lostGame();
                 if (player->getPlayerIdentity() == 0) {
-                    cout << "\nThe dealer's hand is better yours. You lose $" << bets.at(i) << "!\n";
+                    cout << "\nThe dealer's hand is better yours. You lose!\n";
                     this_thread::sleep_for(chrono::milliseconds(sleepTime));
                 }
                 else if (i != players.size() - 1) { // for the bots, not the dealer
-                    cout << "\nThe dealer's hand is better " << name << "'s. They lose $" << bets.at(i) << "!\n";
+                    cout << "\nThe dealer's hand is better " << name << "'s. They lose!\n";
                     this_thread::sleep_for(chrono::milliseconds(sleepTime));
                 }
 
@@ -453,24 +472,6 @@ void Game::runPlayingMode() {
         cout << "\n************************************************************************************************\n";
 
         while (true) {
-            if (players.at(userIndex)->getMoney() < tableBuyIn)
-            {
-                cout << "\nYou ran out of money! :(\n\n";
-                this_thread::sleep_for(chrono::milliseconds(sleepTime));
-                for (int i = 0; i < numPlayers; i++) {
-                    Player * p = findPlayer(i);
-                    cout << "\n" << p->getPlayerName() << ":\n";
-                    cout << "Total money: " << p->getMoney();
-                    cout << "\nWon games: " << p->getWins();
-                    cout << "\nLost games: " << p->getLosses();
-                    cout << "\nTied games: " << p->getTies();
-                    if (p->getLosses() != 0 || p->getWins() != 0) // prevents divide by zero error
-                        cout << "\nWin percent: " << p->getWins() * 100 / (p->getLosses() + p->getWins()) << "%";
-                    cout << "\nTotal rounds: " << p->getWins() + p->getLosses() + p->getTies() << endl;
-                    this_thread::sleep_for(chrono::milliseconds(sleepTime));
-                }
-                return;
-            }
             cout << "\nWould you like to keep playing? (0 for no, 1 for yes) ";
             string keepPlaying;
             cin >> keepPlaying;
@@ -480,7 +481,7 @@ void Game::runPlayingMode() {
             if (keepPlaying == "0") {
                 for (int i = 0; i < numPlayers; i++) {
                     Player * p = findPlayer(i);
-                    cout << "\n" << p->getPlayerName() << ":\n";
+                    cout << "Player " << p->getPlayerIdentity() << ":\n";
                     cout << "Total money: " << p->getMoney();
                     cout << "\nWon games: " << p->getWins();
                     cout << "\nLost games: " << p->getLosses();
@@ -488,15 +489,13 @@ void Game::runPlayingMode() {
                     if (p->getLosses() != 0 || p->getWins() != 0) // prevents divide by zero error
                         cout << "\nWin percent: " << p->getWins() * 100 / (p->getLosses() + p->getWins()) << "%";
                     cout << "\nTotal rounds: " << p->getWins() + p->getLosses() + p->getTies() << endl;
-                    this_thread::sleep_for(chrono::milliseconds(sleepTime));
                 }
                 return;
             }
             else if (keepPlaying == "1") {
-                if (roundCounter - lastRoundShuffled > 6) {
-                    unusedPile = new DeckStack(6);
-                    discardPile = new DeckStack(0);
-                    lastRoundShuffled = roundCounter;
+                if (players.at(userIndex)->getMoney() < tableBuyIn)
+                {
+                    cout << "\nToo bad, you ran out of money! :(\n";
                 }
                 break;
             }
@@ -504,6 +503,23 @@ void Game::runPlayingMode() {
                 cout << "Invalid input, please enter 0 or 1\n";
             }
         }
+
+        if (roundCounter - lastRoundShuffled > 6) {
+            unusedPile = new DeckStack(6);
+            discardPile = new DeckStack(0);
+            lastRoundShuffled = roundCounter;
+        }
+    }
+    for (int i = 0; i < numPlayers; i++) {
+        Player * p = findPlayer(i);
+        cout << "Player " << p->getPlayerIdentity() << ":\n";
+        cout << "Total money: " << p->getMoney();
+        cout << "\nWon games: " << p->getWins();
+        cout << "\nLost games: " << p->getLosses();
+        cout << "\nTied games: " << p->getTies();
+        if (p->getLosses() != 0 || p->getWins() != 0) // prevents divide by zero error
+            cout << "\nWin percent: " << p->getWins() * 100 / (p->getLosses() + p->getWins()) << "%";
+        cout << "\nTotal rounds: " << p->getWins() + p->getLosses() + p->getTies() << endl;
     }
 }
 
@@ -536,9 +552,8 @@ void Game::runSimulationMode() {
         }
 
         roundCounter++;
-
-        bets = *(new vector<int> (numPlayers));
-        surrendered = *(new vector <bool> (numPlayers));
+        //stores player's bets
+        vector<int> bets;
 
         // stores the dealer
         Player * dealer = players.at(players.size() - 1);
@@ -558,7 +573,7 @@ void Game::runSimulationMode() {
         for (int i = 0; i < players.size(); i++) {
             Player * p = players.at(i);
             // adds p's bet to bets
-            bets.at(i) = p->getBet(tableBuyIn);
+            bets.push_back(p->getBet(tableBuyIn));
             p->setEndTurn(false);
             p->setNatural(false);                       // sets that the player does not have a natural at the beginning of the turn
             if (p->getBestHand() == 21)                 // if you start with 21
@@ -679,7 +694,7 @@ void Game::runSimulationMode() {
 
     for (int i = 1; i < numPlayers; i++) {
         Player * p = findPlayer(i);
-        cout << "\n" << p->getPlayerName() << ":";
+        cout << "\nPlayer " << p->getPlayerIdentity() << ":";
         cout << "\nTotal money: " << p->getMoney();
         cout << "\nWon games: " << p->getWins();
         cout << "\nLost games: " << p->getLosses();
@@ -706,59 +721,32 @@ int Game::getTableBuyIn(){
     return this->tableBuyIn;
 }
 
-void Game::getNumPlayers(int userGameTypeChoice) {
-    if (userGameTypeChoice == 1) {
-        cout << "\nHow many other players do you want in the game?\n";
-        cout << "Enter an integer from 0 to 5: ";
+void Game::getNumPlayers() {
+    cout << "\nHow many other players do you want in the game?\n";
+    cout << "Enter an integer from 0 to 5: ";
+    string input;
 
-        while (true) {
-            cin >> numPlayers;
+    while(true) {
+        cin >> input;
 
-            cin.clear(); //clear the input stream
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cin.clear(); //clear the input stream
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
+        // Check for valid user input
+        if (input == "0" || input == "1" || input == "2" || input == "3" || input == "4" || input == "5") {
+            numPlayers = stoi(input); //converts the char to the int value
             numPlayers++; // adding a player to account for the user running the game
-
-            // Check for valid user input
-            if (numPlayers > 0 && numPlayers < 7) {
-                return; // this is a valid input
-            }
-            cout << "\nInvalid input. Please enter an integer from 0 to 5: ";
-
-            // clears the input stream to allow the user to input an acceptable value
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            return; // this is a valid input
         }
-    }
-
-    else {
-        cout << "\nHow many players do you want in the game?\n";
-        cout << "Enter an integer from 1 to 5: ";
-
-        while (true) {
-            cin >> numPlayers;
-
-            cin.clear(); //clear the input stream
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-            numPlayers++; // adding a player to account for the user running the game
-
-            // Check for valid user input
-            if (numPlayers > 1 && numPlayers < 7) {
-                return; // this is a valid input
-            }
-            cout << "\nInvalid input. Please enter an integer from 1 to 5: ";
-
-            // clears the input stream to allow the user to input an acceptable value
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        else{
+            cout << "\nInvalid input. Please enter an integer from 0 to 5: "; //not a digit
         }
     }
 }
 
 void Game::getAmountMoney() {
     cout << "\nHow much money should each player start with?\n";
-    cout << "Enter an integer greater than or equal to $100: ";
+    cout << "Enter an integer between $100 and $1000000: ";
     while (true) {
         cin >> amountMoney;
 
@@ -766,15 +754,11 @@ void Game::getAmountMoney() {
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
         // Check for valid user input
-        if (amountMoney >= 100) {
+        if (amountMoney >= 100 && amountMoney <= 1000000) {
             return; //this is a valid input
         }
         else {
-            cout << "\nInvalid input. Please enter an integer greater than or equal to $100: ";
-
-            // clears the input stream to allow the user to input an acceptable value
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "\nInvalid input. Please enter an integer between $100 and $1000000: ";
         }
     }
 }
@@ -786,25 +770,14 @@ void Game::getMinBet() {
         cin >> tableBuyIn;
         cin.clear(); //clear the input stream
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
         // Check for valid user input
         if ((tableBuyIn >= 2) && (tableBuyIn <= 500) && (tableBuyIn <= amountMoney)) {
             return; // this is a valid input
         }
-        else {                                  // if input is not valid, generally says "invalid input"
-            cout << "\nInvalid input, enter an integer between $2 and $500 (and below player's starting money): ";
 
-            // clears the input stream to allow the user to input an acceptable value
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            // prints error that input is above player's starting money
-            if (tableBuyIn < amountMoney) {
-                cout << " Please make sure the integer is below player's starting money.\n";
-            }
-            // prints error that input is not b/w $2 and $500
-            if ((tableBuyIn <= 2) && (tableBuyIn >= 500))
-            {
-                cout << " Please make sure the integer is between $2 and $500.\n";
-            }
+        else {                                  // if input is not valid
+            cout << "\nInvalid input, enter an integer between $2 and $500 (and below player's starting money): ";
         }
     }
 }
@@ -837,4 +810,3 @@ Player * Game::findPlayer(int playerIdentity) {
     }
     return NULL;
 }
-

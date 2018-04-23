@@ -19,7 +19,7 @@
 //#include <chrono>
 
 using namespace std;
-int userGameTypeChoice = 0;
+string userGameTypeChoice;
 
 
 void printInstructions(){
@@ -55,67 +55,59 @@ void beginTutorial()
 {
     bool responseBool = true;       // is true when firstTime is not a valid input, turns false when it becomes "Yes" or "No"
     bool learnYes = false;          // tracks if user wants to see rules or not (true for rules, false for no rules)
-    string firstTime;               // holds users response to if it is their first time playing (should be "Yes" or "No")
-    string learnToPlay;             // holds user response to if they would like to learn to play or not (should be "Yes" or "No")
+    string firstTime;               // holds users response to if it is their first time playing (should be "1" or "2")
+    string learnToPlay;             // holds user response to if they would like to learn to play or not (should be "1" or "2")
 
-    cout << "\nIs this your first time playing? (Yes or No): ";
-    cin >> firstTime;
-
-    cin.clear(); //clear the input stream
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-    transform(firstTime.begin(), firstTime.end(), firstTime.begin(), ::tolower);
+    cout << "\nIs this your first time playing? Enter 1 (Yes) or 2 (No): ";
 
     while (responseBool)
     {
-        if (firstTime == "yes")
+        cin >> firstTime;
+
+        cin.clear(); //clear the input stream
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        if (firstTime == "1")
         {
             responseBool = false;           // can now exit the loop asking if it is their first time
             bool responseLearn = true;      // this variable tracks if the user has an appropriate response to "would you like to play"
-            cout << "\nAwesome! Would you like to learn how to play? (Yes or No): ";
-            cin >> learnToPlay;
-
-            cin.clear(); //clear the input stream
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-            transform(learnToPlay.begin(), learnToPlay.end(), learnToPlay.begin(), ::tolower);
+            cout << "\nAwesome! Would you like to learn how to play? Enter 1 (Yes) or 2 (No): ";
 
             while (responseLearn)
             {
-                if (learnToPlay == "yes")
+                cin >> learnToPlay;
+
+                cin.clear(); //clear the input stream
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+                if (learnToPlay == "1")
                 {
                     cout << "\nWonderful! We'll give you a brief overview of the rules and how to play!\n\n";
                     responseLearn = false;       // can now exit the loop asking if they would like to learn how to play
                     learnYes = true;             // activates that they must be given the rules
                 }
-                else if (learnToPlay == "no")
+                else if (learnToPlay == "2")
                 {
                     cout << "\nRisky?! We like it!\n";
                     return;                      // no further action needed. Exit can go to the menu
                 }
                 else
                 {
-                    cout << "\nPlease enter a valid choice.";
-                    cin.clear();        // clears input stream
-                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                    cin >> learnToPlay;
+                    cout << "\nInvalid input, please enter 1 (Yes) or 2 (No): ";
                 }
             }
         }
-        else if (firstTime == "no")
+        else if (firstTime == "2")
         {
             cout << "\nGreat! Let's get right to it then!\n";
             return;                             // no further action needed. Exit can go to the menu
         }
         else
         {
-            cout << "\nPlease enter a valid choice.";
-            cin.clear();                        // clears input stream
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cin >> firstTime;
-            transform(firstTime.begin(), firstTime.end(), firstTime.begin(), ::tolower);
+            cout << "\nInvalid input, please enter 1 (Yes) or 2 (No): ";
         }
     }
+
     if (learnYes)               // if true, states the rules of BlackJack
     {
         printInstructions();
@@ -141,7 +133,7 @@ void printCardSymbols(){
     this_thread::sleep_for(chrono::milliseconds(sleepTime));
     cout << "\t\t\t    {      }     \t\t\t\t     .'  `.      \t\t\t\t      .'  `.      \t\t\t\t  {              }\n";
     this_thread::sleep_for(chrono::milliseconds(sleepTime));
-    cout << "\t\t\t .-~-.    .-~-.  \t\t\t\t   .'      `.    \t\t\t\t     '      `.    \t\t\t\t   `.          .' \n";
+    cout << "\t\t\t .-~-.    .-~-.  \t\t\t\t   .'      `.    \t\t\t\t    .'      `.    \t\t\t\t   `.          .' \n";
     this_thread::sleep_for(chrono::milliseconds(sleepTime));
     cout << "\t\t\t{              } \t\t\t\t  <          >   \t\t\t\t  .'          `.  \t\t\t\t     `.      .'   \n";
     this_thread::sleep_for(chrono::milliseconds(sleepTime));
@@ -172,36 +164,28 @@ void beginMenu(){
 
     printCardSymbols();
 
-    while (programRun) {
         cout << "You may run either:\n";
         cout << "\t1) Playing mode: play rounds of Blackjack against a dealer and other players\n";
         cout << "\t2) Simulation mode: run many simulations to test effectiveness of playing styles between our bots\n";
-
         cout << "Enter 1 or 2: ";
+
+    while(programRun){
         cin >> userGameTypeChoice;
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
         //Check for valid user input
-        switch (userGameTypeChoice) {
-            case 1: {
-                //Exit loop with valid input
-                beginTutorial();            // asks the user if they would like to hear the rules of blackjack
-                programRun = false;
-                break;
-            }
+        if(userGameTypeChoice == "1"){
+            //Exit loop with valid input
+            beginTutorial();            // asks the user if they would like to hear the rules of blackjack
+            break;
+        }
 
-            case 2: {
-                //Exit loop with valid input
-                programRun = false;
-                break;
-            }
-            default: {
-                cout << "\nInvalid input, please enter a 1 or 2: ";
-                //clears the input stream to allow the user to input an acceptable value
-                cin.clear();
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            }
+        else if (userGameTypeChoice == "2"){
+            //Exit loop with valid input
+            break;
+        }
+        else{
+            cout << "\nInvalid input, please enter a 1 or 2: ";
         }
     }
 }
@@ -209,5 +193,6 @@ void beginMenu(){
 int main() {
     srand (unsigned (time(0)));
     beginMenu();                // asks the user which mode they want to run (playing or simulation)
-    Game game(userGameTypeChoice);
+    int choice = stoi(userGameTypeChoice);
+    Game game(choice);
 }
