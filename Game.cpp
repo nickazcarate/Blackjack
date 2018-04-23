@@ -32,69 +32,6 @@ int Game::determineUserIndex() {
     return -1;
 }
 
-bool Game::playerTurn(){
-  // if their hand total is over 21, end turn
-  if (p->getHandTotals().at(0) > 21) {
-      //getHandTotals().at(0) is the baseTotal, which is the lowest possible total
-      //if this total is already > 21, then the player busts (is out of the round)
-      if(p->getPlayerIdentity() == 0) {
-          cout << "\nYour current hand is: ";
-          for (Card *c : p->getHand()) {
-              cout << " " << c->getValue();
-          }
-          cout << "\t Hand total: " << p->getBestHand() << endl;
-          cout << "You bust! :(\n";
-      }
-      endTurn = true;
-  }
-  else if (p->getBestHand() == 21) {
-      if(p->getPlayerIdentity() == 0) {
-          cout << "\nYour current hand is: ";
-          for (Card *c : p->getHand()) {
-              cout << " " << c->getValue();
-          }
-          cout << "\tYou got 21!";
-      }
-      cout << "\n";
-      endTurn = true;
-  }
-
-  else {
-      // gets player action (passes in dealer's top card so user can see it)
-      int playerAction = p->takeTurn(players.at(players.size() - 1)->getHand().at(0));
-      switch (playerAction) {
-          case 1: // stand
-              endTurn = true;
-              break;
-          case 2: // hit
-              p->giveCard(unusedPile->getTopCard()); //places card into player's hand and then deletes the card
-              discard(unusedPile->removeTopCard()); //places card in discardPile cardStack
-              break;
-          case 3: // double down
-              p->giveCard(unusedPile->getTopCard()); //places card into player's hand and then deletes the card
-              discard(unusedPile->removeTopCard()); //places card in discardPile cardStack
-              bets.at(i) = bets.at(i) * 2;
-              if(p->getPlayerIdentity() == 0) {
-                  cout << "\nYour current hand is: ";
-                  for (Card *c : p->getHand()) {
-                      cout << c->getValue() << " ";
-                  }
-                  cout << "\t Hand total: " << p->getBestHand() << endl;
-                  if (p->getBestHand() > 21) {
-                      cout <<"\nYou bust! :(";
-                  }
-              }
-              endTurn = true;
-              break;
-          case 4: // surrender
-              bets.at(i) = bets.at(i) / 2;
-              surrendered.at(i) = true;
-              endTurn = true;
-              break;
-      }
-  }
-}
-
 void Game::runPlayingMode() {
     getNumPlayers();
     getAmountMoney();
@@ -177,7 +114,66 @@ void Game::runPlayingMode() {
                 }
             }
             while (!endTurn and !dealerHasNatural) {
+                // if their hand total is over 21, end turn
+                if (p->getHandTotals().at(0) > 21) {
+                    //getHandTotals().at(0) is the baseTotal, which is the lowest possible total
+                    //if this total is already > 21, then the player busts (is out of the round)
+                    if(p->getPlayerIdentity() == 0) {
+                        cout << "\nYour current hand is: ";
+                        for (Card *c : p->getHand()) {
+                            cout << " " << c->getValue();
+                        }
+                        cout << "\t Hand total: " << p->getBestHand() << endl;
+                        cout << "You bust! :(\n";
+                    }
+                    endTurn = true;
+                }
+                else if (p->getBestHand() == 21) {
+                    if(p->getPlayerIdentity() == 0) {
+                        cout << "\nYour current hand is: ";
+                        for (Card *c : p->getHand()) {
+                            cout << " " << c->getValue();
+                        }
+                        cout << "\tYou got 21!";
+                    }
+                    cout << "\n";
+                    endTurn = true;
+                }
 
+                else {
+                    // gets player action (passes in dealer's top card so user can see it)
+                    int playerAction = p->takeTurn(players.at(players.size() - 1)->getHand().at(0));
+                    switch (playerAction) {
+                        case 1: // stand
+                            endTurn = true;
+                            break;
+                        case 2: // hit
+                            p->giveCard(unusedPile->getTopCard()); //places card into player's hand and then deletes the card
+                            discard(unusedPile->removeTopCard()); //places card in discardPile cardStack
+                            break;
+                        case 3: // double down
+                            p->giveCard(unusedPile->getTopCard()); //places card into player's hand and then deletes the card
+                            discard(unusedPile->removeTopCard()); //places card in discardPile cardStack
+                            bets.at(i) = bets.at(i) * 2;
+                            if(p->getPlayerIdentity() == 0) {
+                                cout << "\nYour current hand is: ";
+                                for (Card *c : p->getHand()) {
+                                    cout << c->getValue() << " ";
+                                }
+                                cout << "\t Hand total: " << p->getBestHand() << endl;
+                                if (p->getBestHand() > 21) {
+                                    cout <<"\nYou bust! :(";
+                                }
+                            }
+                            endTurn = true;
+                            break;
+                        case 4: // surrender
+                            bets.at(i) = bets.at(i) / 2;
+                            surrendered.at(i) = true;
+                            endTurn = true;
+                            break;
+                    }
+                }
             }
         }
 

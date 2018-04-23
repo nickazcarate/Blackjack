@@ -35,7 +35,6 @@ private:
 public:
 
     Game(int userGameTypeChoice);
-    bool playerTurn();
     void runPlayingMode();
     void runSimulationMode();
     int determineUserIndex();
