@@ -46,9 +46,9 @@ void printInstructions(){
                 "\t - If the dealer has a natural, the round ends and the dealers takes all bets.\n"
                 "\t - If both the player and dealer have a neutral, there is a tie and no money is paid out.\n\n";
 
-    cout << "- If the dealer is showing an Ace, a player can \"purchase insurance\", which costs half of your bet \n"
-                "\t - If the dealer has a natural 21, then the player loses the original bet but is paid 2:1 on the insurance bet\n"
-                "\t - If the dealer doesn't have a natural 21, then the player loses the insurance bet and the round continues\n\n";
+//    cout << "- If the dealer is showing an Ace, a player can \"purchase insurance\", which costs half of your bet \n"
+//                "\t - If the dealer has a natural 21, then the player loses the original bet but is paid 2:1 on the insurance bet\n"
+//                "\t - If the dealer doesn't have a natural 21, then the player loses the insurance bet and the round continues\n\n";
 }
 
 void beginTutorial()
@@ -60,6 +60,10 @@ void beginTutorial()
 
     cout << "\nIs this your first time playing? (Yes or No): ";
     cin >> firstTime;
+
+    cin.clear(); //clear the input stream
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
     transform(firstTime.begin(), firstTime.end(), firstTime.begin(), ::tolower);
 
     while (responseBool)
@@ -70,6 +74,10 @@ void beginTutorial()
             bool responseLearn = true;      // this variable tracks if the user has an appropriate response to "would you like to play"
             cout << "\nAwesome! Would you like to learn how to play? (Yes or No): ";
             cin >> learnToPlay;
+
+            cin.clear(); //clear the input stream
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
             transform(learnToPlay.begin(), learnToPlay.end(), learnToPlay.begin(), ::tolower);
 
             while (responseLearn)
@@ -124,6 +132,8 @@ void beginMenu(){
 
         cout << "Enter 1 or 2: ";
         cin >> userGameTypeChoice;
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
         //Check for valid user input
         switch (userGameTypeChoice) {
@@ -140,7 +150,7 @@ void beginMenu(){
                 break;
             }
             default: {
-                cout << "\nPlease enter a valid choice. ";
+                cout << "\nInvalid input, please enter a 1 or 2: ";
                 //clears the input stream to allow the user to input an acceptable value
                 cin.clear();
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');

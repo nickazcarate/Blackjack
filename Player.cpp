@@ -170,6 +170,8 @@ int Player::takeTurn(Card * dealersTop) {
                 cout << "\n\nWhat would you like to do? (1 for stand, 2 for hit, 3 for double down, 4 for surrender): ";
                 string temp;
                 cin >> temp;
+                cin.clear(); //clear the input stream
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 if (temp == "1" or temp == "2") {
                     // Returns the user's choice so game can use it
                     return stoi(temp);
@@ -518,6 +520,8 @@ int Player::getBet(int tableBuyIn) {
         while (bet < tableBuyIn || bet > money ) {
             cout <<  "How much money would you like to bet? (minimum bet is $" << tableBuyIn << "): ";
             cin >> bet;
+            cin.clear(); //clear the input stream
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             cout << endl;
             if (bet <= 0) {
                 cout << "Invalid input, bet must be a positive integer.\n\n";

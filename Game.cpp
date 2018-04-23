@@ -285,6 +285,8 @@ void Game::runPlayingMode() {
             cout << "\nWould you like to keep playing? (0 for no, 1 for yes) ";
             string keepPlaying;
             cin >> keepPlaying;
+            cin.clear(); //clear the input stream
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
             if (keepPlaying == "0") {
                 for (int i = 0; i < numPlayers; i++) {
@@ -534,6 +536,10 @@ void Game::getNumPlayers() {
     cout << "Enter an integer from 0 to 5: ";
     while(true) {
         cin >> numPlayers;
+
+        cin.clear(); //clear the input stream
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
         numPlayers++; // adding a player to account for the user running the game
 
         // Check for valid user input
@@ -554,6 +560,9 @@ void Game::getAmountMoney() {
     while (true) {
         cin >> amountMoney;
 
+        cin.clear(); //clear the input stream
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
         // Check for valid user input
         if (amountMoney >= 100) {
             return; //this is a valid input
@@ -573,8 +582,10 @@ void Game::getMinBet() {
     cout << "Enter an integer between $2 and $500: ";
     while (true) {                  // while statement that error handles, printing the specific error
         cin >> tableBuyIn;
+        cin.clear(); //clear the input stream
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
         // Check for valid user input
-        if ((tableBuyIn >= 2) && (tableBuyIn <= 500) && (tableBuyIn < amountMoney)) {
+        if ((tableBuyIn >= 2) && (tableBuyIn <= 500) && (tableBuyIn <= amountMoney)) {
             return; // this is a valid input
         }
         else {                                  // if input is not valid, generally says "invalid input"
