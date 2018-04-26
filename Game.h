@@ -34,10 +34,9 @@ private:
 
 public:
     Game(int userGameTypeChoice);
-    void runPlayingMode();
+    void runPlayingMode(bool demoToggle);
     void runSimulationMode();
     int determineUserIndex();
-    void gamePlay();
     vector<Player *> getPlayers();
     int getTableBuyIn();
     void getNumPlayers(int userGameTypeChoice);

@@ -155,7 +155,7 @@ double Player::getProbability(int cardValue) {
 }
 
 // Runs specific functions depending on the player type that runs the turns
-int Player::takeTurn(Card * dealersTop) {
+int Player::takeTurn(Card * dealersTop, bool playerDemoToggle) {
 
     // Human Player
     if (playerIdentity == 0) {
@@ -201,7 +201,7 @@ int Player::takeTurn(Card * dealersTop) {
 
         // Various Bot strategies
         case 1:
-            return randoTurn();
+            return randoTurn(playerDemoToggle);
         case 2:
             return superCardCounterTurn(dealersTop);
         case 3:
@@ -215,7 +215,7 @@ int Player::takeTurn(Card * dealersTop) {
         case 6:
             return dealerTurn();
         default:
-            return randoTurn();
+            return randoTurn(playerDemoToggle);
     }
 }
 
@@ -230,16 +230,21 @@ int Player::dealerTurn(){
 }
 
 // Randomly chooses to get card, double down, or stand
-int Player::randoTurn(){
+int Player::randoTurn(bool playerDemoToggle){
     int randNum = rand()%100 +1;
-    if (randNum <= 65) {                            // 65% chance the bot will hit
-        return getCard();
-    }
-    else if((randNum > 65) && (randNum <= 70)) {    // 5% chance the bot will double down
-        return doubleDown();
-    }
-    else                                            // 30% chance the bot will stand
+    if (playerDemoToggle){
         return stand();
+    }
+    else{
+        if (randNum <= 65) {                            // 65% chance the bot will hit
+            return getCard();
+        }
+        else if((randNum > 65) && (randNum <= 70)) {    // 5% chance the bot will double down
+            return doubleDown();
+        }
+        else                                            // 30% chance the bot will stand
+            return stand();
+    }
 }
 
 // This person uses a card counting strategy, remembering ALL of the cards

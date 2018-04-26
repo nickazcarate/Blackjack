@@ -21,6 +21,7 @@ class DeckStack {
 private:
 
     void createDeck();
+    void createDemoDeck();
     vector<Card *> cardStack;
     int numberDecks;
 

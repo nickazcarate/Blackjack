@@ -11,16 +11,24 @@ Game::Game(int userGameTypeChoice){
     getNumPlayers(userGameTypeChoice);
     getAmountMoney();
     getMinBet();
-    unusedPile = new DeckStack(6);
+    if(userGameTypeChoice == 3){
+        unusedPile = new DeckStack(7);
+    }
+    else{
+        unusedPile = new DeckStack(6);
+    }
     discardPile = new DeckStack(0);
     bets = *(new vector<int> (numPlayers));
     surrendered = *(new vector <bool> (numPlayers));
 
     if(userGameTypeChoice == 1){
-        runPlayingMode();
+        runPlayingMode(false);
     }
     else if(userGameTypeChoice == 2){
         runSimulationMode();
+    }
+    else if(userGameTypeChoice == 3){
+        runPlayingMode(true);
     }
 }
 
@@ -71,13 +79,15 @@ int Game::determineUserIndex() {
     return -1;
 }
 
-void Game::runPlayingMode() {
+void Game::runPlayingMode(bool demoToggle) {
     lastRoundShuffled = 0;
     vector<string> names = {"You", "RandomBot", "SuperCounterBot", "ModerateCounterBot", "BasicStrategyBot1", "BasicStrategyBot2"};
     for(int i = 0; i < numPlayers; i++){
         players.push_back(new Player(amountMoney, i, names[i])); //creates the number of other players desired
     }
-    random_shuffle(players.begin(), players.end(), myRandom1); //shuffles the players to have random placement around the table
+    if (!demoToggle){
+        random_shuffle(players.begin(), players.end(), myRandom1); //shuffles the players to have random placement around the table
+    }
 
     //add dealer as the last person in the vector
     players.push_back(new Player(0, 6, "Dealer"));
@@ -222,7 +232,7 @@ void Game::runPlayingMode() {
 
                 else {
                     // gets player action (passes in dealer's top card so user can see it)
-                    int playerAction = p->takeTurn(players.at(players.size() - 1)->getHand().at(0));
+                    int playerAction = p->takeTurn(players.at(players.size() - 1)->getHand().at(0), demoToggle);
 
                     if (i != userIndex) { // for the bots and the dealer
                         cout << "\n" << name << "'s current hand is: \n";
@@ -575,7 +585,7 @@ void Game::runSimulationMode() {
 
                 else {
                     // gets player action (passes in dealer's top card so user can see it)
-                    int playerAction = p->takeTurn(players.at(players.size() - 1)->getHand().at(0));
+                    int playerAction = p->takeTurn(players.at(players.size() - 1)->getHand().at(0),false);
                     switch (playerAction) {
                         case 1: // stand
                             stand(p);
@@ -686,13 +696,6 @@ void Game::runSimulationMode() {
 
 }
 
-void Game::gamePlay() {
-    while(true){
-        //if();
-        //game runs if at least one person has money
-    }
-}
-
 vector<Player *> Game::getPlayers(){
     return this->players;
 }
@@ -702,7 +705,7 @@ int Game::getTableBuyIn(){
 }
 
 void Game::getNumPlayers(int userGameTypeChoice) {
-    if (userGameTypeChoice == 1) {
+    if ((userGameTypeChoice == 1) || (userGameTypeChoice == 3)) {
         cout << "\nHow many other players do you want in the game?\n";
         cout << "Enter an integer from 0 to 5: ";
         string input;
@@ -814,4 +817,3 @@ Player * Game::findPlayer(int playerIdentity) {
     }
     return NULL;
 }
-

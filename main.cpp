@@ -167,7 +167,8 @@ void beginMenu(){
         cout << "You may run either:\n";
         cout << "\t1) Playing mode: play rounds of Blackjack against a dealer and other players\n";
         cout << "\t2) Simulation mode: run many simulations to test effectiveness of playing styles between our bots\n";
-        cout << "Enter 1 or 2: ";
+        cout << "\t3) Demo mode: let us show you how naturals work!\n";
+        cout << "Enter 1 or 2 or 3: ";
 
     while(programRun){
         cin >> userGameTypeChoice;
@@ -184,8 +185,12 @@ void beginMenu(){
             //Exit loop with valid input
             break;
         }
+        else if (userGameTypeChoice == "3"){
+            // Exit loop with valid input
+            break;
+        }
         else{
-            cout << "\nInvalid input, please enter a 1 or 2: ";
+            cout << "\nInvalid input, please enter a 1 or 2 or 3: ";
         }
     }
 }
